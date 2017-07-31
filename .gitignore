@@ -8,3 +8,6 @@ development/
 # Vendors
 mcms/vendor/
 mcms/public/vendor
+
+# Cache
+mcms/cache/
