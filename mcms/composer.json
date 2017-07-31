@@ -1,0 +1,16 @@
+{
+    "name": "zheness/mcms",
+    "description": "Backend composer file",
+    "require": {
+        "phalcon/incubator": "^3.2"
+    },
+    "require-dev": {
+        "phalcon/ide-stubs": "^3.2"
+    },
+    "authors": [
+        {
+            "name": "Max Prudhomme",
+            "email": "maxprudhomme@gmail.com"
+        }
+    ]
+}

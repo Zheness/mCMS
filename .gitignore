@@ -1,0 +1,10 @@
+# IDE
+.idea/
+*.iml
+
+# development
+development/
+
+# Vendors
+mcms/vendor/
+mcms/public/vendor
