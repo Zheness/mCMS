@@ -8,7 +8,7 @@ use Phalcon\Mvc\View\Engine\Volt as VoltEngine;
  * Shared configuration service
  */
 $di->setShared('config', function () {
-    return include APP_PATH . "/config/config.php";
+    return include APP_PATH . "/config/app_config.php";
 });
 
 /**
