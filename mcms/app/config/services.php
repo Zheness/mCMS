@@ -1,6 +1,5 @@
 <?php
 
-use Phalcon\Loader;
 use Phalcon\Mvc\Model\Metadata\Memory as MetaDataAdapter;
 use Phalcon\Mvc\View\Engine\Volt as VoltEngine;
 
@@ -20,11 +19,11 @@ $di->setShared('db', function () {
 
     $class = 'Phalcon\Db\Adapter\Pdo\\' . $config->database->adapter;
     $params = [
-        'host'     => $config->database->host,
+        'host' => $config->database->host,
         'username' => $config->database->username,
         'password' => $config->database->password,
-        'dbname'   => $config->database->dbname,
-        'charset'  => $config->database->charset
+        'dbname' => $config->database->dbname,
+        'charset' => $config->database->charset
     ];
 
     if ($config->database->adapter == 'Postgresql') {
@@ -51,7 +50,7 @@ $di->setShared('voltShared', function ($view) {
 
     $volt = new VoltEngine($view, $this);
     $volt->setOptions([
-        'compiledPath' => function($templatePath) use ($config) {
+        'compiledPath' => function ($templatePath) use ($config) {
             $basePath = $config->application->appDir;
             if ($basePath && substr($basePath, 0, 2) == '..') {
                 $basePath = dirname(__DIR__);
@@ -73,8 +72,8 @@ $di->setShared('voltShared', function ($view) {
                 $cacheDir = sys_get_temp_dir();
             }
 
-            if (!is_dir($cacheDir . DIRECTORY_SEPARATOR . 'volt' )) {
-                @mkdir($cacheDir . DIRECTORY_SEPARATOR . 'volt' , 0755, true);
+            if (!is_dir($cacheDir . DIRECTORY_SEPARATOR . 'volt')) {
+                @mkdir($cacheDir . DIRECTORY_SEPARATOR . 'volt', 0755, true);
             }
 
             return $cacheDir . DIRECTORY_SEPARATOR . 'volt' . DIRECTORY_SEPARATOR . $filename;

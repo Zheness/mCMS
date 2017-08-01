@@ -11,6 +11,11 @@ define('APP_PATH', BASE_PATH . '/app');
 try {
 
     /**
+     * Include composer autoload
+     */
+    require BASE_PATH . '/vendor/autoload.php';
+
+    /**
      * The FactoryDefault Dependency Injector automatically registers the services that
      * provide a full stack framework. These default services can be overidden with custom ones.
      */
@@ -29,7 +34,7 @@ try {
     /**
      * Get config service for use in inline setup below
      */
-    $config = $di->getConfig();
+    $config = $di->get("config");
 
     /**
      * Include Autoloader
@@ -46,6 +51,7 @@ try {
      */
     $application->registerModules([
         'frontend' => ['className' => 'Mcms\Modules\Frontend\Module'],
+        'admin' => ['className' => 'Mcms\Modules\Admin\Module'],
     ]);
 
     /**

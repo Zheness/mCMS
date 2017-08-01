@@ -4,6 +4,8 @@ namespace Mcms\Modules\Admin;
 
 use Phalcon\DiInterface;
 use Phalcon\Loader;
+use Phalcon\Mvc\Dispatcher;
+use Phalcon\Mvc\Url;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\View\Engine\Php as PhpEngine;
 use Phalcon\Mvc\ModuleDefinitionInterface;
@@ -22,8 +24,7 @@ class Module implements ModuleDefinitionInterface
         $loader = new Loader();
 
         $loader->registerNamespaces([
-            'Mcms\Modules\Admin\Controllers' => __DIR__ . '/controllers/',
-            'Mcms\Modules\Admin\Models'      => __DIR__ . '/models/'
+            'Mcms\Modules\Admin\Controllers' => __DIR__ . '/controllers/'
         ]);
 
         $loader->register();
@@ -37,50 +38,29 @@ class Module implements ModuleDefinitionInterface
     public function registerServices(DiInterface $di)
     {
         /**
-         * Try to load local configuration
-         */
-        if (file_exists(__DIR__ . '/config/config.php')) {
-            
-            $config = $di['config'];
-            
-            $override = new Config(include __DIR__ . '/config/config.php');
-
-            if ($config instanceof Config) {
-                $config->merge($override);
-            } else {
-                $config = $override;
-            }
-        }
-
-        /**
          * Setting up the view component
          */
-        $di['view'] = function () {
-            $config = $this->getConfig();
-
+        $di->set('view', function () {
             $view = new View();
-            $view->setViewsDir($config->get('application')->viewsDir);
-            
+            $view->setDI($this);
+            $view->setViewsDir(__DIR__ . '/views/');
+
             $view->registerEngines([
-                '.volt'  => 'voltShared',
+                '.volt' => 'voltShared',
                 '.phtml' => PhpEngine::class
             ]);
 
             return $view;
-        };
+        });
 
         /**
-         * Database connection is created based in the parameters defined in the configuration file
+         * Setting up the url service
          */
-        $di['db'] = function () {
-            $config = $this->getConfig();
-
-            $dbConfig = $config->database->toArray();
-
-            $dbAdapter = '\Phalcon\Db\Adapter\Pdo\\' . $dbConfig['adapter'];
-            unset($config['adapter']);
-
-            return new $dbAdapter($dbConfig);
-        };
+        $di->set('url', function () {
+            $url = new Url();
+            $url->setBaseUri("/admin/");
+            $url->setStaticBaseUri("/adminFiles/");
+            return $url;
+        });
     }
 }

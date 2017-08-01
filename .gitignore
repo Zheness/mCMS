@@ -11,3 +11,6 @@ mcms/public/vendor
 
 # Cache
 mcms/cache/
+
+# Config template
+mcms/app/config/config.tpl.php
