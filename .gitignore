@@ -7,7 +7,8 @@ development/
 
 # Vendors
 mcms/vendor/
-mcms/public/vendor
+mcms/public/vendor/
+mcms/public/components/
 
 # Cache
 mcms/cache/

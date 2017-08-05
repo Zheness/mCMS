@@ -1,0 +1,14 @@
+{
+    "name": "zheness/mcms",
+    "description": "Public composer for the mCMS project",
+    "require": {
+        "iron-summit-media/startbootstrap-sb-admin-2": "^3.3",
+        "moment/moment": "^2.18"
+    },
+    "authors": [
+        {
+            "name": "Max Prudhomme",
+            "email": "maxprudhomme@gmail.com"
+        }
+    ]
+}

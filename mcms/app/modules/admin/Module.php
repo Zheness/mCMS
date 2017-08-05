@@ -59,7 +59,7 @@ class Module implements ModuleDefinitionInterface
         $di->set('url', function () {
             $url = new Url();
             $url->setBaseUri("/admin/");
-            $url->setStaticBaseUri("/adminFiles/");
+            $url->setStaticBaseUri("/");
             return $url;
         });
     }
