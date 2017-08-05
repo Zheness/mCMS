@@ -12,12 +12,12 @@
     <ul class="nav navbar-top-links navbar-right hidden-xs">
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                <i class="fa fa-user fa-fw"></i> {{ session.get("user").getFullname() }} <i
+                <i class="fa fa-user fa-fw"></i> {{ session.get("member").getFullname() }} <i
                     class="fa fa-caret-down"></i>
             </a>
             <ul class="dropdown-menu dropdown-user">
                 <li>
-                    <a href="{{ url("user/edit/" ~ session.get("user").id) }}"><i class="fa fa-gear fa-fw"></i>
+                    <a href="{{ url("member/edit/" ~ session.get("member").id) }}"><i class="fa fa-gear fa-fw"></i>
                         Paramètres</a>
                 </li>
                 <li class="divider"></li>

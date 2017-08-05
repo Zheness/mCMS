@@ -8,7 +8,7 @@
     {% if page_info['title'] is defined %}
         <title>{{ page_info['title'] }}</title>
     {% else %}
-        <title>Administration</title>
+        <title>{{ config.site.name }} - Administration</title>
     {% endif %}
 
     <link href="{{ static_url("vendor/components/bootstrap/css/bootstrap.min.css") }}" rel="stylesheet">
@@ -26,7 +26,7 @@
 </head>
 <body>
 
-{% if session.has('user') %}
+{% if session.has('member') %}
     <div id="wrapper">
         {% include "layouts/navbar.volt" %}
         <div id="page-wrapper">

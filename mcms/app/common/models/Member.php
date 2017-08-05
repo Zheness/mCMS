@@ -184,4 +184,9 @@ class Member extends ModelBase
         return parent::findFirst($parameters);
     }
 
+    public function getFullname()
+    {
+        return $this->firstname . " " . $this->lastname;
+    }
+
 }

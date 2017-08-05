@@ -24,7 +24,8 @@ class Module implements ModuleDefinitionInterface
         $loader = new Loader();
 
         $loader->registerNamespaces([
-            'Mcms\Modules\Admin\Controllers' => __DIR__ . '/controllers/'
+            'Mcms\Modules\Admin\Controllers' => __DIR__ . '/controllers/',
+            'Mcms\Modules\Admin\Forms' => __DIR__ . '/forms/'
         ]);
 
         $loader->register();

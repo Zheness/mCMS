@@ -21,6 +21,14 @@ return new \Phalcon\Config([
         'charset'  => 'utf8',
     ],
 
+    'site' => [
+        'method' => '', // http or https
+        'domain' => '', // domain.tld
+        'url' => '', // full URL (ex: http://domain.tld)
+        'admin_url' => '', // full URL of the administration (ex: http://domain.tld/admin)
+        'name' => '', // name of the website
+    ],
+
     'application' => [
         'appDir'         => APP_PATH . '/',
         'modelsDir'      => APP_PATH . '/common/models/',

@@ -45,17 +45,40 @@ $di->setShared('session', function () {
  */
 $di->set('flash', function () {
     return new Flash([
-        'error'   => 'alert alert-danger',
+        'error' => 'alert alert-danger',
         'success' => 'alert alert-success',
-        'notice'  => 'alert alert-info',
+        'notice' => 'alert alert-info',
         'warning' => 'alert alert-warning'
     ]);
 });
 
 /**
-* Set the default namespace for dispatcher
-*/
-$di->setShared('dispatcher', function() {
+ * Register the session flash service with the Twitter Bootstrap classes
+ */
+$di->setShared('flashSession', function () {
+    $flashSession = new \Phalcon\Flash\Session([
+        'error' => 'alert alert-danger',
+        'success' => 'alert alert-success',
+        'notice' => 'alert alert-info',
+        'warning' => 'alert alert-warning'
+    ]);
+    $flashSession->setAutoescape(false);
+    return $flashSession;
+});
+
+/**
+ * Set the security component
+ */
+$di->setShared("security", function () {
+    $security = new \Phalcon\Security();
+    $security->setWorkFactor(12);
+    return $security;
+});
+
+/**
+ * Set the default namespace for dispatcher
+ */
+$di->setShared('dispatcher', function () {
     $dispatcher = new Dispatcher();
     $dispatcher->setDefaultNamespace('Mcms\Modules\Frontend\Controllers');
     return $dispatcher;

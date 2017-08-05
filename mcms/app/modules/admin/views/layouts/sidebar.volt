@@ -34,10 +34,10 @@
                 <a href="#"><i class="fa fa-users fa-fw"></i> Utilisateurs<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="{{ url("user") }}"><i class="fa fa-list"></i> Liste des utilisateurs</a>
+                        <a href="{{ url("member") }}"><i class="fa fa-list"></i> Liste des membres</a>
                     </li>
                     <li>
-                        <a href="{{ url("user/add") }}"><i class="fa fa-plus"></i> Nouvel utilisateur</a>
+                        <a href="{{ url("member/add") }}"><i class="fa fa-plus"></i> Nouveau membre</a>
                     </li>
                 </ul>
             </li>
@@ -54,7 +54,7 @@
                 </ul>
             </li>
             <li class="visible-xs">
-                <a href="#"><i class="fa fa-user fa-fw"></i> {{ session.get("user").getFullname() }}<span
+                <a href="#"><i class="fa fa-user fa-fw"></i> {{ session.get("member").getFullname() }}<span
                         class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
