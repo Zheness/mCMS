@@ -15,6 +15,7 @@
     <link href="{{ static_url("vendor/onokumus/metismenu/dist/metisMenu.min.css") }}" rel="stylesheet">
     <link href="{{ static_url("vendor/components/font-awesome/css/font-awesome.min.css") }}" rel="stylesheet">
     <link href="{{ static_url("vendor/iron-summit-media/startbootstrap-sb-admin-2/dist/css/sb-admin-2.css") }}" rel="stylesheet">
+    <link href="{{ static_url("css/style.css") }}" rel="stylesheet">
     {{ assets.outputCss() }}
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->

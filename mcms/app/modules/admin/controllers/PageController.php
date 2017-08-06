@@ -5,6 +5,7 @@ namespace Mcms\Modules\Admin\Controllers;
 use Mcms\Models\Page;
 use Mcms\Modules\Admin\Forms\AddPageForm;
 use Mcms\Library\Tools;
+use Mcms\Modules\Admin\Forms\DeletePageForm;
 use Phalcon\Utils\Slug;
 
 /**
@@ -129,6 +130,44 @@ class PageController extends ControllerBase
         }
         $this->view->setVar("page", $page);
         $this->view->setVar("form", $form);
+        return true;
+    }
+
+    /**
+     * Delete a page
+     * @param int $id
+     * @return bool
+     */
+    public function deleteAction($id = 0)
+    {
+        $page = Page::findFirst($id);
+        if (!$page) {
+            $this->flashSession->error("La page séléctionnée n'existe pas.");
+            $this->dispatcher->forward(
+                [
+                    "controller" => "page",
+                    "action" => "index",
+                ]
+            );
+            return false;
+        }
+        $form = new DeletePageForm();
+        if ($this->request->isPost()) {
+            if ($form->isValid($this->request->getPost())) {
+                $this->flashSession->success("La page a bien été supprimée.");
+                $page->delete();
+                $this->dispatcher->forward(
+                    [
+                        "controller" => "page",
+                        "action" => "index",
+                    ]
+                );
+            } else {
+                $this->generateFlashSessionErrorForm($form);
+            }
+        }
+        $this->view->setVar("form", $form);
+        $this->view->setVar("page", $page);
         return true;
     }
 }

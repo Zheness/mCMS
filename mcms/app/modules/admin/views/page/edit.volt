@@ -6,7 +6,7 @@
     <li class="active">{{ page.title }}</li>
     <li class="active">Modifier</li>
 </ul>
-<ul class="nav nav-tabs margin-bottom">
+<ul class="nav nav-tabs margin-bottom-10">
     <li class="active"><a href="{{ url("page/edit/" ~ page.id) }}"><span class="fa fa-edit"></span> Modifier</a></li>
     <li><a href="{{ url("page/delete/" ~ page.id) }}" class="text-danger"><span class="fa fa-trash"></span>
             Supprimer</a></li>
