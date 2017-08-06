@@ -77,7 +77,8 @@ $di->setShared('voltShared', function ($view) {
             }
 
             return $cacheDir . DIRECTORY_SEPARATOR . 'volt' . DIRECTORY_SEPARATOR . $filename;
-        }
+        },
+        'compileAlways' => $this->getConfig()->voltEngine->compileAlways,
     ]);
 
     return $volt;

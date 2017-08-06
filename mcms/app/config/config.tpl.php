@@ -12,6 +12,10 @@ defined('APP_PATH') || define('APP_PATH', BASE_PATH . '/app');
 return new \Phalcon\Config([
     'version' => '1.0',
 
+    'voltEngine' => [
+        'compileAlways' => false // In production mode, no need to always compile volt files
+    ],
+
     'database' => [
         'adapter' => 'Mysql',
         'host' => 'localhost',

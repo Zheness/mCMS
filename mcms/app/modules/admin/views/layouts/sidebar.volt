@@ -20,7 +20,18 @@
                 </ul>
             </li>
             <li>
-                <a href="#"><i class="fa fa-file-image-o fa-fw"></i> Albums<span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-file-image-o fa-fw"></i> Images<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="{{ url("image") }}"><i class="fa fa-list"></i> Liste des images</a>
+                    </li>
+                    <li>
+                        <a href="{{ url("image/add") }}"><i class="fa fa-plus"></i> Nouvelle image</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-camera fa-fw"></i> Albums<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="#"><i class="fa fa-list"></i> Liste des albums</a>
