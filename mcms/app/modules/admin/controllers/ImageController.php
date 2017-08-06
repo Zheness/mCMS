@@ -5,6 +5,7 @@ namespace Mcms\Modules\Admin\Controllers;
 use Mcms\Models\Image;
 use Mcms\Modules\Admin\Forms\AddImageForm;
 use Mcms\Library\Tools;
+use Mcms\Modules\Admin\Forms\DeleteImageForm;
 use Mcms\Modules\Admin\Forms\EditImageForm;
 use Phalcon\Text;
 use Phalcon\Utils\Slug;
@@ -59,6 +60,7 @@ class ImageController extends ControllerBase
                             $image->createdBy = $this->session->get('member')->id;
                             $image->save();
                             $this->flashSession->success("L'image a bien été enregistrée.");
+                            $form->clear();
                         } else {
                             $this->flashSession->error("Impossible de déplacer le fichier le dossier de destination.");
                         }
@@ -112,6 +114,54 @@ class ImageController extends ControllerBase
         }
         $this->view->setVar("image", $image);
         $this->view->setVar("form", $form);
+        return true;
+    }
+
+    /**
+     * Delete a page
+     * @param int $id
+     * @return bool
+     */
+    public function deleteAction($id = 0)
+    {
+        $image = Image::findFirst($id);
+        if (!$image) {
+            $this->flashSession->error("L'image séléctionnée n'existe pas.");
+            $this->dispatcher->forward(
+                [
+                    "controller" => "image",
+                    "action" => "index",
+                ]
+            );
+            return false;
+        }
+        $form = new DeleteImageForm();
+        if ($this->request->isPost()) {
+            if ($form->isValid($this->request->getPost())) {
+                $hasError = false;
+                if (file_exists('img/upload/' . $image->filename)) {
+                    if (!unlink('img/upload/' . $image->filename)) {
+                        $this->flashSession->error("Impossible de supprimer le fichier.");
+                        $hasError = true;
+                    }
+                }
+                if (!$hasError) {
+                    $this->flashSession->success("L'image a bien été supprimée.");
+                    $image->delete();
+                    $this->dispatcher->forward(
+                        [
+                            "controller" => "image",
+                            "action" => "index",
+                        ]
+                    );
+                    return false;
+                }
+            } else {
+                $this->generateFlashSessionErrorForm($form);
+            }
+        }
+        $this->view->setVar("form", $form);
+        $this->view->setVar("image", $image);
         return true;
     }
 }
