@@ -2,6 +2,8 @@
 
 namespace Mcms\Models;
 
+use Mcms\Library\Tools;
+
 class Page extends ModelBase
 {
 
@@ -119,6 +121,65 @@ class Page extends ModelBase
     public static function findFirst($parameters = null)
     {
         return parent::findFirst($parameters);
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullnameCreator()
+    {
+        if ($this->createdBy == null) {
+            return "-";
+        }
+        return $this->createdByMember->getFullname();
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullnameLastEditor()
+    {
+        if ($this->updatedBy == null) {
+            return "-";
+        }
+        return $this->updatedByMember->getFullname();
+    }
+
+    /**
+     * Returns the public url of the page
+     * @return string
+     */
+    public function getUrl()
+    {
+        return "/page/" . $this->slug;
+    }
+
+    public function getAdminLinkCreator()
+    {
+        if ($this->createdBy == null) {
+            return "-";
+        }
+        $href = $this->getDI()->get("url")->get("member/edit/" . $this->createdBy);
+        return "<a href='{$href}'>{$this->createdByMember->getFullname()}</a>";
+    }
+
+    public function getAdminLinkLastEditor()
+    {
+        if ($this->updatedBy == null) {
+            return "-";
+        }
+        $href = $this->getDI()->get("url")->get("member/edit/" . $this->updatedBy);
+        return "<a href='{$href}'>{$this->updatedByMember->getFullname()}</a>";
+    }
+
+    public function dateCreatedToFr()
+    {
+        return Tools::mysqlDateToFr($this->dateCreated);
+    }
+
+    public function dateUpdatedToFr()
+    {
+        return Tools::mysqlDateToFr($this->dateUpdated);
     }
 
 }

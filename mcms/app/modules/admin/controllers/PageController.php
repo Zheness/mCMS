@@ -15,6 +15,15 @@ use Phalcon\Utils\Slug;
 class PageController extends ControllerBase
 {
     /**
+     * List of the pages
+     */
+    public function indexAction()
+    {
+        $this->addAssetsDataTable();
+        $this->assets->addJs("adminFiles/js/page.js");
+    }
+
+    /**
      * Add a page
      */
     public function addAction()

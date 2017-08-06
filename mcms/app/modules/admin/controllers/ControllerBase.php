@@ -38,4 +38,14 @@ class ControllerBase extends Controller
         $this->assets->addJs("vendor/ivan-chkv/tinymce-i18n/langs/fr_FR.js");
         $this->assets->addJs("adminFiles/js/tinymceTextareas.js");
     }
+
+    protected function addAssetsDataTable()
+    {
+//        $this->assets->addCss("vendor/datatables/datatables/media/css/jquery.dataTables.min.css");
+        $this->assets->addCss("vendor/datatables/datatables/media/css/dataTables.bootstrap.min.css");
+        $this->assets->addJs("vendor/datatables/datatables/media/js/jquery.dataTables.min.js");
+        $this->assets->addJs("vendor/datatables/datatables/media/js/dataTables.bootstrap.min.js");
+//        $this->assets->addCss("css/datatable_bootstrap.min.css");
+        $this->assets->addJs("adminFiles/js/dataTables_fr.js");
+    }
 }
