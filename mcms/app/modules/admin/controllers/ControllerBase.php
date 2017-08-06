@@ -3,6 +3,7 @@ namespace Mcms\Modules\Admin\Controllers;
 
 use Mcms\Modules\Admin\Forms\FormBase;
 use Phalcon\Mvc\Controller;
+use Phalcon\Validation\Message\Group;
 
 class ControllerBase extends Controller
 {
@@ -23,6 +24,21 @@ class ControllerBase extends Controller
             }
             $html .= "</ul>";
         }
+        $this->flashSession->error($html);
+    }
+
+    /**
+     * Generate the html message which contains all the file upload errors
+     * @param Group $messages
+     */
+    protected function generateFileUploadErrorMessage($messages)
+    {
+        $html = "<p>Le fichier envoyé comporte les erreurs suivantes:</p>";
+        $html .= "<ul>";
+        foreach ($messages as $message) {
+            $html .= "<li><b>Fichier</b>: {$message->getMessage()}</li>";
+        }
+        $html .= "</ul>";
         $this->flashSession->error($html);
     }
 
