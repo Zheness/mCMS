@@ -62,14 +62,14 @@ class AddPageForm extends FormBase
 
     private function commentsOpen()
     {
-        $element = new Check("commentsOpen");
+        $element = new Check("commentsOpen", ['value' => 'on']);
         $element->setLabel("Commentaires ouverts");
         return $element;
     }
 
     private function isPrivate()
     {
-        $element = new Check("isPrivate");
+        $element = new Check("isPrivate", ['value' => 'on']);
         $element->setLabel("Page privée");
         return $element;
     }

@@ -2,12 +2,10 @@
 
 namespace Mcms\Modules\Admin\Controllers;
 
-use Mcms\Library\Tools;
 use Mcms\Models\Page;
 
 /**
  * Class PageAjaxController
- * @package Msites\Modules\Admin\Controllers
  * @Private
  * @Ajax
  */
