@@ -2,14 +2,18 @@
 
 namespace Mcms\Modules\Admin;
 
+use Mcms\Library\AnnotationsPlugin;
+use Mcms\Library\DispatchPlugin;
+use Mcms\Library\ExceptionPlugin;
 use Phalcon\DiInterface;
+use Phalcon\Events\Manager;
 use Phalcon\Loader;
 use Phalcon\Mvc\Dispatcher;
+use Phalcon\Mvc\Router;
 use Phalcon\Mvc\Url;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\View\Engine\Php as PhpEngine;
 use Phalcon\Mvc\ModuleDefinitionInterface;
-use Phalcon\Config;
 
 
 class Module implements ModuleDefinitionInterface
@@ -62,6 +66,23 @@ class Module implements ModuleDefinitionInterface
             $url->setBaseUri("/admin/");
             $url->setStaticBaseUri("/");
             return $url;
+        });
+
+        /**
+         * Setting up the dispatcher service
+         */
+        $di->set('dispatcher', function () {
+            $eventsManager = new Manager();
+            $eventsManager->attach(
+                "dispatch",
+                new DispatchPlugin()
+            );
+
+            $dispatcher = new Dispatcher();
+
+            $dispatcher->setEventsManager($eventsManager);
+
+            return $dispatcher;
         });
     }
 }
