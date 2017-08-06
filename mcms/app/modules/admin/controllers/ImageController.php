@@ -16,6 +16,15 @@ class ImageController extends ControllerBase
 {
 
     /**
+     * List of the images
+     */
+    public function indexAction()
+    {
+        $this->addAssetsDataTable();
+        $this->assets->addJs("adminFiles/js/image.js");
+    }
+
+    /**
      * Add an image
      */
     public function addAction()

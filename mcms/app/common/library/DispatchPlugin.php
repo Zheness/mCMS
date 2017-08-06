@@ -85,6 +85,10 @@ class DispatchPlugin extends Plugin
                 return false;
                 break;
             default:
+                var_dump($exception->getMessage());
+                echo "<pre>";
+                echo $exception->getTraceAsString();
+                exit();
                 $dispatcher->forward(
                     [
                         "controller" => "error",

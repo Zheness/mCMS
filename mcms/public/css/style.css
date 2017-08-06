@@ -5,3 +5,10 @@
 .margin-bottom-10 {
     margin-bottom: 10px;
 }
+
+.thumbnail-datatables {
+    display: block;
+    margin: auto;
+    max-width: 200px;
+    max-height: 145px;
+}
