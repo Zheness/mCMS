@@ -44,6 +44,7 @@ class ControllerBase extends Controller
 
     public function afterExecuteRoute()
     {
+        $this->assets->addCss("adminFiles/css/admin-style.css");
         $this->view->setVar("csrfKey", $this->security->getTokenKey());
         $this->view->setVar("csrf", $this->security->getToken());
     }
@@ -57,11 +58,9 @@ class ControllerBase extends Controller
 
     protected function addAssetsDataTable()
     {
-//        $this->assets->addCss("vendor/datatables/datatables/media/css/jquery.dataTables.min.css");
         $this->assets->addCss("vendor/datatables/datatables/media/css/dataTables.bootstrap.min.css");
         $this->assets->addJs("vendor/datatables/datatables/media/js/jquery.dataTables.min.js");
         $this->assets->addJs("vendor/datatables/datatables/media/js/dataTables.bootstrap.min.js");
-//        $this->assets->addCss("css/datatable_bootstrap.min.css");
         $this->assets->addJs("adminFiles/js/dataTables_fr.js");
     }
 }

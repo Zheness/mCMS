@@ -5,6 +5,7 @@ namespace Mcms\Modules\Admin\Controllers;
 use Mcms\Models\Image;
 use Mcms\Modules\Admin\Forms\AddImageForm;
 use Mcms\Library\Tools;
+use Mcms\Modules\Admin\Forms\EditImageForm;
 use Phalcon\Text;
 use Phalcon\Utils\Slug;
 
@@ -70,6 +71,48 @@ class ImageController extends ControllerBase
             }
         }
         $this->view->setVar("form", $form);
+    }
+
+    /**
+     * Edit an image
+     * @param int $id
+     * @return bool
+     */
+    public function editAction($id = 0)
+    {
+        $image = Image::findFirst($id);
+        if (!$image) {
+            $this->flashSession->error("L'image séléctionnée n'existe pas.");
+            $this->dispatcher->forward(
+                [
+                    "controller" => "image",
+                    "action" => "index",
+                ]
+            );
+            return false;
+        }
+        $form = new EditImageForm();
+        if ($this->request->isPost()) {
+            if ($form->isValid($this->request->getPost())) {
+                $title = $this->request->getPost("title");
+                $description = $this->request->getPost("description");
+
+                $image->title = $title;
+                $image->description = $description;
+                $image->dateUpdated = Tools::now();
+                $image->updatedBy = $this->session->get('member')->id;
+                $image->save();
+                $this->flashSession->success("Les informations sur l'image ont bien été enregistrées.");
+            } else {
+                $this->generateFlashSessionErrorForm($form);
+            }
+        } else {
+            $form->get("title")->setDefault($image->title);
+            $form->get("description")->setDefault($image->description);
+        }
+        $this->view->setVar("image", $image);
+        $this->view->setVar("form", $form);
+        return true;
     }
 }
 
