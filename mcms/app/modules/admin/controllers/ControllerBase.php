@@ -31,4 +31,11 @@ class ControllerBase extends Controller
         $this->view->setVar("csrfKey", $this->security->getTokenKey());
         $this->view->setVar("csrf", $this->security->getToken());
     }
+
+    protected function addAssetsTinyMce()
+    {
+        $this->assets->addJs("vendor/tinymce/tinymce/tinymce.min.js");
+        $this->assets->addJs("vendor/ivan-chkv/tinymce-i18n/langs/fr_FR.js");
+        $this->assets->addJs("adminFiles/js/tinymceTextareas.js");
+    }
 }

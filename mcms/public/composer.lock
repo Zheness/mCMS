@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "0d9891446e1f385a8dbd043317129f89",
+    "content-hash": "72d5f559fb682c2ac682d4d9388dd33c",
     "packages": [
         {
             "name": "components/bootstrap",
@@ -218,6 +218,124 @@
             "description": "SB Admin 2 is an open source, admin dashboard template for Bootstrap created by Start Bootstrap.",
             "homepage": "https://github.com/davidtmiller",
             "time": "2016-07-25T20:49:41+00:00"
+        },
+        {
+            "name": "ivan-chkv/tinymce-i18n",
+            "version": "4.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ivan-chkv/tinymce-i18n.git",
+                "reference": "3fd8c19f1cb0d0fd774e5223dc135648f4154243"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ivan-chkv/tinymce-i18n/zipball/3fd8c19f1cb0d0fd774e5223dc135648f4154243",
+                "reference": "3fd8c19f1cb0d0fd774e5223dc135648f4154243",
+                "shasum": ""
+            },
+            "require-dev": {
+                "language/ar": "*",
+                "language/ar_sa": "*",
+                "language/az": "*",
+                "language/be": "*",
+                "language/bg_bg": "*",
+                "language/bn_bd": "*",
+                "language/bs": "*",
+                "language/ca": "*",
+                "language/cs": "*",
+                "language/cs_cz": "*",
+                "language/cy": "*",
+                "language/da": "*",
+                "language/de": "*",
+                "language/de_at": "*",
+                "language/dv": "*",
+                "language/el": "*",
+                "language/en_ca": "*",
+                "language/en_gb": "*",
+                "language/eo": "*",
+                "language/es": "*",
+                "language/es_mx": "*",
+                "language/et": "*",
+                "language/eu": "*",
+                "language/fa": "*",
+                "language/fa_ir": "*",
+                "language/fi": "*",
+                "language/fo": "*",
+                "language/fr_ch": "*",
+                "language/fr_fr": "*",
+                "language/ga": "*",
+                "language/gd": "*",
+                "language/gl": "*",
+                "language/he_il": "*",
+                "language/hi_in": "*",
+                "language/hr": "*",
+                "language/hu_hu": "*",
+                "language/hy": "*",
+                "language/id": "*",
+                "language/is_is": "*",
+                "language/it": "*",
+                "language/ja": "*",
+                "language/ka_ge": "*",
+                "language/kab": "*",
+                "language/kk": "*",
+                "language/km_kh": "*",
+                "language/ko": "*",
+                "language/ko_kr": "*",
+                "language/ku": "*",
+                "language/ku_iq": "*",
+                "language/lb": "*",
+                "language/lt": "*",
+                "language/lv": "*",
+                "language/mk_mk": "*",
+                "language/ml": "*",
+                "language/ml_in": "*",
+                "language/mn_mn": "*",
+                "language/nb_no": "*",
+                "language/nl": "*",
+                "language/pl": "*",
+                "language/pt_br": "*",
+                "language/pt_pt": "*",
+                "language/ro": "*",
+                "language/ru": "*",
+                "language/ru_ru": "*",
+                "language/si_lk": "*",
+                "language/sk": "*",
+                "language/sl_si": "*",
+                "language/sr": "*",
+                "language/sv_se": "*",
+                "language/ta": "*",
+                "language/ta_in": "*",
+                "language/tg": "*",
+                "language/th_th": "*",
+                "language/tr": "*",
+                "language/tr_tr": "*",
+                "language/tt": "*",
+                "language/ug": "*",
+                "language/uk": "*",
+                "language/uk_ua": "*",
+                "language/vi": "*",
+                "language/vi_vn": "*",
+                "language/zh_cn": "*",
+                "language/zh_tw": "*"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "TinyMCE Community"
+                }
+            ],
+            "description": "Languages for TinyMCE 4",
+            "homepage": "https://www.tinymce.com/download/language-packages/",
+            "keywords": [
+                "i18n",
+                "languages",
+                "tinymce"
+            ],
+            "time": "2016-08-16T04:26:34+00:00"
         },
         {
             "name": "kriswallsmith/assetic",
@@ -488,6 +606,52 @@
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
             "time": "2017-07-13T13:05:09+00:00"
+        },
+        {
+            "name": "tinymce/tinymce",
+            "version": "4.6.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tinymce/tinymce-dist.git",
+                "reference": "a874c512a61a353e80809f5e4ffb5e12869aa177"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tinymce/tinymce-dist/zipball/a874c512a61a353e80809f5e4ffb5e12869aa177",
+                "reference": "a874c512a61a353e80809f5e4ffb5e12869aa177",
+                "shasum": ""
+            },
+            "type": "component",
+            "extra": {
+                "component": {
+                    "scripts": [
+                        "tinymce.js",
+                        "plugins/*/plugin.js",
+                        "themes/*/theme.js"
+                    ],
+                    "files": [
+                        "tinymce.min.js",
+                        "plugins/*/plugin.min.js",
+                        "themes/*/theme.min.js",
+                        "skins/**"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1"
+            ],
+            "description": "Web based JavaScript HTML WYSIWYG editor control.",
+            "homepage": "http://www.tinymce.com",
+            "keywords": [
+                "editor",
+                "html",
+                "javascript",
+                "richtext",
+                "tinymce",
+                "wysiwyg"
+            ],
+            "time": "2017-08-02T14:08:17+00:00"
         }
     ],
     "packages-dev": [],

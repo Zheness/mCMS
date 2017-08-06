@@ -9,7 +9,7 @@ $loader = new Loader();
  */
 $loader->registerNamespaces([
     'Mcms\Models' => APP_PATH . '/common/models/',
-    'Mcms'        => APP_PATH . '/common/library/',
+    'Mcms\Library'        => APP_PATH . '/common/library/',
 ]);
 
 /**
