@@ -6,6 +6,7 @@ use Mcms\Library\Tools;
 use Mcms\Models\Member;
 use Mcms\Modules\Frontend\Forms\LoginForm;
 use Mcms\Modules\Frontend\Forms\SignupForm;
+use Phalcon\Filter;
 
 class IndexController extends ControllerBase
 {
@@ -73,8 +74,8 @@ class IndexController extends ControllerBase
             if ($form->isValid($this->request->getPost())) {
                 $email = $this->request->getPost("email");
                 $password = $this->request->getPost("password");
-                $firstname = $this->request->getPost("firstname");
-                $lastname = $this->request->getPost("lastname");
+                $firstname = $this->request->getPost("firstname", [Filter::FILTER_SPECIAL_CHARS]);
+                $lastname = $this->request->getPost("lastname", [Filter::FILTER_SPECIAL_CHARS]);
                 $member = Member::findFirstByEmail($email);
                 if (!$member) {
                     $member = new Member();

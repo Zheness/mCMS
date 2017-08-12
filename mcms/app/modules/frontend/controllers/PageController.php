@@ -41,12 +41,12 @@ class PageController extends ControllerBase
 
         if ($this->request->isPost()) {
             if ($formComment->isValid($this->request->getPost())) {
-                $content = $this->request->getPost("content");
+                $content = $this->request->getPost("content", [Filter::FILTER_SPECIAL_CHARS]);
 
                 $comment = new Comment();
                 $comment->ipAddress = $this->request->getClientAddress();
                 $comment->pageId = $page->id;
-                $comment->content = $this->filter->sanitize($content, Filter::FILTER_SPECIAL_CHARS);
+                $comment->content = $content;
                 $comment->dateCreated = Tools::now();
 
                 if ($memberConnected) {
@@ -54,7 +54,7 @@ class PageController extends ControllerBase
                     $comment->createdBy = $member->id;
                     $comment->username = $member->getFullname();
                 } else {
-                    $username = $this->request->getPost("username");
+                    $username = $this->request->getPost("username", [Filter::FILTER_SPECIAL_CHARS]);
                     $comment->username = $username;
                 }
 
