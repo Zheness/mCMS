@@ -6,6 +6,9 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">
+                {% if page.isPrivate %}
+                    <span class="fa fa-lock" data-toggle="tooltip" data-placement="top" title="Page privée"></span>
+                {% endif %}
                 <a href="{{ page.getUrl() }}">{{ page.title }}</a>
             </h3>
         </div>

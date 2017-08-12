@@ -6,6 +6,9 @@
 <article>
     <h1>
         {{ page.title }}
+        {% if page.isPrivate %}
+            <small><sup class="fa fa-lock" data-toggle="tooltip" data-placement="top" title="Page privée"></sup></small>
+        {% endif %}
     </h1>
     <p class="text-muted">
         Rédigé par {{ page.createdByMember.getFullname() }} le {{ page.dateCreatedToFr() }}.

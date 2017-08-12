@@ -10,6 +10,7 @@
     <link rel="shortcut icon" href="{{ static_url('img/design/favicon.ico') }}" type="image/x-icon">
 
     <link href="{{ static_url("vendor/twbs/bootstrap/dist/css/bootstrap.min.css") }}" rel="stylesheet">
+    <link href="{{ static_url("vendor/components/font-awesome/css/font-awesome.min.css") }}" rel="stylesheet">
     <link href="{{ static_url("css/style.css") }}" rel="stylesheet">
     {{ assets.outputCss() }}
 
@@ -41,6 +42,7 @@
 
 <script src="{{ static_url("vendor/components/jquery/jquery.min.js") }}"></script>
 <script src="{{ static_url("vendor/twbs/bootstrap/dist/js/bootstrap.min.js") }}"></script>
+<script src="{{ static_url("js/bootstrap.js") }}"></script>
 {{ assets.outputJs() }}
 
 </body>

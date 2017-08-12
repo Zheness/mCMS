@@ -50,6 +50,7 @@
 <script src="{{ static_url("vendor/components/bootstrap/js/bootstrap.min.js") }}"></script>
 <script src="{{ static_url("vendor/onokumus/metismenu/dist/metisMenu.min.js") }}"></script>
 <script src="{{ static_url("vendor/iron-summit-media/startbootstrap-sb-admin-2/dist/js/sb-admin-2.js") }}"></script>
+<script src="{{ static_url("js/bootstrap.js") }}"></script>
 {{ assets.outputJs() }}
 
 </body>
