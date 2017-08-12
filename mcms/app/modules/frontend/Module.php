@@ -3,6 +3,7 @@ namespace Mcms\Modules\Frontend;
 
 use Phalcon\DiInterface;
 use Phalcon\Loader;
+use Phalcon\Mvc\Url;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\View\Engine\Php as PhpEngine;
 use Phalcon\Mvc\ModuleDefinitionInterface;
@@ -46,6 +47,16 @@ class Module implements ModuleDefinitionInterface
             ]);
 
             return $view;
+        });
+
+        /**
+         * Setting up the url service
+         */
+        $di->set('url', function () {
+            $url = new Url();
+            $url->setBaseUri("/");
+            $url->setStaticBaseUri("/");
+            return $url;
         });
     }
 }

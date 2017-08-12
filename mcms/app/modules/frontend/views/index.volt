@@ -1,20 +1,41 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-        <title>Phalcon PHP Framework</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    </head>
-    <body>
-        <div class="container">
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Blog layout example - UIkit documentation</title>
+    <link rel="shortcut icon" href="{{ static_url('img/design/favicon.ico') }}" type="image/x-icon">
+
+    <link href="{{ static_url("vendor/twbs/bootstrap/dist/css/bootstrap.min.css") }}" rel="stylesheet">
+    <link href="{{ static_url("css/style.css") }}" rel="stylesheet">
+    {{ assets.outputCss() }}
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div class="container">
+    {% include "layouts/navbar.volt" %}
+
+    <div class="row">
+        <div class="col-md-8">
             {{ content() }}
         </div>
-        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-        <!-- Latest compiled and minified JavaScript -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    </body>
+
+        <div class="col-md-4">
+            {% include "layouts/sidebar.volt" %}
+        </div>
+    </div>
+
+</div>
+
+<script src="{{ static_url("vendor/components/jquery/jquery.min.js") }}"></script>
+<script src="{{ static_url("vendor/twbs/bootstrap/dist/js/bootstrap.min.js") }}"></script>
+{{ assets.outputJs() }}
+
+</body>
 </html>

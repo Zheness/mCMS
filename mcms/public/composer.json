@@ -5,7 +5,9 @@
         "iron-summit-media/startbootstrap-sb-admin-2": "^3.3",
         "moment/moment": "^2.18",
         "tinymce/tinymce": "^4.6",
-        "ivan-chkv/tinymce-i18n": "^4.0"
+        "ivan-chkv/tinymce-i18n": "^4.0",
+        "twbs/bootstrap": "^3.3",
+        "components/jquery": "^3.2"
     },
     "authors": [
         {
