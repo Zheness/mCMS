@@ -98,10 +98,10 @@ class Comment extends ModelBase
     {
         $this->setSchema("mcms");
         $this->setSource("comment");
-        $this->hasMany('id', 'Mcms\Models\Comment', 'parentId', ['alias' => 'Comment']);
+        $this->hasMany('id', 'Mcms\Models\Comment', 'parentId', ['alias' => 'Comments']);
         $this->belongsTo('albumId', 'Mcms\Models\\Album', 'id', ['alias' => 'Album']);
         $this->belongsTo('articleId', 'Mcms\Models\\Article', 'id', ['alias' => 'Article']);
-        $this->belongsTo('parentId', 'Mcms\Models\\Comment', 'id', ['alias' => 'Comment']);
+        $this->belongsTo('parentId', 'Mcms\Models\\Comment', 'id', ['alias' => 'ParentComment']);
         $this->belongsTo('pageId', 'Mcms\Models\\Page', 'id', ['alias' => 'Page']);
         $this->belongsTo('createdBy', 'Mcms\Models\\Member', 'id', ['alias' => 'createdByMember']);
         $this->belongsTo('updatedBy', 'Mcms\Models\\Member', 'id', ['alias' => 'updatedByMember']);
