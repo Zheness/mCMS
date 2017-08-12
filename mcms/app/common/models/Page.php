@@ -2,6 +2,8 @@
 
 namespace Mcms\Models;
 
+use Mcms\Library\Tools;
+
 class Page extends ModelBase
 {
 
