@@ -3,7 +3,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Blog layout example - UIkit documentation</title>
+    <title>
+        {{ metaTitle is defined ? metaTitle ~ ' - ' : '' }}
+        {{ config.site.name }}
+    </title>
     <link rel="shortcut icon" href="{{ static_url('img/design/favicon.ico') }}" type="image/x-icon">
 
     <link href="{{ static_url("vendor/twbs/bootstrap/dist/css/bootstrap.min.css") }}" rel="stylesheet">

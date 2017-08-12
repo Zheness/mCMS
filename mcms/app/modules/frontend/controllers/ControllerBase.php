@@ -12,6 +12,7 @@ class ControllerBase extends Controller
          * Latest pages
          */
         $pages = Page::find([
+            'conditions' => $this->session->has('member') ? null : 'isPrivate = 0',
             'order' => 'dateCreated DESC',
             'limit' => 5
         ]);

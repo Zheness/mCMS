@@ -1,3 +1,7 @@
+.no-margin {
+    margin: 0;
+}
+
 .margin-top-10 {
     margin-top: 10px;
 }

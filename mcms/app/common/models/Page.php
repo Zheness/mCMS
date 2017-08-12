@@ -129,6 +129,16 @@ class Page extends ModelBase
      */
     public function getUrl()
     {
-        return "/page/" . $this->slug;
+        return "/page/read/" . $this->slug;
+    }
+
+    /**
+     * Truncate the content and keep html tags
+     * @param int $maxLength
+     * @return string
+     */
+    public function truncateContent($maxLength = 300)
+    {
+        return Tools::truncateHTML($maxLength, $this->content);
     }
 }

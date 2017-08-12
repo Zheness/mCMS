@@ -81,5 +81,7 @@ $di->setShared('voltShared', function ($view) {
         'compileAlways' => $this->getConfig()->voltEngine->compileAlways,
     ]);
 
+    $compiler = $volt->getCompiler();
+
     return $volt;
 });
