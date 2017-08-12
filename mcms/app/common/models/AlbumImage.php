@@ -12,35 +12,35 @@ class AlbumImage extends ModelBase
      * @Identity
      * @Column(type="integer", length=11, nullable=false)
      */
-    public $Id;
+    public $id;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=false)
      */
-    public $Datecreated;
+    public $dateCreated;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=11, nullable=false)
      */
-    public $Createdby;
+    public $createdBy;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=11, nullable=false)
      */
-    public $Albumid;
+    public $albumId;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=11, nullable=false)
      */
-    public $Imageid;
+    public $imageId;
 
     /**
      * Initialize method for model.
@@ -52,16 +52,6 @@ class AlbumImage extends ModelBase
         $this->belongsTo('albumId', 'Mcms\Models\\Album', 'id', ['alias' => 'Album']);
         $this->belongsTo('imageId', 'Mcms\Models\\Image', 'id', ['alias' => 'Image']);
         $this->belongsTo('createdBy', 'Mcms\Models\\Member', 'id', ['alias' => 'createdByMember']);
-    }
-
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'album_image';
     }
 
     /**
@@ -84,6 +74,16 @@ class AlbumImage extends ModelBase
     public static function findFirst($parameters = null)
     {
         return parent::findFirst($parameters);
+    }
+
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    public function getSource()
+    {
+        return 'album_image';
     }
 
 }

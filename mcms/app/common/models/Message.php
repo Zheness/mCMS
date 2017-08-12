@@ -12,91 +12,91 @@ class Message extends ModelBase
      * @Identity
      * @Column(type="integer", length=11, nullable=false)
      */
-    public $Id;
+    public $id;
 
     /**
      *
      * @var string
      * @Column(type="string", length=90, nullable=true)
      */
-    public $Subject;
+    public $subject;
 
     /**
      *
      * @var string
      * @Column(type="string", length=70, nullable=true)
      */
-    public $Firstname;
+    public $firstname;
 
     /**
      *
      * @var string
      * @Column(type="string", length=70, nullable=true)
      */
-    public $Lastname;
+    public $lastname;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=false)
      */
-    public $Content;
+    public $content;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=false)
      */
-    public $Datecreated;
+    public $dateCreated;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=true)
      */
-    public $Dateupdated;
+    public $dateUpdated;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=11, nullable=true)
      */
-    public $Createdby;
+    public $createdBy;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=11, nullable=true)
      */
-    public $Updatedby;
+    public $updatedBy;
 
     /**
      *
      * @var string
      * @Column(type="string", length=50, nullable=true)
      */
-    public $Ipaddress;
+    public $ipAddress;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=11, nullable=true)
      */
-    public $Parentid;
+    public $parentId;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=1, nullable=true)
      */
-    public $Unread;
+    public $unread;
 
     /**
      *
      * @var string
      * @Column(type="string", length=100, nullable=true)
      */
-    public $Token;
+    public $token;
 
     /**
      * Initialize method for model.
@@ -109,16 +109,6 @@ class Message extends ModelBase
         $this->belongsTo('parentId', 'Mcms\Models\\Message', 'id', ['alias' => 'ParentMessage']);
         $this->belongsTo('createdBy', 'Mcms\Models\\Member', 'id', ['alias' => 'createdByMember']);
         $this->belongsTo('updatedBy', 'Mcms\Models\\Member', 'id', ['alias' => 'updatedByMember']);
-    }
-
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'message';
     }
 
     /**
@@ -141,6 +131,16 @@ class Message extends ModelBase
     public static function findFirst($parameters = null)
     {
         return parent::findFirst($parameters);
+    }
+
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    public function getSource()
+    {
+        return 'message';
     }
 
 }

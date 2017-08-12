@@ -12,84 +12,84 @@ class Comment extends ModelBase
      * @Identity
      * @Column(type="integer", length=11, nullable=false)
      */
-    public $Id;
+    public $id;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=false)
      */
-    public $Content;
+    public $content;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=false)
      */
-    public $Datecreated;
+    public $dateCreated;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=true)
      */
-    public $Dateupdated;
+    public $dateUpdated;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=11, nullable=true)
      */
-    public $Createdby;
+    public $createdBy;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=11, nullable=true)
      */
-    public $Updatedby;
+    public $updatedBy;
 
     /**
      *
      * @var string
      * @Column(type="string", length=50, nullable=true)
      */
-    public $Ipaddress;
+    public $ipAddress;
 
     /**
      *
      * @var string
      * @Column(type="string", length=70, nullable=true)
      */
-    public $Username;
+    public $username;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=11, nullable=true)
      */
-    public $Parentid;
+    public $parentId;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=11, nullable=true)
      */
-    public $Articleid;
+    public $articleId;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=11, nullable=true)
      */
-    public $Albumid;
+    public $albumId;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=11, nullable=true)
      */
-    public $Pageid;
+    public $pageId;
 
     /**
      * Initialize method for model.
@@ -105,16 +105,6 @@ class Comment extends ModelBase
         $this->belongsTo('pageId', 'Mcms\Models\\Page', 'id', ['alias' => 'Page']);
         $this->belongsTo('createdBy', 'Mcms\Models\\Member', 'id', ['alias' => 'createdByMember']);
         $this->belongsTo('updatedBy', 'Mcms\Models\\Member', 'id', ['alias' => 'updatedByMember']);
-    }
-
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'comment';
     }
 
     /**
@@ -137,6 +127,16 @@ class Comment extends ModelBase
     public static function findFirst($parameters = null)
     {
         return parent::findFirst($parameters);
+    }
+
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    public function getSource()
+    {
+        return 'comment';
     }
 
 }

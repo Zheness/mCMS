@@ -12,49 +12,49 @@ class Log extends ModelBase
      * @Identity
      * @Column(type="integer", length=11, nullable=false)
      */
-    public $Id;
+    public $id;
 
     /**
      *
      * @var string
      * @Column(type="string", length=200, nullable=false)
      */
-    public $Username;
+    public $username;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=10, nullable=true)
      */
-    public $Sourcerid;
+    public $sourcerId;
 
     /**
      *
      * @var string
      * @Column(type="string", length=45, nullable=false)
      */
-    public $Type;
+    public $type;
 
     /**
      *
      * @var string
      * @Column(type="string", length=200, nullable=false)
      */
-    public $Action;
+    public $action;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=true)
      */
-    public $Content;
+    public $content;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=false)
      */
-    public $Datecreated;
+    public $dateCreated;
 
     /**
      * Initialize method for model.
@@ -63,16 +63,6 @@ class Log extends ModelBase
     {
         $this->setSchema("mcms");
         $this->setSource("log");
-    }
-
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'log';
     }
 
     /**
@@ -95,6 +85,16 @@ class Log extends ModelBase
     public static function findFirst($parameters = null)
     {
         return parent::findFirst($parameters);
+    }
+
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    public function getSource()
+    {
+        return 'log';
     }
 
 }

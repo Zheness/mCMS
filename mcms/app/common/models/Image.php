@@ -12,56 +12,56 @@ class Image extends ModelBase
      * @Identity
      * @Column(type="integer", length=11, nullable=false)
      */
-    public $Id;
+    public $id;
 
     /**
      *
      * @var string
      * @Column(type="string", length=90, nullable=true)
      */
-    public $Title;
+    public $title;
 
     /**
      *
      * @var string
      * @Column(type="string", length=90, nullable=false)
      */
-    public $Filename;
+    public $filename;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=true)
      */
-    public $Description;
+    public $description;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=false)
      */
-    public $Datecreated;
+    public $dateCreated;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=true)
      */
-    public $Dateupdated;
+    public $dateUpdated;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=11, nullable=false)
      */
-    public $Createdby;
+    public $createdBy;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=11, nullable=true)
      */
-    public $Updatedby;
+    public $updatedBy;
 
     /**
      * Initialize method for model.
@@ -74,16 +74,6 @@ class Image extends ModelBase
         $this->hasMany('id', 'Mcms\Models\Member', 'profilePicture', ['alias' => 'ProfilePictureMembers']);
         $this->belongsTo('createdBy', 'Mcms\Models\\Member', 'id', ['alias' => 'createdByMember']);
         $this->belongsTo('updatedBy', 'Mcms\Models\\Member', 'id', ['alias' => 'updatedByMember']);
-    }
-
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'image';
     }
 
     /**
@@ -106,6 +96,16 @@ class Image extends ModelBase
     public static function findFirst($parameters = null)
     {
         return parent::findFirst($parameters);
+    }
+
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    public function getSource()
+    {
+        return 'image';
     }
 
 }

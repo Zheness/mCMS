@@ -2,8 +2,6 @@
 
 namespace Mcms\Models;
 
-use Mcms\Library\Tools;
-
 class Page extends ModelBase
 {
 
@@ -14,70 +12,70 @@ class Page extends ModelBase
      * @Identity
      * @Column(type="integer", length=11, nullable=false)
      */
-    public $Id;
+    public $id;
 
     /**
      *
      * @var string
      * @Column(type="string", length=90, nullable=false)
      */
-    public $Title;
+    public $title;
 
     /**
      *
      * @var string
      * @Column(type="string", length=90, nullable=false)
      */
-    public $Slug;
+    public $slug;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=false)
      */
-    public $Content;
+    public $content;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=1, nullable=false)
      */
-    public $Commentsopen;
+    public $commentsOpen;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=false)
      */
-    public $Datecreated;
+    public $dateCreated;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=true)
      */
-    public $Dateupdated;
+    public $dateUpdated;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=11, nullable=false)
      */
-    public $Createdby;
+    public $createdBy;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=11, nullable=true)
      */
-    public $Updatedby;
+    public $updatedBy;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=1, nullable=true)
      */
-    public $Isprivate;
+    public $isPrivate;
 
     /**
      * Initialize method for model.
@@ -89,16 +87,6 @@ class Page extends ModelBase
         $this->hasMany('id', 'Mcms\Models\Comment', 'pageId', ['alias' => 'Comments']);
         $this->belongsTo('createdBy', 'Mcms\Models\\Member', 'id', ['alias' => 'createdByMember']);
         $this->belongsTo('updatedBy', 'Mcms\Models\\Member', 'id', ['alias' => 'updatedByMember']);
-    }
-
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'page';
     }
 
     /**
@@ -141,4 +129,15 @@ class Page extends ModelBase
     {
         return Tools::truncateHTML($maxLength, $this->content);
     }
+
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    public function getSource()
+    {
+        return 'page';
+    }
+
 }

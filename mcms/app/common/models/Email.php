@@ -12,56 +12,56 @@ class Email extends ModelBase
      * @Identity
      * @Column(type="integer", length=11, nullable=false)
      */
-    public $Id;
+    public $id;
 
     /**
      *
      * @var string
      * @Column(type="string", length=150, nullable=false)
      */
-    public $Subject;
+    public $subject;
 
     /**
      *
      * @var string
      * @Column(type="string", length=150, nullable=false)
      */
-    public $Toemail;
+    public $toEmail;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=false)
      */
-    public $Content;
+    public $content;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=true)
      */
-    public $Response;
+    public $response;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=false)
      */
-    public $Datecreated;
+    public $dateCreated;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=10, nullable=false)
      */
-    public $Frommemberid;
+    public $fromMemberId;
 
     /**
      *
      * @var string
      * @Column(type="string", length=200, nullable=false)
      */
-    public $Frommemberusername;
+    public $fromMemberUsername;
 
     /**
      * Initialize method for model.
@@ -70,16 +70,6 @@ class Email extends ModelBase
     {
         $this->setSchema("mcms");
         $this->setSource("email");
-    }
-
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'email';
     }
 
     /**
@@ -102,6 +92,16 @@ class Email extends ModelBase
     public static function findFirst($parameters = null)
     {
         return parent::findFirst($parameters);
+    }
+
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    public function getSource()
+    {
+        return 'email';
     }
 
 }

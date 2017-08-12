@@ -2,7 +2,6 @@
 
 namespace Mcms\Models;
 
-use Phalcon\Validation;
 use Phalcon\Validation\Validator\Email as EmailValidator;
 
 class Member extends ModelBase
@@ -15,91 +14,91 @@ class Member extends ModelBase
      * @Identity
      * @Column(type="integer", length=11, nullable=false)
      */
-    public $Id;
+    public $id;
 
     /**
      *
      * @var string
      * @Column(type="string", length=70, nullable=true)
      */
-    public $Firstname;
+    public $firstname;
 
     /**
      *
      * @var string
      * @Column(type="string", length=70, nullable=true)
      */
-    public $Lastname;
+    public $lastname;
 
     /**
      *
      * @var string
      * @Column(type="string", length=100, nullable=false)
      */
-    public $Email;
+    public $email;
 
     /**
      *
      * @var string
      * @Column(type="string", length=255, nullable=true)
      */
-    public $Password;
+    public $password;
 
     /**
      *
      * @var string
      * @Column(type="string", length=70, nullable=true)
      */
-    public $Username;
+    public $username;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=false)
      */
-    public $Role;
+    public $role;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=false)
      */
-    public $Datecreated;
+    public $dateCreated;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=true)
      */
-    public $Dateupdated;
+    public $dateUpdated;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=11, nullable=true)
      */
-    public $Createdby;
+    public $createdBy;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=11, nullable=true)
      */
-    public $Updatedby;
+    public $updatedBy;
 
     /**
      *
      * @var string
      * @Column(type="string", length=100, nullable=true)
      */
-    public $Token;
+    public $token;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=11, nullable=true)
      */
-    public $Profilepicture;
+    public $profilePicture;
 
     /**
      * Validations and business logic
@@ -153,16 +152,6 @@ class Member extends ModelBase
     }
 
     /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'member';
-    }
-
-    /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
@@ -184,9 +173,20 @@ class Member extends ModelBase
         return parent::findFirst($parameters);
     }
 
+
     public function getFullname()
     {
         return $this->firstname . " " . $this->lastname;
+    }
+
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    public function getSource()
+    {
+        return 'member';
     }
 
 }

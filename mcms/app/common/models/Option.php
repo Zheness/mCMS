@@ -12,42 +12,42 @@ class Option extends ModelBase
      * @Identity
      * @Column(type="integer", length=11, nullable=false)
      */
-    public $Id;
+    public $id;
 
     /**
      *
      * @var string
      * @Column(type="string", length=90, nullable=false)
      */
-    public $Interntitle;
+    public $internTitle;
 
     /**
      *
      * @var string
      * @Column(type="string", length=90, nullable=false)
      */
-    public $Slug;
+    public $slug;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=true)
      */
-    public $Content;
+    public $content;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=true)
      */
-    public $Dateupdated;
+    public $dateUpdated;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=11, nullable=true)
      */
-    public $Updatedby;
+    public $updatedBy;
 
     /**
      * Initialize method for model.
@@ -57,16 +57,6 @@ class Option extends ModelBase
         $this->setSchema("mcms");
         $this->setSource("option");
         $this->belongsTo('updatedBy', 'Mcms\Models\\Member', 'id', ['alias' => 'updatedByMember']);
-    }
-
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'option';
     }
 
     /**
@@ -89,6 +79,16 @@ class Option extends ModelBase
     public static function findFirst($parameters = null)
     {
         return parent::findFirst($parameters);
+    }
+
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    public function getSource()
+    {
+        return 'option';
     }
 
 }

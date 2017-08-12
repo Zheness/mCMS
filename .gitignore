@@ -15,6 +15,7 @@ mcms/cache/
 
 # Config template
 mcms/app/config/app_config.php
+mcms/app/config/config.ini
 
 # Uploaded images
 mcms/public/img/upload/
