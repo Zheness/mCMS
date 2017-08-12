@@ -41,9 +41,9 @@
                     <p class="help-block">Entrez votre nom, celui-ci sera affiché au-dessus du commentaire.</p>
                 {% endif %}
             </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-12">
                         <label for="content" class="control-label">Commentaire</label>
                         {{ formComment.render("content", ["class": "form-control", "rows": "5"]) }}
                     </div>

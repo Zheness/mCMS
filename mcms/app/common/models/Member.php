@@ -2,8 +2,6 @@
 
 namespace Mcms\Models;
 
-use Phalcon\Validation\Validator\Email as EmailValidator;
-
 class Member extends ModelBase
 {
 
@@ -99,28 +97,6 @@ class Member extends ModelBase
      * @Column(type="integer", length=11, nullable=true)
      */
     public $profilePicture;
-
-    /**
-     * Validations and business logic
-     *
-     * @return boolean
-     */
-    public function validation()
-    {
-        $validator = new Validation();
-
-        $validator->add(
-            'Email',
-            new EmailValidator(
-                [
-                    'model'   => $this,
-                    'message' => 'Please enter a correct email address',
-                ]
-            )
-        );
-
-        return $this->validate($validator);
-    }
 
     /**
      * Initialize method for model.

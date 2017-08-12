@@ -2,8 +2,10 @@
 
 namespace Mcms\Modules\Frontend\Controllers;
 
+use Mcms\Library\Tools;
 use Mcms\Models\Member;
 use Mcms\Modules\Frontend\Forms\LoginForm;
+use Mcms\Modules\Frontend\Forms\SignupForm;
 
 class IndexController extends ControllerBase
 {
@@ -57,6 +59,48 @@ class IndexController extends ControllerBase
             $this->flashSession->notice("Vous êtes maintenant déconnecté.");
         }
         $this->dispatcher->forward(["controller" => "index", "action" => "index"]);
+    }
+
+    public function signupAction()
+    {
+        if ($this->session->has("member")) {
+            $this->response->redirect("");
+            $this->response->send();
+            return false;
+        }
+        $form = new SignupForm();
+        if ($this->request->isPost()) {
+            if ($form->isValid($this->request->getPost())) {
+                $email = $this->request->getPost("email");
+                $password = $this->request->getPost("password");
+                $firstname = $this->request->getPost("firstname");
+                $lastname = $this->request->getPost("lastname");
+                $member = Member::findFirstByEmail($email);
+                if (!$member) {
+                    $member = new Member();
+                    $member->firstname = $firstname;
+                    $member->lastname = $lastname;
+                    $member->email = $email;
+                    $member->password = $this->security->hash($password);
+                    $member->dateCreated = Tools::now();
+                    $member->save();
+                    $this->session->set("member", $member);
+                    $this->flashSession->success("Inscription réussie ! Vous êtes maintenant connecté à l'espace membre.");
+                    $this->view->disable();
+                    $this->response->redirect("");
+                    $this->response->send();
+                    return false;
+                } else {
+                    $this->flashSession->error("Cette addresse email est déjà utilisée.");
+                }
+            } else {
+                $this->generateFlashSessionErrorForm($form);
+            }
+        }
+        $this->view->setVar("form", $form);
+        $this->view->setVar('metaTitle', 'Inscription à l\'espace membre');
+        $this->view->setVar('activeMenu', 'signup');
+        return true;
     }
 
 }
