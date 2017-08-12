@@ -15,9 +15,15 @@
         <div class="panel-footer">
             <p class="text-right no-margin">
                 <a href="{{ page.getUrl() }}" class="btn btn-primary">Voir la page</a>
-                <a href="{{ page.getUrl() }}#comments" class="btn btn-default">
-                    {{ page.Comments.count() }} {{ page.Comments.count() == 1 ? 'commentaire' : 'commentaires' }}
-                </a>
+                {% if page.commentsOpen %}
+                    <a href="{{ page.getUrl() }}#comments" class="btn btn-default">
+                        {{ page.Comments.count() }} {{ page.Comments.count() == 1 ? 'commentaire' : 'commentaires' }}
+                    </a>
+                {% else %}
+                    <a href="{{ page.getUrl() }}#comments" class="btn btn-default disabled">
+                        Commentaires fermés
+                    </a>
+                {% endif %}
             </p>
         </div>
     </div>
