@@ -25,6 +25,9 @@
     {% include "layouts/navbar.volt" %}
 
     <div class="row">
+        <div class="col-md-12">
+            {{ flashSession.output() }}
+        </div>
         <div class="col-md-8">
             {{ content() }}
         </div>

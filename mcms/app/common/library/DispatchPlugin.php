@@ -41,6 +41,20 @@ class DispatchPlugin extends Plugin
             }
         }
         if ($classAnnotations !== false) {
+            if ($classAnnotations->has("Admin")) {
+                if ($this->session->get("member")->role != 'admin') {
+                    $dispatcher->forward(
+                        [
+                            "controller" => "error",
+                            "action" => "error403",
+                        ]
+                    );
+                    $this->response->setStatusCode(403);
+                    return false;
+                }
+            }
+        }
+        if ($classAnnotations !== false) {
             if ($classAnnotations->has("Ajax")) {
                 if (!$this->request->isAjax()) {
                     $dispatcher->forward(

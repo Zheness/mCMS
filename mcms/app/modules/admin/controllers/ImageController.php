@@ -13,6 +13,7 @@ use Phalcon\Utils\Slug;
 /**
  * Class ImageController
  * @Private
+ * @Admin
  */
 class ImageController extends ControllerBase
 {

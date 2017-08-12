@@ -7,6 +7,7 @@ use Mcms\Models\Page;
 /**
  * Class PageAjaxController
  * @Private
+ * @Admin
  * @Ajax
  */
 class PageAjaxController extends ControllerBase

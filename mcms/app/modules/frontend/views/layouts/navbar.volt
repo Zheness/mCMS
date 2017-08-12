@@ -28,14 +28,22 @@
                     <a href="{{ url('message') }}">Contact</a>
                 </li>
             </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li class="{{ activeMenu == 'signin' ? 'active' : '' }}">
-                    <a href="{{ url('index/login') }}">Connexion</a>
-                </li>
-                <li class="{{ activeMenu == 'signup' ? 'active' : '' }}">
-                    <a href="{{ url('index/signup') }}">Inscription</a>
-                </li>
-            </ul>
+            {% if session.has('member') %}
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="{{ url('index/logout') }}">Déconnexion</a>
+                    </li>
+                </ul>
+            {% else %}
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="{{ activeMenu == 'login' ? 'active' : '' }}">
+                        <a href="{{ url('index/login') }}">Connexion</a>
+                    </li>
+                    <li class="{{ activeMenu == 'signup' ? 'active' : '' }}">
+                        <a href="{{ url('index/signup') }}">Inscription</a>
+                    </li>
+                </ul>
+            {% endif %}
         </div>
     </div>
 </nav>

@@ -11,6 +11,7 @@ use Phalcon\Utils\Slug;
 /**
  * Class PageController
  * @Private
+ * @Admin
  */
 class PageController extends ControllerBase
 {

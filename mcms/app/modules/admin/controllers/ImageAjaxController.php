@@ -8,6 +8,7 @@ use Mcms\Models\Page;
 /**
  * Class ImageAjaxController
  * @Private
+ * @Admin
  * @Ajax
  */
 class ImageAjaxController extends ControllerBase

@@ -17,7 +17,7 @@ class IndexController extends ControllerBase
 
     public function loginAction()
     {
-        if ($this->session->has("user")) {
+        if ($this->session->has("member")) {
             $this->dispatcher->forward(["controller" => "index", "action" => "index"]);
         }
         $form = new LoginForm();

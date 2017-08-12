@@ -3,7 +3,6 @@
     <li><a href="{{ url('page') }}">Pages</a></li>
     <li class="active">{{ page.title }}</li>
 </ol>
-{{ flashSession.output() }}
 <article>
     <h1>
         {{ page.title }}
