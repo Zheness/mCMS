@@ -65,7 +65,7 @@
                 <div class="panel-heading">
                     {{ comment.username }} - {{ comment.dateCreatedToFr() }}
                 </div>
-                <div class="panel-body">
+                <div class="panel-body nl2br">
                     {{ comment.content }}
                 </div>
             </div>

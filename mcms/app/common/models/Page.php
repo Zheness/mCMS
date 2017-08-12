@@ -87,6 +87,9 @@ class Page extends ModelBase
         $this->setSchema("mcms");
         $this->setSource("page");
         $this->hasMany('id', 'Mcms\Models\Comment', 'pageId', ['alias' => 'Comments']);
+        $this->hasMany('id', 'Mcms\Models\Comment', 'pageId', ['alias' => 'CommentsDesc', 'params' => [
+            'order' => 'dateCreated DESC'
+        ]]);
         $this->belongsTo('createdBy', 'Mcms\Models\\Member', 'id', ['alias' => 'createdByMember']);
         $this->belongsTo('updatedBy', 'Mcms\Models\\Member', 'id', ['alias' => 'updatedByMember']);
     }

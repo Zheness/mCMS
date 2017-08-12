@@ -171,5 +171,27 @@ class PageController extends ControllerBase
         $this->view->setVar("page", $page);
         return true;
     }
+
+    /**
+     * Manage comments on a page
+     * @param int $id
+     * @return bool
+     */
+    public function commentsAction($id = 0)
+    {
+        $page = Page::findFirst($id);
+        if (!$page) {
+            $this->flashSession->error("La page séléctionnée n'existe pas.");
+            $this->dispatcher->forward(
+                [
+                    "controller" => "page",
+                    "action" => "index",
+                ]
+            );
+            return false;
+        }
+        $this->view->setVar("page", $page);
+        return true;
+    }
 }
 

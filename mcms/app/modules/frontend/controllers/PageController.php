@@ -6,6 +6,7 @@ use Mcms\Library\Tools;
 use Mcms\Models\Comment;
 use Mcms\Models\Page;
 use Mcms\Modules\Frontend\Forms\AddPageCommentForm;
+use Phalcon\Filter;
 
 class PageController extends ControllerBase
 {
@@ -45,7 +46,7 @@ class PageController extends ControllerBase
                 $comment = new Comment();
                 $comment->ipAddress = $this->request->getClientAddress();
                 $comment->pageId = $page->id;
-                $comment->content = $content;
+                $comment->content = $this->filter->sanitize($content, Filter::FILTER_SPECIAL_CHARS);
                 $comment->dateCreated = Tools::now();
 
                 if ($memberConnected) {
