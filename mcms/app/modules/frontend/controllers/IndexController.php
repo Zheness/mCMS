@@ -2,6 +2,7 @@
 
 namespace Mcms\Modules\Frontend\Controllers;
 
+use Mailgun\Mailgun;
 use Mcms\Library\Tools;
 use Mcms\Models\Member;
 use Mcms\Modules\Frontend\Forms\LoginForm;
@@ -14,6 +15,17 @@ class IndexController extends ControllerBase
     public function indexAction()
     {
         $this->view->setVar('activeMenu', 'homepage');
+//        $client = new Mailgun('key-942d65f04a3923ebbd2f27573e797485');
+//        $domain = 'sandboxaa42a819db5c4a8f8ab17535ceffe0ab.mailgun.org';
+//        $result = $client->sendMessage($domain, [
+//            'from' => 'mp-mailgun@yopmail.com',
+//            'to' => 'maxprudhomme@gmail.com',
+//            'subject' => 'premier test',
+//            'text' => 'mon premier message'
+//        ]);
+//        echo "<pre>";
+//        var_dump($result);
+//        exit();
     }
 
     public function loginAction()

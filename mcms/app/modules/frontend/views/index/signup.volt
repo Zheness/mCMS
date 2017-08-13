@@ -1,3 +1,7 @@
+<ol class="breadcrumb">
+    <li><a href="{{ url('') }}">Accueil</a></li>
+    <li class="active">Inscription à l'espace membre</li>
+</ol>
 <form method="post" action="{{ url("index/signup") }}">
     <div class="row">
         <div class="col-md-7">

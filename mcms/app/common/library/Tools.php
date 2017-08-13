@@ -2,6 +2,7 @@
 
 namespace Mcms\Library;
 
+use Mailgun\Mailgun;
 use Phalcon\Mvc\User\Plugin;
 
 class Tools extends Plugin
@@ -108,5 +109,25 @@ class Tools extends Plugin
         $html = $bufferOuput;
 
         return $html;
+    }
+
+    /**
+     * Send an email
+     * @param string $to
+     * @param string $subject
+     * @param string $html
+     * @return object
+     */
+    public function sendMail($to, $subject, $html)
+    {
+        $client = new Mailgun($this->config->mail->config->mailgun->api_key);
+        $domain = $this->config->mail->config->mailgun->domain;
+        $result = $client->sendMessage($domain, [
+            'from' => $this->config->mail->from,
+            'to' => $to,
+            'subject' => $subject,
+            'html' => $html
+        ]);
+        return $result;
     }
 }

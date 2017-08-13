@@ -33,6 +33,16 @@ return new \Phalcon\Config([
         'name' => '', // name of the website
     ],
 
+    'mail' => [
+        'from' => '', // From what email address the mail are sent
+        'config' => [
+            'mailgun' => [ // mCMS currently uses Mailgun to send emails
+                'api_key' => '', // API key used
+                'domain' => '', // Domain used
+            ]
+        ]
+    ],
+
     'module' => [
         'image' => [
             'maxSize' => '8M', // Maximum size of the image when uploaded (default 8M), false for no limit
