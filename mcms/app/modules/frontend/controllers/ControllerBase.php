@@ -1,6 +1,7 @@
 <?php
 namespace Mcms\Modules\Frontend\Controllers;
 
+use Mcms\Models\Album;
 use Mcms\Models\Page;
 use Mcms\Modules\Frontend\Forms\FormBase;
 use Phalcon\Mvc\Controller;
@@ -40,5 +41,14 @@ class ControllerBase extends Controller
             'limit' => 5
         ]);
         $this->view->setVar('menu_latestPages', $pages);
+        /*
+         * Latest albums
+         */
+        $pages = Album::find([
+            'conditions' => $this->session->has('member') ? null : 'isPrivate = 0',
+            'order' => 'dateCreated DESC',
+            'limit' => 5
+        ]);
+        $this->view->setVar('menu_latestAlbums', $pages);
     }
 }
