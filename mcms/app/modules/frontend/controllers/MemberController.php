@@ -5,8 +5,10 @@ namespace Mcms\Modules\Frontend\Controllers;
 
 use Mcms\Library\Tools;
 use Mcms\Models\Member;
+use Mcms\Modules\Frontend\Forms\EditMemberInfoForm;
 use Mcms\Modules\Frontend\Forms\PasswordLostForm;
 use Mcms\Modules\Frontend\Forms\ResetPasswordForm;
+use Phalcon\Filter;
 use Phalcon\Text;
 
 class MemberController extends ControllerBase
@@ -95,6 +97,44 @@ class MemberController extends ControllerBase
         $this->view->setVar('form', $form);
         $this->view->setVar('metaTitle', 'Réinitialisation du mot de passe');
         return true;
+    }
+
+    public function editAction()
+    {
+        if (!$this->session->has('member')) {
+            // 401
+            exit("401");
+        }
+        /** @var Member $member */
+        $member = $this->session->get('member');
+        $form = new EditMemberInfoForm();
+        if ($this->request->isPost()) {
+            if ($form->isValid($this->request->getPost())) {
+                $firstname = $this->request->getPost('firstname', Filter::FILTER_SPECIAL_CHARS);
+                $lastname = $this->request->getPost('lastname', Filter::FILTER_SPECIAL_CHARS);
+                $email = $this->request->getPost('email', Filter::FILTER_EMAIL);
+                $username = $this->request->getPost('username', Filter::FILTER_SPECIAL_CHARS);
+
+                $member->firstname = $firstname;
+                $member->lastname = $lastname;
+                $member->username = $username;
+                $member->email = $email;
+                $member->dateUpdated = Tools::now();
+                $member->updatedBy = $member->id;
+                $member->save();
+                $this->session->set('member', $member);
+                $this->flashSession->success("Vos informations ont bien été modifiées.");
+            } else {
+                $this->generateFlashSessionErrorForm($form);
+            }
+        }
+        $form->get("firstname")->setDefault($member->firstname);
+        $form->get("lastname")->setDefault($member->lastname);
+        $form->get("email")->setDefault($member->email);
+        $form->get("username")->setDefault($member->username);
+        $this->view->setVar('member', $member);
+        $this->view->setVar('form', $form);
+        $this->view->setVar('metaTitle', 'Modification du profil');
     }
 
 }
