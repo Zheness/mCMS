@@ -5,6 +5,7 @@ namespace Mcms\Modules\Admin\Controllers;
 use Mcms\Models\Album;
 use Mcms\Modules\Admin\Forms\AddAlbumForm;
 use Mcms\Library\Tools;
+use Mcms\Modules\Admin\Forms\DeleteAlbumForm;
 use Phalcon\Utils\Slug;
 
 /**
@@ -130,6 +131,44 @@ class AlbumController extends ControllerBase
         }
         $this->view->setVar("album", $album);
         $this->view->setVar("form", $form);
+        return true;
+    }
+
+    /**
+     * Delete an album
+     * @param int $id
+     * @return bool
+     */
+    public function deleteAction($id = 0)
+    {
+        $album = Album::findFirst($id);
+        if (!$album) {
+            $this->flashSession->error("L'album séléctionné n'existe pas.");
+            $this->dispatcher->forward(
+                [
+                    "controller" => "page",
+                    "action" => "index",
+                ]
+            );
+            return false;
+        }
+        $form = new DeleteAlbumForm();
+        if ($this->request->isPost()) {
+            if ($form->isValid($this->request->getPost())) {
+                $this->flashSession->success("L'album a bien été supprimé.");
+                $album->delete();
+                $this->dispatcher->forward(
+                    [
+                        "controller" => "album",
+                        "action" => "index",
+                    ]
+                );
+            } else {
+                $this->generateFlashSessionErrorForm($form);
+            }
+        }
+        $this->view->setVar("form", $form);
+        $this->view->setVar("album", $album);
         return true;
     }
 }
