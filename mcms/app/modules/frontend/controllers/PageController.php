@@ -5,7 +5,7 @@ namespace Mcms\Modules\Frontend\Controllers;
 use Mcms\Library\Tools;
 use Mcms\Models\Comment;
 use Mcms\Models\Page;
-use Mcms\Modules\Frontend\Forms\AddPageCommentForm;
+use Mcms\Modules\Frontend\Forms\AddCommentForm;
 use Phalcon\Filter;
 
 class PageController extends ControllerBase
@@ -37,7 +37,7 @@ class PageController extends ControllerBase
 
         $memberConnected = $this->session->has("member");
 
-        $formComment = new AddPageCommentForm(null, ['connected' => $memberConnected]);
+        $formComment = new AddCommentForm(null, ['connected' => $memberConnected]);
 
         if ($this->request->isPost()) {
             if ($formComment->isValid($this->request->getPost())) {
