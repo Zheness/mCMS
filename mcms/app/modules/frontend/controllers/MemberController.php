@@ -6,6 +6,7 @@ namespace Mcms\Modules\Frontend\Controllers;
 use Mcms\Library\Tools;
 use Mcms\Models\Member;
 use Mcms\Modules\Frontend\Forms\PasswordLostForm;
+use Mcms\Modules\Frontend\Forms\ResetPasswordForm;
 use Phalcon\Text;
 
 class MemberController extends ControllerBase
@@ -52,6 +53,47 @@ class MemberController extends ControllerBase
         }
         $this->view->setVar('form', $form);
         $this->view->setVar('metaTitle', 'Mot de passe perdu');
+        return true;
+    }
+
+    public function resetPasswordAction($token = null)
+    {
+        if ($this->session->has("member")) {
+            $this->response->redirect("");
+            $this->response->send();
+            return false;
+        }
+        if ($token === null) {
+            // 404
+            exit("404");
+        }
+        /** @var Member $member */
+        $member = Member::findFirstByToken($token);
+        if (!$member) {
+            // 404
+            exit("404");
+        }
+        $form = new ResetPasswordForm();
+        if ($this->request->isPost()) {
+            if ($form->isValid($this->request->getPost())) {
+                $password = $this->request->getPost("password");
+                $member->token = null;
+                $member->password = $this->security->hash($password);
+                $member->dateUpdated = Tools::now();
+                $member->save();
+
+                $this->flashSession->success("Votre mot de passe a bien été modifié.");
+
+                $this->response->redirect("index/login");
+                $this->response->send();
+                return false;
+            } else {
+                $this->generateFlashSessionErrorForm($form);
+            }
+        }
+        $this->view->setVar('member', $member);
+        $this->view->setVar('form', $form);
+        $this->view->setVar('metaTitle', 'Réinitialisation du mot de passe');
         return true;
     }
 

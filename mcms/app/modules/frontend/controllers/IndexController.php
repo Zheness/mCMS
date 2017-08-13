@@ -15,17 +15,6 @@ class IndexController extends ControllerBase
     public function indexAction()
     {
         $this->view->setVar('activeMenu', 'homepage');
-//        $client = new Mailgun('key-942d65f04a3923ebbd2f27573e797485');
-//        $domain = 'sandboxaa42a819db5c4a8f8ab17535ceffe0ab.mailgun.org';
-//        $result = $client->sendMessage($domain, [
-//            'from' => 'mp-mailgun@yopmail.com',
-//            'to' => 'maxprudhomme@gmail.com',
-//            'subject' => 'premier test',
-//            'text' => 'mon premier message'
-//        ]);
-//        echo "<pre>";
-//        var_dump($result);
-//        exit();
     }
 
     public function loginAction()
@@ -43,6 +32,8 @@ class IndexController extends ControllerBase
                 $member = Member::findFirstByEmail($email);
                 if ($member) {
                     if ($this->security->checkHash($password, $member->password)) {
+                        $member->token = null;
+                        $member->save();
                         $this->session->set("member", $member);
                         $this->flashSession->success("Vous êtes maintenant connecté à l'espace membre.");
                         $this->view->disable();
