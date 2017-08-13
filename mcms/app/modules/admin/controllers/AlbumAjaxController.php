@@ -87,7 +87,7 @@ class AlbumAjaxController extends ControllerBase
                 $album->title,
                 $album->dateCreatedToFr() . "<br/>" . $album->getAdminLinkCreator(),
                 $album->dateUpdatedToFr() . "<br/>" . $album->getAdminLinkLastEditor(),
-                $album->AlbumImages->count(),
+                $album->Images->count(),
                 $album->commentsOpen ? '<span class="text-success"><i class="fa fa-check-circle"></i> Oui</span>' : '<span class="text-danger"><i class="fa fa-times-circle"></i> Non</span>',
                 $album->isPrivate ? '<span class="text-success"><i class="fa fa-check-circle"></i> Oui</span>' : '<span class="text-danger"><i class="fa fa-times-circle"></i> Non</span>',
                 '<div class="btn-group btn-group-sm btn-group-right">

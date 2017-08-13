@@ -84,7 +84,7 @@ class Album extends ModelBase
     {
         $this->setSchema("mcms");
         $this->setSource("album");
-        $this->hasMany('id', 'Mcms\Models\AlbumImage', 'albumId', ['alias' => 'AlbumImages']);
+        $this->hasMany('id', 'Mcms\Models\AlbumImage', 'albumId', ['alias' => 'Images']);
         $this->hasMany('id', 'Mcms\Models\Comment', 'albumId', ['alias' => 'Comments']);
         $this->belongsTo('createdBy', 'Mcms\Models\\Member', 'id', ['alias' => 'createdByMember']);
         $this->belongsTo('updatedBy', 'Mcms\Models\\Member', 'id', ['alias' => 'updatedByMember']);

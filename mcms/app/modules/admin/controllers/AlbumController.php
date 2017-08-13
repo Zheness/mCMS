@@ -65,5 +65,72 @@ class AlbumController extends ControllerBase
         }
         $this->view->setVar("form", $form);
     }
+
+    /**
+     * Edit a album
+     * @param int $id
+     * @return bool
+     */
+    public function editAction($id = 0)
+    {
+        $album = Album::findFirst($id);
+        if (!$album) {
+            $this->flashSession->error("L'album séléctionné n'existe pas.");
+            $this->dispatcher->forward(
+                [
+                    "controller" => "album",
+                    "action" => "index",
+                ]
+            );
+            return false;
+        }
+
+        $this->assets->addCss("adminFiles/css/checkboxes-switch.css");
+        $this->addAssetsTinyMce();
+        $form = new AddAlbumForm();
+        if ($this->request->isPost()) {
+            if ($form->isValid($this->request->getPost())) {
+                $title = $this->request->getPost("title");
+                $content = $this->request->getPost("content");
+                $slug = $this->request->getPost("slug");
+                if (empty($slug)) {
+                    $slug = Slug::generate($title);
+                    $_POST['slug'] = $slug; // Temporary hack to display the url in the field form in case of errors
+                }
+                $commentsOpen = $this->request->getPost("commentsOpen") == "on" ? 1 : 0;
+                $isPrivate = $this->request->getPost("isPrivate") == "on" ? 1 : 0;
+
+                $albumWithSlug = Album::findFirstBySlug($slug);
+                if (!$albumWithSlug || $albumWithSlug->id == $album->id) {
+                    $album->title = $title;
+                    $album->slug = $slug;
+                    $album->content = $content;
+                    $album->commentsOpen = $commentsOpen;
+                    $album->isPrivate = $isPrivate;
+                    $album->dateUpdated = Tools::now();
+                    $album->updatedBy = $this->session->get('member')->id;
+                    $album->save();
+                    $this->flashSession->success("L'album a bien été enregistré.");
+                } else {
+                    $this->flashSession->error("Un album existe déjà avec cette url.");
+                }
+            } else {
+                $this->generateFlashSessionErrorForm($form);
+            }
+        } else {
+            $form->get("title")->setDefault($album->title);
+            $form->get("slug")->setDefault($album->slug);
+            $form->get("content")->setDefault($album->content);
+            if ($album->commentsOpen) {
+                $form->get("commentsOpen")->setAttribute('checked', 'checked');
+            }
+            if ($album->isPrivate) {
+                $form->get("isPrivate")->setAttribute('checked', 'checked');
+            }
+        }
+        $this->view->setVar("album", $album);
+        $this->view->setVar("form", $form);
+        return true;
+    }
 }
 
