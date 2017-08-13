@@ -14,6 +14,14 @@ use Phalcon\Utils\Slug;
  */
 class AlbumController extends ControllerBase
 {
+    /**
+     * List of the albums
+     */
+    public function indexAction()
+    {
+        $this->addAssetsDataTable();
+        $this->assets->addJs("adminFiles/js/album.js");
+    }
 
     /**
      * Add an album

@@ -122,4 +122,13 @@ class Album extends ModelBase
         return 'album';
     }
 
+    /**
+     * Returns the public url of the album
+     * @return string
+     */
+    public function getUrl()
+    {
+        return "/album/read/" . $this->slug;
+    }
+
 }

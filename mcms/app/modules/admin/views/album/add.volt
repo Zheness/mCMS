@@ -2,7 +2,7 @@
 {{ flashSession.output() }}
 <ul class="breadcrumb">
     <li><a href="{{ url("") }}">Accueil</a></li>
-    <li><a href="{{ url("album") }}">Album</a></li>
+    <li><a href="{{ url("album") }}">Albums</a></li>
     <li class="active">Ajouter un nouvel album</li>
 </ul>
 <div class="row">
