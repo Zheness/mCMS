@@ -34,10 +34,10 @@
                 <a href="#"><i class="fa fa-camera fa-fw"></i> Albums<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="#"><i class="fa fa-list"></i> Liste des albums</a>
+                        <a href="{{ url("album") }}"><i class="fa fa-list"></i> Liste des albums</a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-plus"></i> Nouvel album</a>
+                        <a href="{{ url("album/add") }}"><i class="fa fa-plus"></i> Nouvel album</a>
                     </li>
                 </ul>
             </li>
