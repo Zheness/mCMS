@@ -4,8 +4,8 @@
     <li class="active">Modifier mes informations</li>
 </ol>
 <ul class="nav nav-tabs margin-bottom-10">
-    <li class="active"><a href="{{ url("member/edit") }}">Informations</a></li>
-    <li><a href="{{ url("member/password") }}">Mot de passe</a></li>
+    <li class="active"><a href="{{ url("member/edit") }}"><span class="fa fa-user"></span> Informations</a></li>
+    <li><a href="{{ url("member/password") }}"><span class="fa fa-key"></span> Mot de passe</a></li>
     <li>
         <a href="{{ url("member/unsubscribe") }}" class="text-danger">
             <span class="fa fa-trash"></span> Désinscription

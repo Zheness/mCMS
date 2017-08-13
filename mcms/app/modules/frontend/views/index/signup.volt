@@ -55,6 +55,6 @@
     </div>
     <div class="form-group">
         <input type="hidden" name="{{ csrfKey }}" value="{{ csrf }}">
-        <button type="submit" class="btn btn-primary">Connexion</button>
+        <button type="submit" class="btn btn-primary">Inscription</button>
     </div>
 </form>

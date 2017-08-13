@@ -127,14 +127,44 @@ class MemberController extends ControllerBase
             } else {
                 $this->generateFlashSessionErrorForm($form);
             }
+        } else {
+            $form->get("firstname")->setDefault($member->firstname);
+            $form->get("lastname")->setDefault($member->lastname);
+            $form->get("email")->setDefault($member->email);
+            $form->get("username")->setDefault($member->username);
         }
-        $form->get("firstname")->setDefault($member->firstname);
-        $form->get("lastname")->setDefault($member->lastname);
-        $form->get("email")->setDefault($member->email);
-        $form->get("username")->setDefault($member->username);
         $this->view->setVar('member', $member);
         $this->view->setVar('form', $form);
         $this->view->setVar('metaTitle', 'Modification du profil');
+    }
+
+    public function passwordAction()
+    {
+        if (!$this->session->has('member')) {
+            // 401
+            exit("401");
+        }
+        /** @var Member $member */
+        $member = $this->session->get('member');
+        $form = new ResetPasswordForm();
+        if ($this->request->isPost()) {
+            if ($form->isValid($this->request->getPost())) {
+                $password = $this->request->getPost("password");
+                $member->token = null;
+                $member->password = $this->security->hash($password);
+                $member->dateUpdated = Tools::now();
+                $member->updatedBy = $member->id;
+                $member->save();
+
+                $this->flashSession->success("Votre mot de passe a bien été modifié.");
+                $form->clear();
+            } else {
+                $this->generateFlashSessionErrorForm($form);
+            }
+        }
+        $this->view->setVar('member', $member);
+        $this->view->setVar('form', $form);
+        $this->view->setVar('metaTitle', 'Modification du mot de passe');
     }
 
 }
