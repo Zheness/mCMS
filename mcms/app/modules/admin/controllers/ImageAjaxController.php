@@ -2,6 +2,7 @@
 
 namespace Mcms\Modules\Admin\Controllers;
 
+use Mcms\Models\Album;
 use Mcms\Models\Image;
 use Mcms\Models\Page;
 
@@ -98,6 +99,37 @@ class ImageAjaxController extends ControllerBase
             "recordsTotal" => Page::count(),
             "recordsFiltered" => $pagesCount,
             "data" => $data
+        ];
+        return $this->response->setJsonContent($response);
+    }
+
+    public function thumbnailsAction()
+    {
+        $limit = (int) $this->request->getQuery('limit', 'int', 9);
+        $limit = $limit < 0 ? 9 : $limit;
+        $offset = (int) $this->request->getQuery('offset', 'int', 0);
+        $offset = $offset < 0 ? 0 : $offset;
+
+        $images = Image::find([
+            'limit' => $limit,
+            'offset' => $offset,
+        ]);
+
+        $data = [];
+        foreach ($images as $image) {
+            $data[] = [
+                "id" => $image->id,
+                "title" => $image->title,
+                "description" => $image->description,
+                "filename" => $image->filename,
+            ];
+        }
+
+        $response = [
+            "limit" => $limit,
+            "offset" => $offset,
+            "recordsTotal" => Image::count(),
+            "data" => $data,
         ];
         return $this->response->setJsonContent($response);
     }

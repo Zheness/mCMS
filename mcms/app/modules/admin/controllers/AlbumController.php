@@ -171,5 +171,28 @@ class AlbumController extends ControllerBase
         $this->view->setVar("album", $album);
         return true;
     }
+
+    /**
+     * Manage images of an album
+     * @param int $id
+     * @return bool
+     */
+    public function imagesAction($id = 0)
+    {
+        $this->assets->addJs("adminFiles/js/album.js");
+        $album = Album::findFirst($id);
+        if (!$album) {
+            $this->flashSession->error("L'album séléctionné n'existe pas.");
+            $this->dispatcher->forward(
+                [
+                    "controller" => "page",
+                    "action" => "index",
+                ]
+            );
+            return false;
+        }
+        $this->view->setVar("album", $album);
+        return true;
+    }
 }
 

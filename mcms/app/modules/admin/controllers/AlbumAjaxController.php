@@ -2,7 +2,10 @@
 
 namespace Mcms\Modules\Admin\Controllers;
 
+use Mcms\Library\Tools;
 use Mcms\Models\Album;
+use Mcms\Models\AlbumImage;
+use Mcms\Models\Image;
 use Mcms\Models\Page;
 
 /**
@@ -105,6 +108,79 @@ class AlbumAjaxController extends ControllerBase
             "data" => $data
         ];
         return $this->response->setJsonContent($response);
+    }
+
+    public function thumbnailsAction($id = 0)
+    {
+        $album = Album::findFirst($id);
+        if (!$album) {
+            return $this->response->setJsonContent(['code' => 'album_not_found']);
+        }
+
+        $data = [];
+        foreach ($album->Images as $albumImage) {
+            $image = $albumImage->Image;
+            $data[] = [
+                "id" => $image->id,
+                "title" => $image->title,
+                "description" => $image->description,
+                "filename" => $image->filename,
+            ];
+        }
+        return $this->response->setJsonContent($data);
+    }
+
+    public function addImageAction($albumId = 0, $imageId = 0)
+    {
+        $album = Album::findFirst($albumId);
+        if (!$album) {
+            return $this->response->setJsonContent(['code' => 'album_not_found']);
+        }
+        $image = Image::findFirst($imageId);
+        if (!$image) {
+            return $this->response->setJsonContent(['code' => 'image_not_found']);
+        }
+
+        $imageInAlbum = AlbumImage::findFirst([
+            'albumId = :albumId: AND imageId = :imageId:',
+            'bind' => [
+                'albumId' => $albumId,
+                'imageId' => $imageId,
+            ]
+        ]);
+        if (!$imageInAlbum) {
+            $albumImage = new AlbumImage();
+            $albumImage->albumId = $albumId;
+            $albumImage->imageId = $imageId;
+            $albumImage->dateCreated = Tools::now();
+            $albumImage->createdBy = $this->session->get('member')->id;
+            $albumImage->save();
+        }
+        return $this->response->setJsonContent(['code' => 'image_added_in_album']);
+    }
+
+    public function removeImageAction($albumId = 0, $imageId = 0)
+    {
+        $album = Album::findFirst($albumId);
+        if (!$album) {
+            return $this->response->setJsonContent(['code' => 'album_not_found']);
+        }
+        $image = Image::findFirst($imageId);
+        if (!$image) {
+            return $this->response->setJsonContent(['code' => 'image_not_found']);
+        }
+
+        $imageInAlbum = AlbumImage::findFirst([
+            'albumId = :albumId: AND imageId = :imageId:',
+            'bind' => [
+                'albumId' => $albumId,
+                'imageId' => $imageId,
+            ]
+        ]);
+        if ($imageInAlbum) {
+            $imageInAlbum->delete();
+        }
+        return $this->response->setJsonContent(['code' => 'image_removed_from_album']);
     }
 }
 
