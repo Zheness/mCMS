@@ -46,15 +46,26 @@ class CommentController extends ControllerBase
                 $action = "comments";
                 $params = [$comment->pageId];
             }
+            if ($comment->albumId != null) {
+                $controller = "album";
+                $action = "comments";
+                $params = [$comment->albumId];
+            }
         } else {
             // If it's an answer, we get the parent and search the location
             $currentComment = $comment;
+            /** @var Comment $comment */
             $comment = $comment->ParentComment;
 
             if ($comment->pageId != null) {
                 $controller = "page";
                 $action = "comments";
                 $params = [$comment->pageId];
+            }
+            if ($comment->albumId != null) {
+                $controller = "album";
+                $action = "comments";
+                $params = [$comment->albumId];
             }
             $comment = $currentComment;
         }
@@ -112,15 +123,26 @@ class CommentController extends ControllerBase
                 $action = "comments";
                 $params = [$comment->pageId];
             }
+            if ($comment->albumId != null) {
+                $controller = "album";
+                $action = "comments";
+                $params = [$comment->albumId];
+            }
         } else {
             // If it's an answer, we get the parent and search the location
             $currentComment = $comment;
+            /** @var Comment $comment */
             $comment = $comment->ParentComment;
 
             if ($comment->pageId != null) {
                 $controller = "page";
                 $action = "comments";
                 $params = [$comment->pageId];
+            }
+            if ($comment->albumId != null) {
+                $controller = "album";
+                $action = "comments";
+                $params = [$comment->albumId];
             }
             $comment = $currentComment;
         }

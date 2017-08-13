@@ -194,5 +194,27 @@ class AlbumController extends ControllerBase
         $this->view->setVar("album", $album);
         return true;
     }
+
+    /**
+     * Manage comments on an album
+     * @param int $id
+     * @return bool
+     */
+    public function commentsAction($id = 0)
+    {
+        $album = Album::findFirst($id);
+        if (!$album) {
+            $this->flashSession->error("L'album séléctionné n'existe pas.");
+            $this->dispatcher->forward(
+                [
+                    "controller" => "album",
+                    "action" => "index",
+                ]
+            );
+            return false;
+        }
+        $this->view->setVar("album", $album);
+        return true;
+    }
 }
 

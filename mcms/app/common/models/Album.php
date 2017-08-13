@@ -88,6 +88,9 @@ class Album extends ModelBase
         $this->setSource("album");
         $this->hasMany('id', 'Mcms\Models\AlbumImage', 'albumId', ['alias' => 'Images']);
         $this->hasMany('id', 'Mcms\Models\Comment', 'albumId', ['alias' => 'Comments']);
+        $this->hasMany('id', 'Mcms\Models\Comment', 'albumId', ['alias' => 'CommentsDesc', 'params' => [
+            'order' => 'dateCreated DESC'
+        ]]);
         $this->belongsTo('createdBy', 'Mcms\Models\\Member', 'id', ['alias' => 'createdByMember']);
         $this->belongsTo('updatedBy', 'Mcms\Models\\Member', 'id', ['alias' => 'updatedByMember']);
     }
