@@ -103,6 +103,20 @@
                     {{ comment.content }}
                 </div>
             </div>
+            {% for subcomment in comment.Comments %}
+                <div class="row">
+                    <div class="col-md-offset-1 col-md-11">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                {{ subcomment.username }} - {{ subcomment.dateCreatedToFr() }}
+                            </div>
+                            <div class="panel-body nl2br">
+                                {{ subcomment.content }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
         {% endfor %}
     {% else %}
         <p><i>Les commentaires sont désactivés sur cette page.</i></p>
