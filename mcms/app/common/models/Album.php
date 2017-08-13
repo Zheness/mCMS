@@ -2,6 +2,8 @@
 
 namespace Mcms\Models;
 
+use Mcms\Library\Tools;
+
 class Album extends ModelBase
 {
 
@@ -129,6 +131,16 @@ class Album extends ModelBase
     public function getUrl()
     {
         return "/album/read/" . $this->slug;
+    }
+
+    /**
+     * Truncate the content and keep html tags
+     * @param int $maxLength
+     * @return string
+     */
+    public function truncateContent($maxLength = 300)
+    {
+        return Tools::truncateHTML($maxLength, $this->content);
     }
 
 }
