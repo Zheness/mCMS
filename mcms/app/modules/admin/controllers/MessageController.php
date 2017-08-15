@@ -47,6 +47,19 @@ class MessageController extends ControllerBase
                 $thread->save();
 
                 $this->flashSession->success("Votre réponse à la conversation a bien été envoyée.");
+
+                $tools = new Tools();
+
+                // Send mail to member
+                $to = $thread->email;
+                $subject = $thread->subject;
+                $html = $this->view->getPartial("message/mail/replied", [
+                    "firstname" => $thread->firstname,
+                    "subject" => $thread->subject,
+                    "link" => $this->config->site->url . '/message/thread/' . $thread->token
+                ]);
+                $tools->sendMail($to, $subject, $html);
+
                 $form->clear();
             } else {
                 $this->generateFlashSessionErrorForm($form);
