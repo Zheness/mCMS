@@ -25,7 +25,7 @@
                     <a href="{{ url('article') }}">Articles</a>
                 </li>
                 <li class="{{ activeMenu == 'contact' ? 'active' : '' }}">
-                    <a href="{{ url('message') }}">Contact</a>
+                    <a href="{{ url('message/new') }}">Contact</a>
                 </li>
             </ul>
             {% if session.has('member') %}

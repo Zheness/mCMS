@@ -7,6 +7,7 @@ use Mcms\Library\Tools;
 use Mcms\Models\Member;
 use Mcms\Models\Message;
 use Mcms\Modules\Frontend\Forms\AddNewMessageForm;
+use Mcms\Modules\Frontend\Forms\ReplyToMessageForm;
 use Phalcon\Filter;
 use Phalcon\Text;
 
@@ -60,6 +61,54 @@ class MessageController extends ControllerBase
         }
         $this->view->setVar('form', $form);
         $this->view->setVar('metaTitle', 'Envopyer un message de contact');
+        $this->view->setVar('activeMenu', 'contact');
+        return true;
+    }
+
+    public function threadAction($token = null)
+    {
+        /** @var Message $thread */
+        $thread = Message::findFirstByToken($token);
+        if (!$thread) {
+            // 404
+            exit("404");
+        }
+        $form = new ReplyToMessageForm();
+        if ($this->request->isPost()) {
+            if ($form->isValid($this->request->getPost())) {
+                $content = $this->request->getPost('content', Filter::FILTER_SPECIAL_CHARS);
+
+                $message = new Message();
+                $message->firstname = $thread->firstname;
+                $message->lastname = $thread->lastname;
+                $message->email = $thread->email;
+                $message->content = $content;
+                $message->dateCreated = Tools::now();
+                $message->ipAddress = $this->request->getClientAddress();
+                $message->unread = 0;
+                $message->parentId = $thread->id;
+
+                if ($this->session->has('member')) {
+                    $message->createdBy = $this->session->get('member')->id;
+                }
+                $message->save();
+
+                $thread->unread = 1;
+                $thread->dateUpdated = Tools::now();
+                if ($this->session->has('member')) {
+                    $thread->updatedBy = $this->session->get('member')->id;
+                }
+                $thread->save();
+
+                $this->flashSession->success("Votre message a bien été envoyé.");
+                $form->clear();
+            } else {
+                $this->generateFlashSessionErrorForm($form);
+            }
+        }
+        $this->view->setVar('form', $form);
+        $this->view->setVar('thread', $thread);
+        $this->view->setVar('metaTitle', 'Répondre à une conversation');
         return true;
     }
 
