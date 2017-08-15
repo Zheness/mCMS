@@ -95,6 +95,7 @@ class MessageController extends ControllerBase
 
                 $thread->unread = 1;
                 $thread->dateUpdated = Tools::now();
+                $thread->updatedBy = null;
                 if ($this->session->has('member')) {
                     $thread->updatedBy = $this->session->get('member')->id;
                 }

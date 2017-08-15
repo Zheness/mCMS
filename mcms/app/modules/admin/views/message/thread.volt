@@ -8,7 +8,7 @@
 </ul>
 <ul class="nav nav-tabs margin-bottom-10">
     <li class="active">
-        <a href="{{ url("message/thread/" ~ thread.token) }}"><span class="fa fa-edit"></span> Lire</a>
+        <a href="{{ url("message/thread/" ~ thread.token) }}"><span class="fa fa-comments"></span> Lire</a>
     </li>
     <li><a href="{{ url("message/delete/" ~ thread.token) }}" class="text-danger"><span class="fa fa-trash"></span>
             Supprimer</a></li>

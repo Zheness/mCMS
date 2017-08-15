@@ -9,6 +9,11 @@ use Phalcon\Filter;
 
 class MessageController extends ControllerBase
 {
+    public function indexAction()
+    {
+        $this->addAssetsDataTable();
+        $this->assets->addJs("adminFiles/js/message.js");
+    }
 
     public function threadAction($token = null)
     {
