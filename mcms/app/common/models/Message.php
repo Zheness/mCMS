@@ -38,6 +38,13 @@ class Message extends ModelBase
     /**
      *
      * @var string
+     * @Column(type="string", length=100, nullable=true)
+     */
+    public $email;
+
+    /**
+     *
+     * @var string
      * @Column(type="string", nullable=false)
      */
     public $content;
