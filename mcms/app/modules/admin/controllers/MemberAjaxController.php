@@ -6,7 +6,7 @@ use Mcms\Library\Tools;
 use Mcms\Models\Album;
 use Mcms\Models\AlbumImage;
 use Mcms\Models\Image;
-use Mcms\Models\Page;
+use Mcms\Models\Member;
 
 /**
  * Class PageAjaxController
@@ -14,7 +14,7 @@ use Mcms\Models\Page;
  * @Admin
  * @Ajax
  */
-class AlbumAjaxController extends ControllerBase
+class MemberAjaxController extends ControllerBase
 {
     private $draw;
     private $columns;
@@ -24,7 +24,7 @@ class AlbumAjaxController extends ControllerBase
     private $search;
 
     /**
-     * List of the albums
+     * List of the members
      */
     public function listAction()
     {
@@ -43,13 +43,12 @@ class AlbumAjaxController extends ControllerBase
         $this->search = $this->filter->sanitize($this->search['value'], ["trim", "string"]);
 
         $allowedColumns = [
-            "id" => "a.id",
-            "title" => "a.title",
-            "creation" => "a.dateCreated",
-            "edition" => "a.dateUpdated",
-            "images" => "1",
-            "comments" => "a.commentsOpen",
-            "private" => "a.isPrivate",
+            "id" => "m.id",
+            "image" => "1",
+            "fullname" => "CONCAT(m.firstname, ' ', m.lastname)",
+            "creation" => "m.dateCreated",
+            "edition" => "m.dateUpdated",
+            "role" => "m.role",
             "actions" => "1"
         ];
         $hasErrors = false;
@@ -63,14 +62,14 @@ class AlbumAjaxController extends ControllerBase
         }
 
         $query = $this->modelsManager->createBuilder();
-        $query->from(["a" => "Mcms\\Models\\Album"]);
-        $query->leftJoin("Mcms\\Models\\Member", "a.createdBy = mc.id", "mc");
-        $query->leftJoin("Mcms\\Models\\Member", "a.updatedBy = mu.id", "mu");
+        $query->from(["m" => "Mcms\\Models\\Member"]);
+        $query->leftJoin("Mcms\\Models\\Member", "m.createdBy = mc.id", "mc");
+        $query->leftJoin("Mcms\\Models\\Member", "m.updatedBy = mu.id", "mu");
         if (strlen($this->search)) {
             if (is_numeric($this->search)) {
-                $query->where("a.id LIKE :search:", ["search" => $this->search]);
+                $query->where("m.id LIKE :search:", ["search" => $this->search]);
             } else {
-                $query->where("a.title LIKE :search:", ["search" => "%" . $this->search . "%"]);
+                $query->where("CONCAT(m.firstname, ' ', m.lastname) LIKE :search:", ["search" => "%" . $this->search . "%"]);
                 $query->orWhere("CONCAT(mc.firstname, ' ', mc.lastname) LIKE :search:", ["search" => "%" . $this->search . "%"]);
                 $query->orWhere("CONCAT(mu.firstname, ' ', mu.lastname) LIKE :search:", ["search" => "%" . $this->search . "%"]);
             }
@@ -81,29 +80,27 @@ class AlbumAjaxController extends ControllerBase
         $query->orderBy($allowedColumns[$this->columns[$this->order[0]["column"]]["name"]] . " " . $this->order[0]["dir"]);
         $query->limit($this->length, $this->start);
 
-        $albums = $query->getQuery()->execute();
+        $members = $query->getQuery()->execute();
         $data = [];
-        foreach ($albums as $album) {
-            /** @var Album $album */
+        foreach ($members as $member) {
+            /** @var Member $member */
             $data[] = [
-                $album->id,
-                $album->title,
-                $album->dateCreatedToFr() . "<br/>" . $album->getAdminLinkCreator(),
-                $album->dateUpdatedToFr() . "<br/>" . $album->getAdminLinkLastEditor(),
-                $album->Images->count(),
-                $album->commentsOpen ? '<span class="text-success"><i class="fa fa-check-circle"></i> Oui</span>' : '<span class="text-danger"><i class="fa fa-times-circle"></i> Non</span>',
-                $album->isPrivate ? '<span class="text-success"><i class="fa fa-check-circle"></i> Oui</span>' : '<span class="text-danger"><i class="fa fa-times-circle"></i> Non</span>',
+                $member->id,
+                $member->profilePicture == null ? '' : '<div class="text-center"><img src="/img/upload/' . $member->ProfilePicture->filename . '" width="100" height="100"></div>',
+                $member->getFullname(),
+                $member->dateCreatedToFr() . "<br/>" . $member->getAdminLinkCreator(),
+                $member->dateUpdatedToFr() . "<br/>" . $member->getAdminLinkLastEditor(),
+                $member->role == 'admin' ? 'Administrateur' : 'Membre',
                 '<div class="btn-group btn-group-sm btn-group-right">
-                     <a href="' . $album->getUrl() . '" class="btn btn-default" target="_blank"><span class="fa fa-external-link"></span> Ouvrir l\'album</a>
-                     <a href="' . $this->url->get("album/edit/" . $album->id) . '" class="btn btn-default"><span class="fa fa-pencil"></span> Modifier</a>
-                     <a href="' . $this->url->get("album/delete/" . $album->id) . '" class="btn btn-outline btn-danger"><span class="fa fa-trash"></span> Supprimer</a>
+                     <a href="' . $this->url->get("member/edit/" . $member->id) . '" class="btn btn-default"><span class="fa fa-pencil"></span> Modifier</a>
+                     <a href="' . $this->url->get("member/delete/" . $member->id) . '" class="btn btn-outline btn-danger"><span class="fa fa-trash"></span> Supprimer</a>
                 </div>',
             ];
         }
 
         $response = [
             "draw" => $this->draw,
-            "recordsTotal" => Page::count(),
+            "recordsTotal" => Member::count(),
             "recordsFiltered" => $pagesCount,
             "data" => $data
         ];
