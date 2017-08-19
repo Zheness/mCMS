@@ -83,7 +83,7 @@ class ImageAjaxController extends ControllerBase
             /** @var Image $image */
             $data[] = [
                 $image->id,
-                '<img src="/img/upload/' . $image->filename . '" class="thumbnail-datatables">',
+                '<img src="' . $image->getThumbnailUrl() . '" class="thumbnail-datatables">',
                 $image->title,
                 $image->dateCreatedToFr() . "<br/>" . $image->getAdminLinkCreator(),
                 $image->dateUpdatedToFr() . "<br/>" . $image->getAdminLinkLastEditor(),
@@ -122,6 +122,7 @@ class ImageAjaxController extends ControllerBase
                 "title" => $image->title,
                 "description" => $image->description,
                 "filename" => $image->filename,
+                "thumbnailUrl" => $image->getThumbnailUrl(),
             ];
         }
 

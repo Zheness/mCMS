@@ -8,6 +8,7 @@ use Mcms\Modules\Admin\Forms\OptionCommentsForm;
 use Mcms\Modules\Admin\Forms\OptionMaintenanceForm;
 use Mcms\Modules\Admin\Forms\OptionNotificationForm;
 use Mcms\Modules\Admin\Forms\OptionRegistrationForm;
+use Mcms\Modules\Admin\Forms\OptionThumbnailsForm;
 
 /**
  * Class OptionController
@@ -207,6 +208,39 @@ class OptionController extends ControllerBase
             if ($optionEnabled) {
                 $form->get("articlesEnabled")->setAttribute('checked', 'checked');
             }
+        }
+        $this->view->setVar("form", $form);
+    }
+
+    public function thumbnailsAction()
+    {
+        $form = new OptionThumbnailsForm();
+        if ($this->request->isPost()) {
+            if ($form->isValid($this->request->getPost())) {
+                $width = (int)$this->request->getPost("width");
+                $height = (int)$this->request->getPost("height");
+                $width = $width <= 0 ? 1 : $width;
+                $height = $height <= 0 ? 1 : $height;
+
+                $option = Option::findFirstBySlug('thumbnail_width');
+                $option->content = $width;
+                $option->dateUpdated = Tools::now();
+                $option->updatedBy = $this->session->get('member')->id;
+                $option->save();
+
+                $option = Option::findFirstBySlug('thumbnail_height');
+                $option->content = $height;
+                $option->dateUpdated = Tools::now();
+                $option->updatedBy = $this->session->get('member')->id;
+                $option->save();
+
+                $this->flashSession->success('La configuration a bien été enregistrée.');
+            } else {
+                $this->generateFlashSessionErrorForm($form);
+            }
+        } else {
+            $form->get("width")->setDefault(Option::findFirstBySlug('thumbnail_width')->content);
+            $form->get("height")->setDefault(Option::findFirstBySlug('thumbnail_height')->content);
         }
         $this->view->setVar("form", $form);
     }

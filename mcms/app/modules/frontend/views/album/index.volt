@@ -15,7 +15,7 @@
         <div class="panel-body">
             {% if album.Images.count() >= 1 %}
                 <div class="thumbnail">
-                    <img src="/img/upload/{{ album.Images[0].Image.filename }}" alt="Image - {{ album.Images[0].Image.title }}">
+                    <img src="{{ album.Images[0].Image.getUrl() }}" alt="Image - {{ album.Images[0].Image.title }}">
                 </div>
             {% endif %}
             {{ album.truncateContent() }}

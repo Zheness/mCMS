@@ -49,7 +49,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="content" class="control-label">Nombre de messages maximum par jour</label>
+                <label for="maximumCommentsPerDay" class="control-label">Nombre de messages maximum par jour</label>
                 <div class="row">
                     <div class="col-md-2">
                         {{ form.render("maximumCommentsPerDay", ["class": "form-control", "min": "-1", "max": "100"]) }}

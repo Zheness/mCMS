@@ -124,7 +124,7 @@
         <td></td>
     </tr>
     <tr>
-        <td colspan="2">Taille par défault des miniatures d'images</td>
+        <td colspan="2">Taille par défaut des miniatures d'images</td>
         <td>
             {{ options['thumbnail_dimensions'] }}
         </td>

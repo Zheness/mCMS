@@ -28,7 +28,7 @@
                 {% set image = albumImage.Image %}
                 <div class="col-md-3">
                     <a href="#" class="thumbnail" data-toggle="modal" data-target="#modalImage{{ image.id }}">
-                        <img src="/img/upload/{{ image.filename }}" alt="Image - {{ image.title }}">
+                        <img src="{{ image.getThumbnailUrl() }}" alt="Image - {{ image.title }}">
                     </a>
                 </div>
             {% endfor %}
@@ -48,7 +48,7 @@
                     <h4 class="modal-title">{{ image.title }}</h4>
                 </div>
                 <div class="modal-body">
-                    <img src="/img/upload/{{ image.filename }}" alt="Image - {{ image.title }}">
+                    <img src="{{ image.getUrl() }}" alt="Image - {{ image.title }}">
                     <div class="nl2br">{{ image.description }}</div>
                 </div>
                 <div class="modal-footer">
@@ -61,7 +61,7 @@
 <hr>
 <div id="comments">
     <h1>Commentaires</h1>
-    {% if album.commentsOpen %}
+    {% if commentsOpen %}
         <form action="{{ url('album/read/' ~ album.slug) }}" method="post">
             <div class="form-group">
                 <label for="username" class="control-label">Nom</label>

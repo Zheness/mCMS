@@ -2,8 +2,12 @@
 
 namespace Mcms\Models;
 
+use Phalcon\Image\Adapter\Imagick;
+
 class Image extends ModelBase
 {
+
+    const NO_IMAGE = "/img/error.png";
 
     /**
      *
@@ -106,6 +110,53 @@ class Image extends ModelBase
     public function getSource()
     {
         return 'image';
+    }
+
+    /**
+     * @return string
+     */
+    public function getUrl()
+    {
+        if (file_exists(BASE_PATH . "/public/img/upload/{$this->filename}")) {
+            return "/img/upload/{$this->filename}";
+        } else {
+            return self::NO_IMAGE;
+        }
+    }
+
+    /**
+     * @param int|null $width
+     * @param int|null $height
+     * @return string
+     */
+    public function getThumbnailUrl($width = null, $height = null)
+    {
+        if ($width == null) {
+            $width = Option::findFirstBySlug('thumbnail_width')->content;
+        }
+        if ($height == null) {
+            $height = Option::findFirstBySlug('thumbnail_height')->content;
+        }
+        if (file_exists(BASE_PATH . "/public/img/upload/{$width}/{$height}/{$this->filename}")) {
+            return "/img/upload/{$width}/{$height}/{$this->filename}";
+        } else {
+            if (!file_exists(BASE_PATH . "/public/img/upload/{$this->filename}")) {
+                return self::NO_IMAGE;
+            }
+            if (!file_exists(BASE_PATH . "/public/img/upload/{$width}/{$height}")) {
+                if (!mkdir(BASE_PATH . "/public/img/upload/{$width}/{$height}", 0755, true)) {
+                    return self::NO_IMAGE;
+                }
+            }
+            $image = new Imagick(BASE_PATH . "/public/img/upload/{$this->filename}");
+            $image->resize($width, $height);
+            $image->save(BASE_PATH . "/public/img/upload/{$width}/{$height}/{$this->filename}");
+            if (file_exists(BASE_PATH . "/public/img/upload/{$width}/{$height}/{$this->filename}")) {
+                return "/img/upload/{$width}/{$height}/{$this->filename}";
+            } else {
+                return self::NO_IMAGE;
+            }
+        }
     }
 
 }

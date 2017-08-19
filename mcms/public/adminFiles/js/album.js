@@ -75,7 +75,7 @@ $(function () {
                 let image = data[i];
                 let div = $('<div class="col-md-4"> \
                                 <div class="thumbnail"> \
-                                    <img src="/img/upload/' + image['filename'] + '" alt="Image - ' + image['title'] + '"> \
+                                    <img src="' + image['thumbnailUrl'] + '" alt="Image - ' + image['title'] + '"> \
                                     <div class="caption"> \
                                         <button class="btn btn-block btn-primary addImageToAlbum" type="button" data-id="' + image['id'] + '"> \
                                             Ajouter à l\'album \
@@ -92,7 +92,7 @@ $(function () {
                 let image = data[i];
                 let div = $('<div class="col-md-4"> \
                                 <div class="thumbnail"> \
-                                    <img src="/img/upload/' + image['filename'] + '" alt="Image - ' + image['title'] + '"> \
+                                    <img src="' + image['thumbnailUrl'] + '" alt="Image - ' + image['title'] + '"> \
                                     <div class="caption"> \
                                         <button class="btn btn-block btn-danger removeImageFromAlbum" type="button" data-id="' + image['id'] + '"> \
                                             Retirer de l\'album \

@@ -119,12 +119,14 @@ class AlbumAjaxController extends ControllerBase
 
         $data = [];
         foreach ($album->Images as $albumImage) {
+            /** @var Image $image */
             $image = $albumImage->Image;
             $data[] = [
                 "id" => $image->id,
                 "title" => $image->title,
                 "description" => $image->description,
                 "filename" => $image->filename,
+                "thumbnailUrl" => $image->getThumbnailUrl(),
             ];
         }
         return $this->response->setJsonContent($data);
