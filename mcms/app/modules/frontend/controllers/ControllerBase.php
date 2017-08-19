@@ -80,5 +80,17 @@ class ControllerBase extends Controller
                 $this->flashSession->notice($message);
             }
         }
+
+        $cookieConsent = [
+            'text' => Option::findFirstBySlug('cookie_consent_text')->content,
+            'textButton' => Option::findFirstBySlug('cookie_consent_text_button')->content,
+            'textLink' => Option::findFirstBySlug('cookie_consent_text_link')->content,
+            'backgroundColor' => Option::findFirstBySlug('cookie_consent_background_color')->content,
+            'backgroundColorButton' => Option::findFirstBySlug('cookie_consent_button_background_color')->content,
+            'textColor' => Option::findFirstBySlug('cookie_consent_text_color')->content,
+            'textColorButton' => Option::findFirstBySlug('cookie_consent_button_text_color')->content,
+            'textColorLink' => Option::findFirstBySlug('cookie_consent_link_color')->content,
+        ];
+        $this->view->setVar('cookieConsent', $cookieConsent);
     }
 }

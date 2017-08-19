@@ -19,6 +19,22 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+    <style>
+        #cookieConsent {
+            background-color: {{ cookieConsent['backgroundColor'] }};
+            color: {{ cookieConsent['textColor'] }};
+        }
+
+        #cookieConsent a, #cookieConsent a:hover, #cookieConsent a:active, #cookieConsent a:focus, #cookieConsent a:visited {
+            color: {{ cookieConsent['textColorLink'] }};
+        }
+
+        #cookieConsent button, #cookieConsent button:hover, #cookieConsent button:active, #cookieConsent button:focus, #cookieConsent button:visited {
+            background-color: {{ cookieConsent['backgroundColorButton'] }};
+            color: {{ cookieConsent['textColorButton'] }};
+        }
+    </style>
 </head>
 
 <body>
@@ -40,8 +56,8 @@
 
 </div>
 <div class="well text-center" id="cookieConsent">
-    <p>Ce site utilise des cookies pour vous assurer une meilleure navigation possible. <a href="{{ url('index/gtu') }}">En savoir plus</a></p>
-    <button class="btn" id="cookieConsentBtnAccept">J'ai compris</button>
+    <p>{{ cookieConsent['text'] }} <a href="{{ url('index/gtu') }}">{{ cookieConsent['textLink'] }}</a></p>
+    <button class="btn" id="cookieConsentBtnAccept">{{ cookieConsent['textButton'] }}</button>
 </div>
 
 <script src="{{ static_url("vendor/components/jquery/jquery.min.js") }}"></script>
