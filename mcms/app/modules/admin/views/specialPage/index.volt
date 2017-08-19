@@ -27,7 +27,7 @@
             </td>
             <td>
                 <div class="btn-group btn-group-sm btn-group-right">
-                    <a href="{{ url("page/edit/" ~ page.id) }}" class="btn btn-default">
+                    <a href="{{ url("specialPage/edit/" ~ page.id) }}" class="btn btn-default">
                         <span class="fa fa-pencil"></span> Modifier
                     </a>
                 </div>
