@@ -1,6 +1,7 @@
 <?php
 namespace Mcms\Modules\Admin\Controllers;
 
+use Mcms\Models\Message;
 use Mcms\Modules\Admin\Forms\FormBase;
 use Phalcon\Mvc\Controller;
 use Phalcon\Validation\Message\Group;
@@ -45,6 +46,7 @@ class ControllerBase extends Controller
     public function afterExecuteRoute()
     {
         $this->assets->addCss("adminFiles/css/admin-style.css");
+        $this->view->setVar("menu_unreadMessages", Message::count(['parentId IS NULL AND unread = 1']));
         $this->view->setVar("csrfKey", $this->security->getTokenKey());
         $this->view->setVar("csrf", $this->security->getToken());
     }

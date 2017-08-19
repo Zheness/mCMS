@@ -5,8 +5,13 @@
                 <a href="{{ url() }}"><i class="fa fa-dashboard fa-fw"></i> Accueil</a>
             </li>
             <li>
-                <a href="#"><i class="fa fa-envelope-o fa-fw"></i> Messagerie <span
-                        class="badge progress-bar-danger">3</span></a>
+                <a href="{{ url('message') }}">
+                    <i class="fa fa-envelope-o fa-fw"></i>
+                    Messagerie
+                    {% if menu_unreadMessages != 0 %}
+                        <span class="badge progress-bar-danger">{{ menu_unreadMessages }}</span>
+                    {% endif %}
+                </a>
             </li>
             <li>
                 <a href="#"><i class="fa fa-file-o fa-fw"></i> Pages<span class="fa arrow"></span></a>
@@ -53,16 +58,13 @@
                 </ul>
             </li>
             <li>
-                <a href="#"><i class="fa fa-files-o fa-fw"></i> Pages spéciales<span
-                        class="fa arrow"></span></a>
-                <ul class="nav nav-second-level">
-                    <li>
-                        <a href="#"><i class="fa fa-pencil"></i> Accueil</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-pencil"></i> Contact</a>
-                    </li>
-                </ul>
+                <a href="#"><i class="fa fa-files-o fa-fw"></i> Pages spéciales</a>
+            </li>
+            <li>
+                <a href="{{ url('option') }}">
+                    <i class="fa fa-cogs fa-fw"></i>
+                    Options
+                </a>
             </li>
             <li class="visible-xs">
                 <a href="#"><i class="fa fa-user fa-fw"></i> {{ session.get("member").getFullname() }}<span
