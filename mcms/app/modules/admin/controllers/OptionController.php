@@ -6,6 +6,7 @@ use Mcms\Library\Tools;
 use Mcms\Models\Member;
 use Mcms\Models\Option;
 use Mcms\Modules\Admin\Forms\OptionCommentsForm;
+use Mcms\Modules\Admin\Forms\OptionCookieConsentForm;
 use Mcms\Modules\Admin\Forms\OptionMaintenanceForm;
 use Mcms\Modules\Admin\Forms\OptionNotificationForm;
 use Mcms\Modules\Admin\Forms\OptionRegistrationForm;
@@ -281,6 +282,80 @@ class OptionController extends ControllerBase
             }
         } else {
             $form->get("id")->setDefault(Option::findFirstBySlug('root')->content);
+        }
+        $this->view->setVar("form", $form);
+        $this->view->setVar("root", Option::findFirstBySlug('root')->content);
+    }
+
+    public function cookieConsentAction()
+    {
+        $this->assets->addCss('vendor/itsjavi/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css');
+        $this->assets->addJs('vendor/itsjavi/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js');
+        $this->assets->addJs('adminFiles/js/option.js');
+        $form = new OptionCookieConsentForm();
+        if ($this->request->isPost()) {
+            if ($form->isValid($this->request->getPost())) {
+                $option = Option::findFirstBySlug('cookie_consent_text');
+                $option->content = $this->request->getPost('text');
+                $option->dateUpdated = Tools::now();
+                $option->updatedBy = $this->session->get('member')->id;
+                $option->save();
+
+                $option = Option::findFirstBySlug('cookie_consent_text_button');
+                $option->content = $this->request->getPost('textButton');
+                $option->dateUpdated = Tools::now();
+                $option->updatedBy = $this->session->get('member')->id;
+                $option->save();
+
+                $option = Option::findFirstBySlug('cookie_consent_text_link');
+                $option->content = $this->request->getPost('textLink');
+                $option->dateUpdated = Tools::now();
+                $option->updatedBy = $this->session->get('member')->id;
+                $option->save();
+
+                $option = Option::findFirstBySlug('cookie_consent_background_color');
+                $option->content = $this->request->getPost('backgroundColor');
+                $option->dateUpdated = Tools::now();
+                $option->updatedBy = $this->session->get('member')->id;
+                $option->save();
+
+                $option = Option::findFirstBySlug('cookie_consent_button_background_color');
+                $option->content = $this->request->getPost('backgroundColorButton');
+                $option->dateUpdated = Tools::now();
+                $option->updatedBy = $this->session->get('member')->id;
+                $option->save();
+
+                $option = Option::findFirstBySlug('cookie_consent_text_color');
+                $option->content = $this->request->getPost('textColor');
+                $option->dateUpdated = Tools::now();
+                $option->updatedBy = $this->session->get('member')->id;
+                $option->save();
+
+                $option = Option::findFirstBySlug('cookie_consent_button_text_color');
+                $option->content = $this->request->getPost('textColorButton');
+                $option->dateUpdated = Tools::now();
+                $option->updatedBy = $this->session->get('member')->id;
+                $option->save();
+
+                $option = Option::findFirstBySlug('cookie_consent_link_color');
+                $option->content = $this->request->getPost('textColorLink');
+                $option->dateUpdated = Tools::now();
+                $option->updatedBy = $this->session->get('member')->id;
+                $option->save();
+
+                $this->flashSession->success('La configuration a bien été enregistrée.');
+            } else {
+                $this->generateFlashSessionErrorForm($form);
+            }
+        } else {
+            $form->get('text')->setDefault(Option::findFirstBySlug('cookie_consent_text')->content);
+            $form->get('textButton')->setDefault(Option::findFirstBySlug('cookie_consent_text_button')->content);
+            $form->get('textLink')->setDefault(Option::findFirstBySlug('cookie_consent_text_link')->content);
+            $form->get('backgroundColor')->setDefault(Option::findFirstBySlug('cookie_consent_background_color')->content);
+            $form->get('backgroundColorButton')->setDefault(Option::findFirstBySlug('cookie_consent_button_background_color')->content);
+            $form->get('textColor')->setDefault(Option::findFirstBySlug('cookie_consent_text_color')->content);
+            $form->get('textColorButton')->setDefault(Option::findFirstBySlug('cookie_consent_button_text_color')->content);
+            $form->get('textColorLink')->setDefault(Option::findFirstBySlug('cookie_consent_link_color')->content);
         }
         $this->view->setVar("form", $form);
         $this->view->setVar("root", Option::findFirstBySlug('root')->content);

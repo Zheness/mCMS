@@ -39,10 +39,15 @@
     </div>
 
 </div>
+<div class="well text-center" id="cookieConsent">
+    <p>Ce site utilise des cookies pour vous assurer une meilleure navigation possible. <a href="{{ url('index/gtu') }}">En savoir plus</a></p>
+    <button class="btn" id="cookieConsentBtnAccept">J'ai compris</button>
+</div>
 
 <script src="{{ static_url("vendor/components/jquery/jquery.min.js") }}"></script>
 <script src="{{ static_url("vendor/twbs/bootstrap/dist/js/bootstrap.min.js") }}"></script>
 <script src="{{ static_url("js/bootstrap.js") }}"></script>
+<script src="{{ static_url("js/script.js") }}"></script>
 {{ assets.outputJs() }}
 
 </body>

@@ -17,3 +17,10 @@ img {
 .nl2br {
     white-space: pre-line;
 }
+
+#cookieConsent {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    margin-bottom: 0;
+}

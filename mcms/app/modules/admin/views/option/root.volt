@@ -11,7 +11,7 @@
     <div class="col-lg-9">
         <form method="post" action="{{ url("option/root") }}">
             <div class="form-group">
-                <label for="width" class="control-label">Id du membre</label>
+                <label for="id" class="control-label">Id du membre</label>
                 <div class="row">
                     <div class="col-md-2">
                         {{ form.render("id", ["class": "form-control", "min": "1"]) }}

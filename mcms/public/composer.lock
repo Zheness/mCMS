@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ebd25b9ef13f8143f9fc3a482737f420",
+    "content-hash": "ed33b830f34174e41aa171d773e9739e",
     "packages": [
         {
             "name": "components/bootstrap",
@@ -218,6 +218,37 @@
             "description": "SB Admin 2 is an open source, admin dashboard template for Bootstrap created by Start Bootstrap.",
             "homepage": "https://github.com/davidtmiller",
             "time": "2016-07-25T20:49:41+00:00"
+        },
+        {
+            "name": "itsjavi/bootstrap-colorpicker",
+            "version": "2.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/itsjavi/bootstrap-colorpicker.git",
+                "reference": "db978b4d8c3436cdaed6e3a1a065f9f47bb686b1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/itsjavi/bootstrap-colorpicker/zipball/db978b4d8c3436cdaed6e3a1a065f9f47bb686b1",
+                "reference": "db978b4d8c3436cdaed6e3a1a065f9f47bb686b1",
+                "shasum": ""
+            },
+            "require": {
+                "components/jquery": ">=1.10"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache License Version 2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Javier Aguilar",
+                    "homepage": "https://itsjavi.com"
+                }
+            ],
+            "description": "Fancy and customizable colorpicker plugin for Twitter Bootstrap",
+            "time": "2017-02-05T18:59:49+00:00"
         },
         {
             "name": "ivan-chkv/tinymce-i18n",

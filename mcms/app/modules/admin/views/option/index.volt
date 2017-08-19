@@ -145,5 +145,14 @@
             </a>
         </td>
     </tr>
+    <tr>
+        <td colspan="2">Bandeau des cookies</td>
+        <td></td>
+        <td>
+            <a href="{{ url('option/cookieConsent') }}" class="btn btn-default">
+                <span class="fa fa-edit"></span> Modifier
+            </a>
+        </td>
+    </tr>
     </tbody>
 </table>
