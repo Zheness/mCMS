@@ -4,6 +4,7 @@ namespace Mcms\Modules\Admin\Controllers;
 
 use Mcms\Library\Tools;
 use Mcms\Models\Option;
+use Mcms\Modules\Admin\Forms\OptionCommentsForm;
 use Mcms\Modules\Admin\Forms\OptionMaintenanceForm;
 use Mcms\Modules\Admin\Forms\OptionNotificationForm;
 use Mcms\Modules\Admin\Forms\OptionRegistrationForm;
@@ -57,7 +58,7 @@ class OptionController extends ControllerBase
                 $this->generateFlashSessionErrorForm($form);
             }
         } else {
-            $optionEnabled =  Option::findFirstBySlug('maintenance_enabled')->content == 'true';
+            $optionEnabled = Option::findFirstBySlug('maintenance_enabled')->content == 'true';
             $form->get("content")->setDefault(Option::findFirstBySlug('maintenance_message')->content);
             if ($optionEnabled) {
                 $form->get("enabled")->setAttribute('checked', 'checked');
@@ -100,7 +101,7 @@ class OptionController extends ControllerBase
                 $this->generateFlashSessionErrorForm($form);
             }
         } else {
-            $optionEnabled =  Option::findFirstBySlug('notification_enabled')->content == 'true';
+            $optionEnabled = Option::findFirstBySlug('notification_enabled')->content == 'true';
             $form->get("content")->setDefault(Option::findFirstBySlug('notification_message')->content);
             $form->get("type")->setDefault(Option::findFirstBySlug('notification_type')->content);
             if ($optionEnabled) {
@@ -130,9 +131,81 @@ class OptionController extends ControllerBase
                 $this->generateFlashSessionErrorForm($form);
             }
         } else {
-            $optionEnabled =  Option::findFirstBySlug('registration_allowed')->content == 'true';
+            $optionEnabled = Option::findFirstBySlug('registration_allowed')->content == 'true';
             if ($optionEnabled) {
                 $form->get("enabled")->setAttribute('checked', 'checked');
+            }
+        }
+        $this->view->setVar("form", $form);
+    }
+
+    public function commentsAction()
+    {
+        $this->assets->addCss("adminFiles/css/checkboxes-switch.css");
+        $this->addAssetsTinyMce();
+        $form = new OptionCommentsForm();
+        if ($this->request->isPost()) {
+            if ($form->isValid($this->request->getPost())) {
+                $enabled = $this->request->getPost("enabled") == "on" ? 1 : 0;
+                $pagesEnabled = $this->request->getPost("pagesEnabled") == "on" ? 1 : 0;
+                $albumsEnabled = $this->request->getPost("albumsEnabled") == "on" ? 1 : 0;
+                $articlesEnabled = $this->request->getPost("articlesEnabled") == "on" ? 1 : 0;
+                $maximumCommentsPerDay = (int)$this->request->getPost("maximumCommentsPerDay");
+                if ($maximumCommentsPerDay < -1) {
+                    $maximumCommentsPerDay = -1;
+                }
+
+                $option = Option::findFirstBySlug('comments_allowed');
+                $option->content = $enabled ? 'true' : 'false';
+                $option->dateUpdated = Tools::now();
+                $option->updatedBy = $this->session->get('member')->id;
+                $option->save();
+
+                $option = Option::findFirstBySlug('comments_pages_allowed');
+                $option->content = $pagesEnabled ? 'true' : 'false';
+                $option->dateUpdated = Tools::now();
+                $option->updatedBy = $this->session->get('member')->id;
+                $option->save();
+
+                $option = Option::findFirstBySlug('comments_albums_allowed');
+                $option->content = $albumsEnabled ? 'true' : 'false';
+                $option->dateUpdated = Tools::now();
+                $option->updatedBy = $this->session->get('member')->id;
+                $option->save();
+
+                $option = Option::findFirstBySlug('comments_articles_allowed');
+                $option->content = $articlesEnabled ? 'true' : 'false';
+                $option->dateUpdated = Tools::now();
+                $option->updatedBy = $this->session->get('member')->id;
+                $option->save();
+
+                $option = Option::findFirstBySlug('comments_maximum_per_day');
+                $option->content = $maximumCommentsPerDay;
+                $option->dateUpdated = Tools::now();
+                $option->updatedBy = $this->session->get('member')->id;
+                $option->save();
+
+                $this->flashSession->success('La configuration a bien été enregistrée.');
+            } else {
+                $this->generateFlashSessionErrorForm($form);
+            }
+        } else {
+            $form->get("maximumCommentsPerDay")->setDefault(Option::findFirstBySlug('comments_maximum_per_day')->content);
+            $optionEnabled = Option::findFirstBySlug('comments_allowed')->content == 'true';
+            if ($optionEnabled) {
+                $form->get("enabled")->setAttribute('checked', 'checked');
+            }
+            $optionEnabled = Option::findFirstBySlug('comments_pages_allowed')->content == 'true';
+            if ($optionEnabled) {
+                $form->get("pagesEnabled")->setAttribute('checked', 'checked');
+            }
+            $optionEnabled = Option::findFirstBySlug('comments_albums_allowed')->content == 'true';
+            if ($optionEnabled) {
+                $form->get("albumsEnabled")->setAttribute('checked', 'checked');
+            }
+            $optionEnabled = Option::findFirstBySlug('comments_articles_allowed')->content == 'true';
+            if ($optionEnabled) {
+                $form->get("articlesEnabled")->setAttribute('checked', 'checked');
             }
         }
         $this->view->setVar("form", $form);

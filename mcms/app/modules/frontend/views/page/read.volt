@@ -27,7 +27,7 @@
 <hr>
 <div id="comments">
     <h1>Commentaires</h1>
-    {% if page.commentsOpen %}
+    {% if commentsOpen %}
         <form action="{{ url('page/read/' ~ page.slug) }}" method="post">
             <div class="form-group">
                 <label for="username" class="control-label">Nom</label>
