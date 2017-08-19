@@ -2,6 +2,7 @@
 namespace Mcms\Modules\Frontend\Controllers;
 
 use Mcms\Models\Album;
+use Mcms\Models\Option;
 use Mcms\Models\Page;
 use Mcms\Modules\Frontend\Forms\FormBase;
 use Phalcon\Mvc\Controller;
@@ -26,6 +27,19 @@ class ControllerBase extends Controller
             $html .= "</ul>";
         }
         $this->flashSession->error($html);
+    }
+
+    public function beforeExecuteRoute()
+    {
+        if (Option::findFirstBySlug('maintenance_enabled')->content == 'true') {
+            $url = $this->dispatcher->getControllerName() . "/" . $this->dispatcher->getActionName();
+            if ($url != 'index/maintenance') {
+                $this->dispatcher->forward(["controller" => "index", "action" => "maintenance"]);
+                $this->response->setStatusCode(503);
+                return false;
+            }
+        }
+        return true;
     }
 
     public function afterExecuteRoute()

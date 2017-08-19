@@ -5,9 +5,11 @@ namespace Mcms\Modules\Frontend\Controllers;
 use Mailgun\Mailgun;
 use Mcms\Library\Tools;
 use Mcms\Models\Member;
+use Mcms\Models\Option;
 use Mcms\Modules\Frontend\Forms\LoginForm;
 use Mcms\Modules\Frontend\Forms\SignupForm;
 use Phalcon\Filter;
+use Phalcon\Mvc\View;
 
 class IndexController extends ControllerBase
 {
@@ -105,6 +107,12 @@ class IndexController extends ControllerBase
         $this->view->setVar('metaTitle', 'Inscription à l\'espace membre');
         $this->view->setVar('activeMenu', 'signup');
         return true;
+    }
+
+    public function maintenanceAction()
+    {
+        $this->view->setRenderLevel(View::LEVEL_ACTION_VIEW);
+        $this->view->setVar('message', Option::findFirstBySlug('maintenance_message')->content);
     }
 
 }
