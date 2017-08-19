@@ -5,6 +5,7 @@ namespace Mcms\Modules\Admin\Controllers;
 use Mcms\Library\Tools;
 use Mcms\Models\Option;
 use Mcms\Modules\Admin\Forms\OptionMaintenanceForm;
+use Mcms\Modules\Admin\Forms\OptionNotificationForm;
 
 /**
  * Class OptionController
@@ -57,6 +58,50 @@ class OptionController extends ControllerBase
         } else {
             $optionEnabled =  Option::findFirstBySlug('maintenance_enabled')->content == 'true';
             $form->get("content")->setDefault(Option::findFirstBySlug('maintenance_message')->content);
+            if ($optionEnabled) {
+                $form->get("enabled")->setAttribute('checked', 'checked');
+            }
+        }
+        $this->view->setVar("form", $form);
+    }
+
+    public function notificationAction()
+    {
+        $this->assets->addCss("adminFiles/css/checkboxes-switch.css");
+        $this->addAssetsTinyMce();
+        $form = new OptionNotificationForm();
+        if ($this->request->isPost()) {
+            if ($form->isValid($this->request->getPost())) {
+                $content = $this->request->getPost("content");
+                $type = $this->request->getPost("type");
+                $enabled = $this->request->getPost("enabled") == "on" ? 1 : 0;
+
+                $option = Option::findFirstBySlug('notification_enabled');
+                $option->content = $enabled ? 'true' : 'false';
+                $option->dateUpdated = Tools::now();
+                $option->updatedBy = $this->session->get('member')->id;
+                $option->save();
+
+                $option = Option::findFirstBySlug('notification_message');
+                $option->content = $content;
+                $option->dateUpdated = Tools::now();
+                $option->updatedBy = $this->session->get('member')->id;
+                $option->save();
+
+                $option = Option::findFirstBySlug('notification_type');
+                $option->content = $type;
+                $option->dateUpdated = Tools::now();
+                $option->updatedBy = $this->session->get('member')->id;
+                $option->save();
+
+                $this->flashSession->success('La configuration a bien été enregistrée.');
+            } else {
+                $this->generateFlashSessionErrorForm($form);
+            }
+        } else {
+            $optionEnabled =  Option::findFirstBySlug('notification_enabled')->content == 'true';
+            $form->get("content")->setDefault(Option::findFirstBySlug('notification_message')->content);
+            $form->get("type")->setDefault(Option::findFirstBySlug('notification_type')->content);
             if ($optionEnabled) {
                 $form->get("enabled")->setAttribute('checked', 'checked');
             }
