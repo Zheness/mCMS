@@ -6,6 +6,7 @@ use Mailgun\Mailgun;
 use Mcms\Library\Tools;
 use Mcms\Models\Member;
 use Mcms\Models\Option;
+use Mcms\Models\SpecialPage;
 use Mcms\Modules\Frontend\Forms\LoginForm;
 use Mcms\Modules\Frontend\Forms\SignupForm;
 use Phalcon\Filter;
@@ -17,6 +18,9 @@ class IndexController extends ControllerBase
     public function indexAction()
     {
         $this->view->setVar('activeMenu', 'homepage');
+        $page = SpecialPage::findFirstBySlug('index');
+        $this->view->setVar('metaTitle', $page->title);
+        $this->view->setVar('content', $page->content);
     }
 
     public function loginAction()
@@ -119,6 +123,13 @@ class IndexController extends ControllerBase
     {
         $this->view->setRenderLevel(View::LEVEL_ACTION_VIEW);
         $this->view->setVar('message', Option::findFirstBySlug('maintenance_message')->content);
+    }
+
+    public function gtuAction()
+    {
+        $page = SpecialPage::findFirstBySlug('gtu');
+        $this->view->setVar('metaTitle', $page->title);
+        $this->view->setVar('content', $page->content);
     }
 
 }

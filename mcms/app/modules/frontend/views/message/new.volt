@@ -2,6 +2,7 @@
     <li><a href="{{ url('') }}">Accueil</a></li>
     <li class="active">Contact</li>
 </ol>
+{{ content }}
 <form method="post" action="{{ url("message/new") }}">
     <div class="row">
         <div class="col-md-9">

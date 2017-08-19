@@ -6,6 +6,7 @@ namespace Mcms\Modules\Frontend\Controllers;
 use Mcms\Library\Tools;
 use Mcms\Models\Member;
 use Mcms\Models\Message;
+use Mcms\Models\SpecialPage;
 use Mcms\Modules\Frontend\Forms\AddNewMessageForm;
 use Mcms\Modules\Frontend\Forms\ReplyToMessageForm;
 use Phalcon\Filter;
@@ -60,7 +61,10 @@ class MessageController extends ControllerBase
             }
         }
         $this->view->setVar('form', $form);
-        $this->view->setVar('metaTitle', 'Envopyer un message de contact');
+
+        $page = SpecialPage::findFirstBySlug('contact');
+        $this->view->setVar('metaTitle', $page->title);
+        $this->view->setVar('content', $page->content);
         $this->view->setVar('activeMenu', 'contact');
         return true;
     }
