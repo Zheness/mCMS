@@ -58,7 +58,7 @@
                 </ul>
             </li>
             <li>
-                <a href="#"><i class="fa fa-files-o fa-fw"></i> Pages spéciales</a>
+                <a href="{{ url("specialPage") }}"><i class="fa fa-files-o fa-fw"></i> Pages spéciales</a>
             </li>
             <li>
                 <a href="{{ url('option') }}">
