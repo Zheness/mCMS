@@ -3,11 +3,13 @@
 namespace Mcms\Modules\Admin\Controllers;
 
 use Mcms\Library\Tools;
+use Mcms\Models\Member;
 use Mcms\Models\Option;
 use Mcms\Modules\Admin\Forms\OptionCommentsForm;
 use Mcms\Modules\Admin\Forms\OptionMaintenanceForm;
 use Mcms\Modules\Admin\Forms\OptionNotificationForm;
 use Mcms\Modules\Admin\Forms\OptionRegistrationForm;
+use Mcms\Modules\Admin\Forms\OptionRootForm;
 use Mcms\Modules\Admin\Forms\OptionThumbnailsForm;
 
 /**
@@ -20,6 +22,10 @@ class OptionController extends ControllerBase
     public function indexAction()
     {
         $options = [];
+        $rootMember = Member::findFirst(Option::findFirstBySlug('root')->content);
+        $href = $this->getDI()->get("url")->get("member/edit/" . $rootMember->id);
+        $rootMemberLink = "<a href='{$href}'>{$rootMember->getFullname()}</a>";
+        $options['root'] = $rootMemberLink;
         $options['maintenance_enabled'] = Option::findFirstBySlug('maintenance_enabled')->content == 'true';
         $options['notification_enabled'] = Option::findFirstBySlug('notification_enabled')->content == 'true';
         $options['registration_allowed'] = Option::findFirstBySlug('registration_allowed')->content == 'true';
@@ -243,6 +249,41 @@ class OptionController extends ControllerBase
             $form->get("height")->setDefault(Option::findFirstBySlug('thumbnail_height')->content);
         }
         $this->view->setVar("form", $form);
+    }
+
+    public function rootAction()
+    {
+        $form = new OptionRootForm();
+        if ($this->request->isPost()) {
+            if ($this->session->get('member')->id == Option::findFirstBySlug('root')->content) {
+                if ($form->isValid($this->request->getPost())) {
+                    $id = (int)$this->request->getPost("id");
+                    $member = Member::findFirst($id);
+                    if ($member) {
+                        $option = Option::findFirstBySlug('root');
+                        $option->content = $member->id;
+                        $option->dateUpdated = Tools::now();
+                        $option->updatedBy = $this->session->get('member')->id;
+                        $option->save();
+
+                        $member->role = 'admin';
+                        $member->save();
+
+                        $this->flashSession->success('La configuration a bien été enregistrée.');
+                    } else {
+                        $this->flashSession->error('Le membre recherché n\'existe pas.');
+                    }
+                } else {
+                    $this->generateFlashSessionErrorForm($form);
+                }
+            } else {
+                $this->flashSession->error("Vous n'êtes pas autorisé à modifier cette information.");
+            }
+        } else {
+            $form->get("id")->setDefault(Option::findFirstBySlug('root')->content);
+        }
+        $this->view->setVar("form", $form);
+        $this->view->setVar("root", Option::findFirstBySlug('root')->content);
     }
 }
 

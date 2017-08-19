@@ -14,6 +14,17 @@
     </thead>
     <tbody>
     <tr>
+        <td colspan="2">Administrateur principal</td>
+        <td>
+            {{ options['root'] }}
+        </td>
+        <td>
+            <a href="{{ url('option/root') }}" class="btn btn-default">
+                <span class="fa fa-edit"></span> Modifier
+            </a>
+        </td>
+    </tr>
+    <tr>
         <td colspan="2">Site en maintenance</td>
         <td>
             {% if options['maintenance_enabled'] %}
