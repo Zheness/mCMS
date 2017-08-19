@@ -6,6 +6,7 @@ use Mcms\Library\Tools;
 use Mcms\Models\Option;
 use Mcms\Modules\Admin\Forms\OptionMaintenanceForm;
 use Mcms\Modules\Admin\Forms\OptionNotificationForm;
+use Mcms\Modules\Admin\Forms\OptionRegistrationForm;
 
 /**
  * Class OptionController
@@ -102,6 +103,34 @@ class OptionController extends ControllerBase
             $optionEnabled =  Option::findFirstBySlug('notification_enabled')->content == 'true';
             $form->get("content")->setDefault(Option::findFirstBySlug('notification_message')->content);
             $form->get("type")->setDefault(Option::findFirstBySlug('notification_type')->content);
+            if ($optionEnabled) {
+                $form->get("enabled")->setAttribute('checked', 'checked');
+            }
+        }
+        $this->view->setVar("form", $form);
+    }
+
+    public function registrationAction()
+    {
+        $this->assets->addCss("adminFiles/css/checkboxes-switch.css");
+        $this->addAssetsTinyMce();
+        $form = new OptionRegistrationForm();
+        if ($this->request->isPost()) {
+            if ($form->isValid($this->request->getPost())) {
+                $enabled = $this->request->getPost("enabled") == "on" ? 1 : 0;
+
+                $option = Option::findFirstBySlug('registration_allowed');
+                $option->content = $enabled ? 'true' : 'false';
+                $option->dateUpdated = Tools::now();
+                $option->updatedBy = $this->session->get('member')->id;
+                $option->save();
+
+                $this->flashSession->success('La configuration a bien été enregistrée.');
+            } else {
+                $this->generateFlashSessionErrorForm($form);
+            }
+        } else {
+            $optionEnabled =  Option::findFirstBySlug('registration_allowed')->content == 'true';
             if ($optionEnabled) {
                 $form->get("enabled")->setAttribute('checked', 'checked');
             }

@@ -35,7 +35,7 @@ class OptionNotificationForm extends FormBase
     private function enabled()
     {
         $element = new Check("enabled", ['value' => 'on']);
-        $element->setLabel("Site en maintenance");
+        $element->setLabel("Notification activée");
         return $element;
     }
 

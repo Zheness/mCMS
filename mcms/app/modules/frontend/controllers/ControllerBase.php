@@ -65,8 +65,9 @@ class ControllerBase extends Controller
         ]);
         $this->view->setVar('menu_latestAlbums', $pages);
 
-        if (Option::findFirstBySlug('notification_enabled')->content == 'true') {
+        $this->view->setVar('registrationAllowed', Option::findFirstBySlug('registration_allowed')->content == 'true');
 
+        if (Option::findFirstBySlug('notification_enabled')->content == 'true') {
             $type = Option::findFirstBySlug('notification_type')->content;
             $message = Option::findFirstBySlug('notification_message')->content;
             if ($type == 'success') {

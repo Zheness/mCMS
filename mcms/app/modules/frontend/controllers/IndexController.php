@@ -74,6 +74,12 @@ class IndexController extends ControllerBase
             $this->response->send();
             return false;
         }
+        if (Option::findFirstBySlug('registration_allowed')->content != 'true') {
+            $this->flashSession->error("L'inscription est désactivée sur ce site.");
+            $this->response->redirect("");
+            $this->response->send();
+            return false;
+        }
         $form = new SignupForm();
         if ($this->request->isPost()) {
             if ($form->isValid($this->request->getPost())) {

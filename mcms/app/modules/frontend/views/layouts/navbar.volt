@@ -39,9 +39,11 @@
                     <li class="{{ activeMenu == 'login' ? 'active' : '' }}">
                         <a href="{{ url('index/login') }}">Connexion</a>
                     </li>
-                    <li class="{{ activeMenu == 'signup' ? 'active' : '' }}">
-                        <a href="{{ url('index/signup') }}">Inscription</a>
-                    </li>
+                    {% if registrationAllowed %}
+                        <li class="{{ activeMenu == 'signup' ? 'active' : '' }}">
+                            <a href="{{ url('index/signup') }}">Inscription</a>
+                        </li>
+                    {% endif %}
                 </ul>
             {% endif %}
         </div>
