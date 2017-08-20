@@ -177,5 +177,22 @@ class ArticleController extends ControllerBase
         return true;
     }
 
+    public function commentsAction($id = 0)
+    {
+        $article = Article::findFirst($id);
+        if (!$article) {
+            $this->flashSession->error("L'article séléctionné n'existe pas.");
+            $this->dispatcher->forward(
+                [
+                    "controller" => "article",
+                    "action" => "index",
+                ]
+            );
+            return false;
+        }
+        $this->view->setVar("article", $article);
+        return true;
+    }
+
 }
 
