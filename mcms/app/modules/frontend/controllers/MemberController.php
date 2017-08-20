@@ -4,12 +4,16 @@ namespace Mcms\Modules\Frontend\Controllers;
 
 
 use Mcms\Library\Tools;
+use Mcms\Models\Image;
 use Mcms\Models\Member;
 use Mcms\Modules\Frontend\Forms\EditMemberInfoForm;
+use Mcms\Modules\Frontend\Forms\EditMemberProfilePictureForm;
 use Mcms\Modules\Frontend\Forms\PasswordLostForm;
 use Mcms\Modules\Frontend\Forms\ResetPasswordForm;
 use Phalcon\Filter;
 use Phalcon\Text;
+use Phalcon\Utils\Slug;
+use Phalcon\Validation;
 
 class MemberController extends ControllerBase
 {
@@ -165,6 +169,95 @@ class MemberController extends ControllerBase
         $this->view->setVar('member', $member);
         $this->view->setVar('form', $form);
         $this->view->setVar('metaTitle', 'Modification du mot de passe');
+    }
+
+    public function profilePictureAction()
+    {
+        if (!$this->session->has('member')) {
+            // 401
+            exit("401");
+        }
+        /** @var Member $member */
+        $member = $this->session->get('member');
+        $form = new EditMemberProfilePictureForm();
+        if ($this->request->isPost()) {
+            if ($form->isValid($this->request->getPost())) {
+                if ($this->request->hasFiles(true)) {
+                    $file = $this->request->getUploadedFiles()[0];
+                    $name = str_replace('.' . $file->getExtension(), '', $file->getName());
+                    $slug = Slug::generate($name);
+                    $filename = $slug . '-' . Text::random(Text::RANDOM_ALNUM, 6) . '.' . $file->getExtension();
+
+                    $imageValidatorOption = $this->generateImageValidatorOptions();
+                    $fileValidator = new Validation\Validator\File($imageValidatorOption);
+                    $validator = new Validation();
+                    $validator->add('file', $fileValidator);
+                    $messages = $validator->validate($_FILES);
+
+                    if (!count($messages)) {
+                        $hasError = false;
+                        if (!file_exists("img/upload")) {
+                            if (!mkdir('img/upload')) {
+                                $this->flashSession->error("Impossible de créer le dossier de destination.");
+                                $hasError = true;
+                            }
+                        }
+
+                        if (!$hasError) {
+                            if ($file->moveTo('img/upload/' . $filename)) {
+                                $image = new Image();
+                                $image->filename = $filename;
+                                $image->dateCreated = Tools::now();
+                                $image->createdBy = $this->session->get('member')->id;
+                                $image->save();
+
+                                $member->profilePicture = $image->id;
+                                $member->save();
+
+                                $this->flashSession->success("L'image a bien été enregistrée.");
+                                $form->clear();
+                            } else {
+                                $this->flashSession->error("Impossible de déplacer le fichier le dossier de destination.");
+                            }
+                        }
+                    } else {
+                        foreach ($messages as $message) {
+                            $this->flashSession->error($message->getMessage());
+                        }
+                    }
+                } else {
+                    $this->flashSession->error("Le fichier est manquant.");
+                }
+            } else {
+                $this->generateFlashSessionErrorForm($form);
+            }
+        }
+        $this->view->setVar('member', $member);
+        $this->view->setVar('form', $form);
+        $this->view->setVar('metaTitle', 'Modification de l\'image de profil');
+        return true;
+    }
+
+    /**
+     * @return array
+     */
+    private function generateImageValidatorOptions()
+    {
+        $response = [];
+
+        if ($this->config->module->image->maxSize !== false) {
+            $response['maxSize'] = $this->config->module->image->maxSize;
+            $response['messageSize'] = "Le poids de l'image est trop grand (max {$this->config->module->image->maxSize})";
+        }
+        if ($this->config->module->image->maxResolution !== false) {
+            $response['maxResolution'] = $this->config->module->image->maxResolution;
+            $response['messageMaxResolution'] = "L'image est trop grande (résolution maximum {$this->config->module->image->maxResolution})";
+        }
+        if ($this->config->module->image->allowedTypes !== false && count($this->config->module->image->allowedTypes)) {
+            $response['allowedTypes'] = (array)$this->config->module->image->allowedTypes;
+            $response['messageType'] = "Le format de l'image n'est pas supporté (types autorisés: :types)";
+        }
+        return $response;
     }
 
 }

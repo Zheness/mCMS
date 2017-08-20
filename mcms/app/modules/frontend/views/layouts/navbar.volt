@@ -30,8 +30,42 @@
             </ul>
             {% if session.has('member') %}
                 <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="{{ url('index/logout') }}">Déconnexion</a>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-user fa-fw"></i> {{ session.get("member").getFullname() }} <i
+                                class="fa fa-caret-down"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li>
+                                <a href="{{ url("member/edit") }}">
+                                    <i class="fa fa-edit fa-fw"></i>
+                                    Informations
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url("member/profilePicture") }}">
+                                    <i class="fa fa-picture-o fa-fw"></i>
+                                    Image de profil
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url("member/password") }}">
+                                    <i class="fa fa-key fa-fw"></i>
+                                    Mot de passe
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            {% if session.get('member').role == 'admin' %}
+                                <li>
+                                    <a href="{{ url("admin") }}" target="_blank">
+                                        <i class="fa fa-external-link fa-fw"></i> Administration
+                                    </a>
+                                </li>
+                            {% endif %}
+                            <li>
+                                <a href="{{ url("index/logout") }}"><i class="fa fa-sign-out fa-fw"></i> Déconnexion</a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             {% else %}

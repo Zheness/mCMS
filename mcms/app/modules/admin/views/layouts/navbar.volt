@@ -10,6 +10,11 @@
     </div>
 
     <ul class="nav navbar-top-links navbar-right hidden-xs">
+        <li>
+            <a href="{{ config.site.url }}" target="_blank">
+                <i class="fa fa-external-link fa-fw"></i> Ouvrir le site
+            </a>
+        </li>
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                 <i class="fa fa-user fa-fw"></i> {{ session.get("member").getFullname() }} <i
