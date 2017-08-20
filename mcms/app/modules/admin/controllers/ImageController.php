@@ -9,6 +9,7 @@ use Mcms\Modules\Admin\Forms\DeleteImageForm;
 use Mcms\Modules\Admin\Forms\EditImageForm;
 use Phalcon\Text;
 use Phalcon\Utils\Slug;
+use Phalcon\Validation;
 
 /**
  * Class ImageController
@@ -43,27 +44,39 @@ class ImageController extends ControllerBase
                     $slug = Slug::generate($name);
                     $filename = $slug . '-' . Text::random(Text::RANDOM_ALNUM, 6) . '.' . $file->getExtension();
 
-                    $hasError = false;
-                    if (!file_exists("img/upload")) {
-                        if (!mkdir('img/upload')) {
-                            $this->flashSession->error("Impossible de créer le dossier de destination.");
-                            $hasError = true;
-                        }
-                    }
+                    $imageValidatorOption = $this->generateImageValidatorOptions();
+                    $fileValidator = new Validation\Validator\File($imageValidatorOption);
+                    $validator = new Validation();
+                    $validator->add('file', $fileValidator);
+                    $messages = $validator->validate($_FILES);
 
-                    if (!$hasError) {
-                        if ($file->moveTo('img/upload/' . $filename)) {
-                            $image = new Image();
-                            $image->title = $title;
-                            $image->description = $description;
-                            $image->filename = $filename;
-                            $image->dateCreated = Tools::now();
-                            $image->createdBy = $this->session->get('member')->id;
-                            $image->save();
-                            $this->flashSession->success("L'image a bien été enregistrée.");
-                            $form->clear();
-                        } else {
-                            $this->flashSession->error("Impossible de déplacer le fichier le dossier de destination.");
+                    if (!count($messages)) {
+                        $hasError = false;
+                        if (!file_exists("img/upload")) {
+                            if (!mkdir('img/upload')) {
+                                $this->flashSession->error("Impossible de créer le dossier de destination.");
+                                $hasError = true;
+                            }
+                        }
+
+                        if (!$hasError) {
+                            if ($file->moveTo('img/upload/' . $filename)) {
+                                $image = new Image();
+                                $image->title = $title;
+                                $image->description = $description;
+                                $image->filename = $filename;
+                                $image->dateCreated = Tools::now();
+                                $image->createdBy = $this->session->get('member')->id;
+                                $image->save();
+                                $this->flashSession->success("L'image a bien été enregistrée.");
+                                $form->clear();
+                            } else {
+                                $this->flashSession->error("Impossible de déplacer le fichier le dossier de destination.");
+                            }
+                        }
+                    } else {
+                        foreach ($messages as $message) {
+                            $this->flashSession->error($message->getMessage());
                         }
                     }
                 } else {
@@ -164,6 +177,28 @@ class ImageController extends ControllerBase
         $this->view->setVar("form", $form);
         $this->view->setVar("image", $image);
         return true;
+    }
+
+    /**
+     * @return array
+     */
+    private function generateImageValidatorOptions()
+    {
+        $response = [];
+
+        if ($this->config->module->image->maxSize !== false) {
+            $response['maxSize'] = $this->config->module->image->maxSize;
+            $response['messageSize'] = "Le poids de l'image est trop grand (max {$this->config->module->image->maxSize})";
+        }
+        if ($this->config->module->image->maxResolution !== false) {
+            $response['maxResolution'] = $this->config->module->image->maxResolution;
+            $response['messageMaxResolution'] = "L'image est trop grande (résolution maximum {$this->config->module->image->maxResolution})";
+        }
+        if ($this->config->module->image->allowedTypes !== false && count($this->config->module->image->allowedTypes)) {
+            $response['allowedTypes'] = (array) $this->config->module->image->allowedTypes;
+            $response['messageType'] = "Le format de l'image n'est pas supporté (types autorisés: :types)";
+        }
+        return $response;
     }
 }
 
