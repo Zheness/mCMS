@@ -72,7 +72,7 @@ class ImageAjaxController extends ControllerBase
             }
         }
 
-        $pagesCount = count($query->getQuery()->execute());
+        $imagesCount = count($query->getQuery()->execute());
 
         $query->orderBy($allowedColumns[$this->columns[$this->order[0]["column"]]["name"]] . " " . $this->order[0]["dir"]);
         $query->limit($this->length, $this->start);
@@ -96,8 +96,8 @@ class ImageAjaxController extends ControllerBase
 
         $response = [
             "draw" => $this->draw,
-            "recordsTotal" => Page::count(),
-            "recordsFiltered" => $pagesCount,
+            "recordsTotal" => Image::count(),
+            "recordsFiltered" => $imagesCount,
             "data" => $data
         ];
         return $this->response->setJsonContent($response);

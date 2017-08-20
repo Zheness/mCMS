@@ -6,10 +6,11 @@ $(function () {
             "processing": true,
             "serverSide": true,
             "searchDelay": 400,
-            "ajax": ADMIN_PAGE_AJAX_URL + "/list",
+            "ajax": ADMIN_ARTICLE_AJAX_URL + "/list",
             "columns": [
                 {"name": "id"},
                 {"name": "title"},
+                {"name": "publication", "searchable": false},
                 {"name": "creation"},
                 {"name": "edition"},
                 {"name": "comments", "searchable": false},
@@ -18,8 +19,10 @@ $(function () {
             ]
         });
     }
-    $('.bootstrap-date-picker').datepicker({
-        format: "dd/mm/yyyy",
-        language: "fr"
-    });
+    if ($('.bootstrap-date-picker').length) {
+        $('.bootstrap-date-picker').datepicker({
+            format: "dd/mm/yyyy",
+            language: "fr"
+        });
+    }
 });

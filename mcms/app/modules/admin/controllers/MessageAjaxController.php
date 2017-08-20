@@ -69,7 +69,7 @@ class MessageAjaxController extends ControllerBase
         }
         $query->andWhere('m.token IS NOT NULL');
 
-        $pagesCount = count($query->getQuery()->execute());
+        $messagesCount = count($query->getQuery()->execute());
 
         $query->orderBy($allowedColumns[$this->columns[$this->order[0]["column"]]["name"]] . " " . $this->order[0]["dir"]);
         $query->limit($this->length, $this->start);
@@ -94,7 +94,7 @@ class MessageAjaxController extends ControllerBase
         $response = [
             "draw" => $this->draw,
             "recordsTotal" => Message::count(['token IS NOT NULL']),
-            "recordsFiltered" => $pagesCount,
+            "recordsFiltered" => $messagesCount,
             "data" => $data
         ];
         return $this->response->setJsonContent($response);

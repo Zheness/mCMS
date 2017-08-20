@@ -17,6 +17,11 @@ use Phalcon\Utils\Slug;
  */
 class ArticleController extends ControllerBase
 {
+    public function indexAction()
+    {
+        $this->addAssetsDataTable();
+        $this->assets->addJs("adminFiles/js/article.js");
+    }
 
     public function addAction()
     {

@@ -75,7 +75,7 @@ class MemberAjaxController extends ControllerBase
             }
         }
 
-        $pagesCount = count($query->getQuery()->execute());
+        $membersCount = count($query->getQuery()->execute());
 
         $query->orderBy($allowedColumns[$this->columns[$this->order[0]["column"]]["name"]] . " " . $this->order[0]["dir"]);
         $query->limit($this->length, $this->start);
@@ -101,7 +101,7 @@ class MemberAjaxController extends ControllerBase
         $response = [
             "draw" => $this->draw,
             "recordsTotal" => Member::count(),
-            "recordsFiltered" => $pagesCount,
+            "recordsFiltered" => $membersCount,
             "data" => $data
         ];
         return $this->response->setJsonContent($response);

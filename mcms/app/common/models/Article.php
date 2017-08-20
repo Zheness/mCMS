@@ -128,4 +128,14 @@ class Article extends ModelBase
         return 'article';
     }
 
+    public function datePublicationToFr()
+    {
+        return date("d/m/Y", strtotime($this->datePublication));
+    }
+
+    public function getUrl()
+    {
+        return $this->getDI()->get('config')->site->url . '/article/read/' . date("Y/m/d", strtotime($this->datePublication)) . '/' . $this->slug;
+    }
+
 }

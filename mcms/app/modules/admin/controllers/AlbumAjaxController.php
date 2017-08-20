@@ -76,7 +76,7 @@ class AlbumAjaxController extends ControllerBase
             }
         }
 
-        $pagesCount = count($query->getQuery()->execute());
+        $albumsCount = count($query->getQuery()->execute());
 
         $query->orderBy($allowedColumns[$this->columns[$this->order[0]["column"]]["name"]] . " " . $this->order[0]["dir"]);
         $query->limit($this->length, $this->start);
@@ -103,8 +103,8 @@ class AlbumAjaxController extends ControllerBase
 
         $response = [
             "draw" => $this->draw,
-            "recordsTotal" => Page::count(),
-            "recordsFiltered" => $pagesCount,
+            "recordsTotal" => Album::count(),
+            "recordsFiltered" => $albumsCount,
             "data" => $data
         ];
         return $this->response->setJsonContent($response);
