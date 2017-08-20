@@ -19,7 +19,7 @@
         <th>Création</th>
         <th>Modification</th>
         <th>Commentaires ouverts</th>
-        <th>Page privée</th>
+        <th>Article privé</th>
         <th>Actions</th>
     </tr>
     </thead>

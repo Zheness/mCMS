@@ -1,13 +1,31 @@
-<h1 class="page-header">Ajouter un nouvel article</h1>
+<h1 class="page-header">Modification d'un article</h1>
 {{ flashSession.output() }}
 <ul class="breadcrumb">
     <li><a href="{{ url("") }}">Accueil</a></li>
     <li><a href="{{ url("article") }}">Articles</a></li>
-    <li class="active">Ajouter un nouvel article</li>
+    <li class="active">{{ article.title }}</li>
+    <li class="active">Modifier</li>
 </ul>
+<ul class="nav nav-tabs margin-bottom-10">
+    <li class="active">
+        <a href="{{ url("article/edit/" ~ article.id) }}"><span class="fa fa-edit"></span> Modifier</a>
+    </li>
+    <li><a href="{{ url("article/comments/" ~ article.id) }}"><span class="fa fa-comments"></span> Commentaires
+            ({{ article.Comments.count() }})</a></li>
+    <li><a href="{{ url("article/delete/" ~ article.id) }}" class="text-danger"><span class="fa fa-trash"></span>
+            Supprimer</a></li>
+</ul>
+<p class="clearfix"><a href="{{ article.getUrl() }}" class="btn btn-primary pull-right"><span
+            class="fa fa-external-link"></span> Ouvrir l'article</a></p>
+<dl class="dl-horizontal">
+    <dt>Création</dt>
+    <dd>{{ article.dateCreatedToFr() }} - {{ article.getAdminLinkCreator() }}</dd>
+    <dt>Modification</dt>
+    <dd>{{ article.dateUpdatedToFr() }} - {{ article.getAdminLinkLastEditor() }}</dd>
+</dl>
 <div class="row">
     <div class="col-lg-9">
-        <form method="post" action="{{ url("article/add") }}">
+        <form method="post" action="{{ url("article/edit/" ~ article.id) }}">
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group">
@@ -40,7 +58,8 @@
                     <div class="form-group">
                         <label for="datePublication" class="control-label">Date de publication</label>
                         {{ form.render("datePublication", ["class": "form-control bootstrap-date-picker"]) }}
-                        <p class="help-block">Indiquez la date à laquelle l'article doit être affiché sur le site (jj/mm/aaaa).<br>
+                        <p class="help-block">Indiquez la date à laquelle l'article doit être affiché sur le site
+                            (jj/mm/aaaa).<br>
                             Attention, la date de publication détermine aussi l'url de l'article.</p>
                     </div>
                 </div>
@@ -66,7 +85,7 @@
 
             <div class="form-group">
                 <input type="hidden" name="{{ csrfKey }}" value="{{ csrf }}">
-                <button type="submit" class="btn btn-default">Ajouter</button>
+                <button type="submit" class="btn btn-default">Modifier</button>
             </div>
         </form>
     </div>
