@@ -47,6 +47,17 @@
                 </ul>
             </li>
             <li>
+                <a href="#"><i class="fa fa-file-text-o fa-fw"></i> Articles<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="{{ url("article") }}"><i class="fa fa-list"></i> Liste des articles</a>
+                    </li>
+                    <li>
+                        <a href="{{ url("article/add") }}"><i class="fa fa-plus"></i> Nouvel article</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
                 <a href="#"><i class="fa fa-users fa-fw"></i> Utilisateurs<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>

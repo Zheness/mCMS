@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ed33b830f34174e41aa171d773e9739e",
+    "content-hash": "fb3f62e58be6a48111d46a7073c9794b",
     "packages": [
         {
             "name": "components/bootstrap",
@@ -173,6 +173,61 @@
             "description": "DataTables is a plug-in for the jQuery Javascript library. It is a highly flexible tool, based upon the foundations of progressive enhancement, which will add advanced interaction controls to any HTML table.",
             "homepage": "http://www.datatables.net/",
             "time": "2017-04-18T08:24:18+00:00"
+        },
+        {
+            "name": "eternicode/bootstrap-datepicker",
+            "version": "v1.7.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/uxsolutions/bootstrap-datepicker.git",
+                "reference": "4c12834aae54782ca41d9409d6334193f200124d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/uxsolutions/bootstrap-datepicker/zipball/4c12834aae54782ca41d9409d6334193f200124d",
+                "reference": "4c12834aae54782ca41d9409d6334193f200124d",
+                "shasum": ""
+            },
+            "require": {
+                "components/bootstrap": ">=2.0, <4.0",
+                "components/jquery": ">=1.7.1, <4.0.0",
+                "robloach/component-installer": "*"
+            },
+            "type": "component",
+            "extra": {
+                "component": {
+                    "scripts": [
+                        "js/bootstrap-datepicker.js"
+                    ],
+                    "styles": [
+                        "dist/css/bootstrap-datepicker.css",
+                        "dist/css/bootstrap-datepicker3.css"
+                    ],
+                    "files": [
+                        "js/locales/bootstrap-datepicker.*.js"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Andrew Rowls",
+                    "email": "eternicode@gmail.com"
+                },
+                {
+                    "name": "Community",
+                    "homepage": "https://github.com/uxsolutions/bootstrap-datepicker/contributors"
+                }
+            ],
+            "description": "A datepicker for Bootstrap",
+            "keywords": [
+                "bootstrap",
+                "datepicker"
+            ],
+            "time": "2017-07-06T12:14:34+00:00"
         },
         {
             "name": "iron-summit-media/startbootstrap-sb-admin-2",
