@@ -5,6 +5,7 @@ namespace Mcms\Modules\Admin\Controllers;
 use Mcms\Models\Article;
 use Mcms\Modules\Admin\Forms\AddArticleForm;
 use Mcms\Library\Tools;
+use Mcms\Modules\Admin\Forms\DeleteArticleForm;
 use Phalcon\Utils\Slug;
 
 /**
@@ -135,6 +136,39 @@ class ArticleController extends ControllerBase
             }
             if ($article->isPrivate) {
                 $form->get("isPrivate")->setAttribute('checked', 'checked');
+            }
+        }
+        $this->view->setVar("form", $form);
+        $this->view->setVar("article", $article);
+        return true;
+    }
+
+    public function deleteAction($id = 0)
+    {
+        $article = Article::findFirst($id);
+        if (!$article) {
+            $this->flashSession->error("L'article séléctionné n'existe pas.");
+            $this->dispatcher->forward(
+                [
+                    "controller" => "article",
+                    "action" => "index",
+                ]
+            );
+            return false;
+        }
+        $form = new DeleteArticleForm();
+        if ($this->request->isPost()) {
+            if ($form->isValid($this->request->getPost())) {
+                $this->flashSession->success("L'article a bien été supprimé.");
+                $article->delete();
+                $this->dispatcher->forward(
+                    [
+                        "controller" => "article",
+                        "action" => "index",
+                    ]
+                );
+            } else {
+                $this->generateFlashSessionErrorForm($form);
             }
         }
         $this->view->setVar("form", $form);
