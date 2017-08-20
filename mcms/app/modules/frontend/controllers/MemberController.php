@@ -6,6 +6,8 @@ namespace Mcms\Modules\Frontend\Controllers;
 use Mcms\Library\Tools;
 use Mcms\Models\Image;
 use Mcms\Models\Member;
+use Mcms\Models\Option;
+use Mcms\Modules\Frontend\Forms\DeleteMemberForm;
 use Mcms\Modules\Frontend\Forms\EditMemberInfoForm;
 use Mcms\Modules\Frontend\Forms\EditMemberProfilePictureForm;
 use Mcms\Modules\Frontend\Forms\PasswordLostForm;
@@ -260,6 +262,82 @@ class MemberController extends ControllerBase
             $response['messageType'] = "Le format de l'image n'est pas supporté (types autorisés: :types)";
         }
         return $response;
+    }
+
+    public function unsubscribeAction()
+    {
+        if (!$this->session->has('member')) {
+            // 401
+            exit("401");
+        }
+        /** @var Member $member */
+        $member = $this->session->get('member');
+        if ($member->role == 'admin') {
+            $this->response->redirect("admin/member/delete/" . $member->id);
+            $this->response->send();
+            return false;
+        }
+
+        $rootId = Option::findFirstBySlug("root")->content;
+        if ($member->id == $rootId) {
+            $this->flashSession->error("Vous ne pouvez pas supprimer votre compte.");
+            $this->dispatcher->forward(
+                [
+                    "controller" => "member",
+                    "action" => "edit",
+                    "param" => $member->id,
+                ]
+            );
+            return false;
+        }
+
+        $form = new DeleteMemberForm();
+        if ($this->request->isPost()) {
+            if ($form->isValid($this->request->getPost())) {
+
+                foreach ($member->PagesCreated as $page) {
+                    $page->createdBy = $rootId;
+                    $page->save();
+                }
+                foreach ($member->AlbumsCreated as $album) {
+                    $album->createdBy = $rootId;
+                    $album->save();
+                }
+                foreach ($member->AlbumImagesCreated as $albumImage) {
+                    $albumImage->createdBy = $rootId;
+                    $albumImage->save();
+                }
+                foreach ($member->ArticlesCreated as $article) {
+                    $article->createdBy = $rootId;
+                    $article->save();
+                }
+                foreach ($member->ImagesCreated as $image) {
+                    $image->createdBy = $rootId;
+                    $image->save();
+                }
+                foreach ($member->MembersCreated as $memberCreated) {
+                    $memberCreated->createdBy = $rootId;
+                    $memberCreated->save();
+                }
+                foreach ($member->MessagesCreated as $message) {
+                    $message->createdBy = $rootId;
+                    $message->save();
+                }
+                $member->delete();
+
+                $this->flashSession->success("Votre compte a bien été supprimé.");
+                $this->response->redirect("index/logout");
+                $this->response->send();
+                return false;
+
+            } else {
+                $this->generateFlashSessionErrorForm($form);
+            }
+        }
+        $this->view->setVar("form", $form);
+        $this->view->setVar("member", $member);
+        $this->view->setVar("root", Member::findFirst($rootId));
+        return true;
     }
 
 }
