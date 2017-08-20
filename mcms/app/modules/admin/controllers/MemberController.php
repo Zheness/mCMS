@@ -3,10 +3,15 @@
 namespace Mcms\Modules\Admin\Controllers;
 
 use Mcms\Library\Tools;
+use Mcms\Models\Image;
 use Mcms\Models\Member;
 use Mcms\Modules\Admin\Forms\AddMemberForm;
 use Mcms\Modules\Admin\Forms\EditMemberInfoForm;
+use Mcms\Modules\Admin\Forms\EditMemberProfilePictureForm;
 use Phalcon\Filter;
+use Phalcon\Text;
+use Phalcon\Utils\Slug;
+use Phalcon\Validation;
 
 /**
  * Class PageController
@@ -37,7 +42,7 @@ class MemberController extends ControllerBase
             $this->flashSession->error("Le membre séléctionné n'existe pas.");
             $this->dispatcher->forward(
                 [
-                    "controller" => "album",
+                    "controller" => "member",
                     "action" => "index",
                 ]
             );
@@ -125,6 +130,89 @@ class MemberController extends ControllerBase
                 $this->generateFlashSessionErrorForm($form);
             }
         }
+        $this->view->setVar('form', $form);
+        return true;
+    }
+
+
+    /**
+     * Edit the profile picture of a member
+     * @param int $id
+     * @return bool
+     */
+    public function profilePictureAction($id = 0)
+    {
+        $member = Member::findFirst($id);
+        if (!$member) {
+            $this->flashSession->error("Le membre séléctionné n'existe pas.");
+            $this->dispatcher->forward(
+                [
+                    "controller" => "member",
+                    "action" => "index",
+                ]
+            );
+            return false;
+        }
+        $form = new EditMemberProfilePictureForm();
+        if ($this->request->isPost()) {
+            if ($form->isValid($this->request->getPost())) {
+                if ($this->request->hasPost("remove")) {
+                    $member->profilePicture = null;
+                    $member->save();
+                    $this->flashSession->success("L'image a bien été enlevée.");
+                } else {
+                    if ($this->request->hasFiles(true)) {
+                        $file = $this->request->getUploadedFiles()[0];
+                        $name = str_replace('.' . $file->getExtension(), '', $file->getName());
+                        $slug = Slug::generate($name);
+                        $filename = $slug . '-' . Text::random(Text::RANDOM_ALNUM, 6) . '.' . $file->getExtension();
+
+                        $imageValidatorOption = $this->generateImageValidatorOptions();
+                        $fileValidator = new Validation\Validator\File($imageValidatorOption);
+                        $validator = new Validation();
+                        $validator->add('file', $fileValidator);
+                        $messages = $validator->validate($_FILES);
+
+                        if (!count($messages)) {
+                            $hasError = false;
+                            if (!file_exists("img/upload")) {
+                                if (!mkdir('img/upload')) {
+                                    $this->flashSession->error("Impossible de créer le dossier de destination.");
+                                    $hasError = true;
+                                }
+                            }
+
+                            if (!$hasError) {
+                                if ($file->moveTo('img/upload/' . $filename)) {
+                                    $image = new Image();
+                                    $image->filename = $filename;
+                                    $image->dateCreated = Tools::now();
+                                    $image->createdBy = $this->session->get('member')->id;
+                                    $image->save();
+
+                                    $member->profilePicture = $image->id;
+                                    $member->save();
+
+                                    $this->flashSession->success("L'image a bien été enregistrée.");
+                                    $form->clear();
+                                } else {
+                                    $this->flashSession->error("Impossible de déplacer le fichier le dossier de destination.");
+                                }
+                            }
+                        } else {
+                            foreach ($messages as $message) {
+                                $this->flashSession->error($message->getMessage());
+                            }
+                        }
+                    } else {
+                        $this->flashSession->error("Le fichier est manquant.");
+                    }
+                }
+            } else {
+                $this->generateFlashSessionErrorForm($form);
+            }
+        }
+        $this->view->setVar('member', $member);
         $this->view->setVar('form', $form);
         return true;
     }

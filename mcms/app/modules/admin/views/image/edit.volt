@@ -18,7 +18,7 @@
     <dd>{{ image.dateUpdatedToFr() }} - {{ image.getAdminLinkLastEditor() }}</dd>
 </dl>
 <div class="text-center">
-    <img src="/img/upload/{{ image.filename }}" class="img-thumbnail thumbnail-image">
+    <img src="{{ image.getUrl() }}" class="img-thumbnail thumbnail-image">
 </div>
 <div class="row">
     <div class="col-lg-9">

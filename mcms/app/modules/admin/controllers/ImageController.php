@@ -178,27 +178,5 @@ class ImageController extends ControllerBase
         $this->view->setVar("image", $image);
         return true;
     }
-
-    /**
-     * @return array
-     */
-    private function generateImageValidatorOptions()
-    {
-        $response = [];
-
-        if ($this->config->module->image->maxSize !== false) {
-            $response['maxSize'] = $this->config->module->image->maxSize;
-            $response['messageSize'] = "Le poids de l'image est trop grand (max {$this->config->module->image->maxSize})";
-        }
-        if ($this->config->module->image->maxResolution !== false) {
-            $response['maxResolution'] = $this->config->module->image->maxResolution;
-            $response['messageMaxResolution'] = "L'image est trop grande (résolution maximum {$this->config->module->image->maxResolution})";
-        }
-        if ($this->config->module->image->allowedTypes !== false && count($this->config->module->image->allowedTypes)) {
-            $response['allowedTypes'] = (array) $this->config->module->image->allowedTypes;
-            $response['messageType'] = "Le format de l'image n'est pas supporté (types autorisés: :types)";
-        }
-        return $response;
-    }
 }
 
