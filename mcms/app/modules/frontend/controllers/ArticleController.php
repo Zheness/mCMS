@@ -117,5 +117,106 @@ class ArticleController extends ControllerBase
         $this->view->setVar('formComment', $formComment);
     }
 
+    public function listAction($year = null, $month = null)
+    {
+        if ($year === null && $month === null) {
+            // 404
+            exit("404");
+        }
+        $this->assets->addCss('css/article.css');
+        $articleQueryCondition = 'datePublication < NOW()';
+        if (!$this->session->has('member')) {
+            $articleQueryCondition .= " AND isPrivate = 0";
+        }
+        if ((int)$year <= 0 || (int)$year >= 9999) {
+            // 404
+            exit("404");
+        }
+        if ($month == null) {
+            $articlesCount = [
+                [
+                    "name" => "Janvier",
+                    "month" => 1,
+                    "count" => 0,
+                ],
+                [
+                    "name" => "Février",
+                    "month" => 2,
+                    "count" => 0,
+                ],
+                [
+                    "name" => "Mars",
+                    "month" => 3,
+                    "count" => 0,
+                ],
+                [
+                    "name" => "Avril",
+                    "month" => 4,
+                    "count" => 0,
+                ],
+                [
+                    "name" => "Mai",
+                    "month" => 5,
+                    "count" => 0,
+                ],
+                [
+                    "name" => "Juin",
+                    "month" => 6,
+                    "count" => 0,
+                ],
+                [
+                    "name" => "Juillet",
+                    "month" => 7,
+                    "count" => 0,
+                ],
+                [
+                    "name" => "Août",
+                    "month" => 8,
+                    "count" => 0,
+                ],
+                [
+                    "name" => "Septembre",
+                    "month" => 9,
+                    "count" => 0,
+                ],
+                [
+                    "name" => "Octobre",
+                    "month" => "10",
+                    "count" => 0,
+                ],
+                [
+                    "name" => "Novembre",
+                    "month" => "11",
+                    "count" => 0,
+                ],
+                [
+                    "name" => "Décembre",
+                    "month" => "12",
+                    "count" => 0,
+                ],
+            ];
+            foreach ($articlesCount as $key => $item) {
+                $query = $articleQueryCondition;
+                $query .= " AND (YEAR(datePublication) = '{$year}' AND MONTH(datePublication) = '{$item['month']}')";
+                $articlesCount[$key]['count'] = Article::count($query);
+                $articlesCount[$key]['year'] = $year;
+            }
+            $articles = $articlesCount;
+            $query = $articleQueryCondition;
+            $previousYear = $year - 1;
+            $query .= " AND YEAR(datePublication) = '{$previousYear}'";
+            $previousYearArticles = Article::count($query);
+        } else {
+            $articles = Article::find([
+                'conditions' => $articleQueryCondition,
+                'order' => 'datePublication DESC'
+            ]);
+        }
+        $this->view->setVar('articles', $articles);
+        $this->view->setVar('year', $year);
+        $this->view->setVar('previousYearArticles', $previousYearArticles);
+        $this->view->setVar('activeMenu', 'articles');
+    }
+
 }
 
