@@ -5,7 +5,9 @@ namespace Mcms\Modules\Admin\Controllers;
 use Mcms\Library\Tools;
 use Mcms\Models\Image;
 use Mcms\Models\Member;
+use Mcms\Models\Option;
 use Mcms\Modules\Admin\Forms\AddMemberForm;
+use Mcms\Modules\Admin\Forms\DeleteMemberForm;
 use Mcms\Modules\Admin\Forms\EditMemberInfoForm;
 use Mcms\Modules\Admin\Forms\EditMemberProfilePictureForm;
 use Mcms\Modules\Admin\Forms\InviteMemberToBecomeAdminForm;
@@ -279,6 +281,89 @@ class MemberController extends ControllerBase
         }
         $this->view->setVar("form", $form);
         $this->view->setVar('member', $member);
+        return true;
+    }
+
+    /**
+     * Delete a member
+     * @param int $id
+     * @return bool
+     */
+    public function deleteAction($id = 0)
+    {
+        $member = Member::findFirst($id);
+        if (!$member) {
+            $this->flashSession->error("Le membre séléctionné n'existe pas.");
+            $this->dispatcher->forward(
+                [
+                    "controller" => "member",
+                    "action" => "index",
+                ]
+            );
+            return false;
+        }
+
+        $rootId = Option::findFirstBySlug("root")->content;
+        if ($member->id == $rootId) {
+            $this->flashSession->error("Vous ne pouvez supprimer ce membre.");
+            $this->dispatcher->forward(
+                [
+                    "controller" => "member",
+                    "action" => "edit",
+                    "param" => $member->id,
+                ]
+            );
+            return false;
+        }
+
+        $form = new DeleteMemberForm();
+        if ($this->request->isPost()) {
+            if ($form->isValid($this->request->getPost())) {
+
+                foreach ($member->PagesCreated as $page) {
+                    $page->createdBy = $rootId;
+                    $page->save();
+                }
+                foreach ($member->AlbumsCreated as $album) {
+                    $album->createdBy = $rootId;
+                    $album->save();
+                }
+                foreach ($member->AlbumImagesCreated as $albumImage) {
+                    $albumImage->createdBy = $rootId;
+                    $albumImage->save();
+                }
+                foreach ($member->ArticlesCreated as $article) {
+                    $article->createdBy = $rootId;
+                    $article->save();
+                }
+                foreach ($member->ImagesCreated as $image) {
+                    $image->createdBy = $rootId;
+                    $image->save();
+                }
+                foreach ($member->MembersCreated as $memberCreated) {
+                    $memberCreated->createdBy = $rootId;
+                    $memberCreated->save();
+                }
+                foreach ($member->MessagesCreated as $message) {
+                    $message->createdBy = $rootId;
+                    $message->save();
+                }
+
+                $this->flashSession->success("Le membre a bien été supprimé.");
+                $member->delete();
+                $this->dispatcher->forward(
+                    [
+                        "controller" => "member",
+                        "action" => "index",
+                    ]
+                );
+            } else {
+                $this->generateFlashSessionErrorForm($form);
+            }
+        }
+        $this->view->setVar("form", $form);
+        $this->view->setVar("member", $member);
+        $this->view->setVar("root", Member::findFirst($rootId));
         return true;
     }
 

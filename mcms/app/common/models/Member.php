@@ -165,4 +165,9 @@ class Member extends ModelBase
         return 'member';
     }
 
+    public function generateAdminMemberLink()
+    {
+        return "<a href='{$this->getDI()->get('url')->get('member/edit/' . $this->id)}'>{$this->getFullname()}</a>";
+    }
+
 }
