@@ -1,29 +1,13 @@
-<h1 class="page-header">Modification d'un membre</h1>
+<h1 class="page-header">Ajouter un nouveau membre</h1>
 {{ flashSession.output() }}
 <ul class="breadcrumb">
     <li><a href="{{ url("") }}">Accueil</a></li>
     <li><a href="{{ url("member") }}">Membres</a></li>
-    <li class="active">{{ member.getFullname() }}</li>
-    <li class="active">Modifier</li>
+    <li class="active">Ajouter un nouveau membre</li>
 </ul>
-<ul class="nav nav-tabs margin-bottom-10">
-    <li class="active">
-        <a href="{{ url("member/edit/" ~ member.id) }}"><span class="fa fa-edit"></span> Modifier</a>
-    </li>
-    <li><a href="{{ url("member/comments/" ~ member.id) }}"><span class="fa fa-comments"></span> Commentaires
-            ({{ member.CommentsCreated.count() }})</a></li>
-    <li><a href="{{ url("member/delete/" ~ member.id) }}" class="text-danger"><span class="fa fa-trash"></span>
-            Supprimer</a></li>
-</ul>
-<dl class="dl-horizontal">
-    <dt>Création</dt>
-    <dd>{{ member.dateCreatedToFr() }} - {{ member.getAdminLinkCreator() }}</dd>
-    <dt>Modification</dt>
-    <dd>{{ member.dateUpdatedToFr() }} - {{ member.getAdminLinkLastEditor() }}</dd>
-</dl>
 <div class="row">
     <div class="col-lg-9">
-        <form method="post" action="{{ url("member/edit/" ~ member.id) }}">
+        <form method="post" action="{{ url("member/add") }}">
             <div class="row">
                 <div class="col-md-8">
                     <div class="row">
@@ -99,7 +83,7 @@
             </div>
             <div class="form-group">
                 <input type="hidden" name="{{ csrfKey }}" value="{{ csrf }}">
-                <button type="submit" class="btn btn-primary">Modifier</button>
+                <button type="submit" class="btn btn-primary">Ajouter</button>
             </div>
         </form>
     </div>

@@ -2,8 +2,10 @@
 
 namespace Mcms\Modules\Admin\Forms;
 
+use Phalcon\Forms\Element\Password;
 use Phalcon\Forms\Element\Select;
 use Phalcon\Forms\Element\Text;
+use Phalcon\Validation\Validator\Confirmation;
 use Phalcon\Validation\Validator\Email;
 use Phalcon\Validation\Validator\InclusionIn;
 use Phalcon\Validation\Validator\PresenceOf;
@@ -18,6 +20,8 @@ class EditMemberInfoForm extends FormBase
         $this->add($this->email());
         $this->add($this->username());
         $this->add($this->role());
+        $this->add($this->password());
+        $this->add($this->passwordConfirm());
     }
 
     private function email()
@@ -76,6 +80,24 @@ class EditMemberInfoForm extends FormBase
         $element->addValidator(new InclusionIn([
             "domain" => ["member", "admin"],
             "message" => "Le rôle choisi n'est pas autorisé."
+        ]));
+        return $element;
+    }
+
+    private function password()
+    {
+        $element = new Password("password");
+        $element->setLabel("Mot de passe");
+        return $element;
+    }
+
+    private function passwordConfirm()
+    {
+        $element = new Password("passwordConfirm");
+        $element->setLabel("Confirmation du mot de passe");
+        $element->addValidator(new Confirmation([
+            "message" => "Les mots de passe sont différents",
+            "with"    => "password",
         ]));
         return $element;
     }

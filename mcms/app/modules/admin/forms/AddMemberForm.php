@@ -1,15 +1,17 @@
 <?php
 
-namespace Mcms\Modules\Frontend\Forms;
+namespace Mcms\Modules\Admin\Forms;
 
 use Phalcon\Forms\Element\Password;
+use Phalcon\Forms\Element\Select;
 use Phalcon\Forms\Element\Text;
 use Phalcon\Validation\Validator\Confirmation;
 use Phalcon\Validation\Validator\Email;
+use Phalcon\Validation\Validator\InclusionIn;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\StringLength;
 
-class SignupForm extends FormBase
+class AddMemberForm extends FormBase
 {
     public function initialize()
     {
@@ -18,6 +20,8 @@ class SignupForm extends FormBase
         $this->add($this->email());
         $this->add($this->password());
         $this->add($this->passwordConfirm());
+        $this->add($this->username());
+        $this->add($this->role());
     }
 
     private function email()
@@ -39,7 +43,7 @@ class SignupForm extends FormBase
         ]));
         $element->addValidator(new StringLength([
             "max" => 60,
-            "maxMessage" => "Votre prénom ne peut dépasser les 60 caractères."
+            "maxMessage" => "Le prénom ne peut dépasser les 60 caractères."
         ]));
         return $element;
     }
@@ -53,7 +57,29 @@ class SignupForm extends FormBase
         ]));
         $element->addValidator(new StringLength([
             "max" => 60,
-            "maxMessage" => "Votre nom ne peut dépasser les 60 caractères."
+            "maxMessage" => "Le nom ne peut dépasser les 60 caractères."
+        ]));
+        return $element;
+    }
+
+    private function username()
+    {
+        $element = new Text("username");
+        $element->setLabel("Pseudonyme");
+        $element->addValidator(new StringLength([
+            "max" => 60,
+            "maxMessage" => "Le pseudonyme ne peut dépasser les 60 caractères."
+        ]));
+        return $element;
+    }
+
+    private function role()
+    {
+        $element = new Select("role", ['member' => 'Membre', 'admin' => 'Administrateur']);
+        $element->setLabel("Rôle");
+        $element->addValidator(new InclusionIn([
+            "domain" => ["member", "admin"],
+            "message" => "Le rôle choisi n'est pas autorisé."
         ]));
         return $element;
     }
@@ -62,9 +88,6 @@ class SignupForm extends FormBase
     {
         $element = new Password("password");
         $element->setLabel("Mot de passe");
-        $element->addValidator(new PresenceOf([
-            "message" => self::FR_VALIDATOR_PRESENCE_OF
-        ]));
         return $element;
     }
 
