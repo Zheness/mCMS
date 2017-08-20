@@ -270,9 +270,6 @@ class MemberController extends ControllerBase
                     "linkResetPassword" => $this->config->site->url . '/member/resetPassword/' . $member->token,
                     "linkAdmin" => $this->config->site->url . '/admin'
                 ]);
-//                echo "<pre>";
-//                var_dump($to, $subject, $html);
-//                exit();
                 $tools->sendMail($to, $subject, $html);
 
                 $this->flashSession->success("L'invitation a bien été envoyée.");

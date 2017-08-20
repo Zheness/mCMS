@@ -60,7 +60,7 @@ class MessageController extends ControllerBase
                 $subject = $thread->subject;
                 $html = $this->view->getPartial("message/mail/replied", [
                     "firstname" => $thread->firstname,
-                    "subject" => $thread->subject,
+                    "thread_subject" => $thread->subject,
                     "link" => $this->config->site->url . '/message/thread/' . $thread->token
                 ]);
                 $tools->sendMail($to, $subject, $html);

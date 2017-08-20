@@ -6,6 +6,7 @@ namespace Mcms\Modules\Frontend\Controllers;
 use Mcms\Library\Tools;
 use Mcms\Models\Member;
 use Mcms\Models\Message;
+use Mcms\Models\Option;
 use Mcms\Models\SpecialPage;
 use Mcms\Modules\Frontend\Forms\AddNewMessageForm;
 use Mcms\Modules\Frontend\Forms\ReplyToMessageForm;
@@ -44,6 +45,20 @@ class MessageController extends ControllerBase
                     $message->createdBy = $this->session->get('member')->id;
                 }
                 $message->save();
+
+                $tools = new Tools();
+
+                $admin = Member::findFirst(Option::findFirstBySlug('root')->content);
+                // Send mail to member
+                $to = $admin->email;
+                $subject = "Nouveau message reçu";
+                $html = $this->view->getPartial("message/mail/new", [
+                    "firstname" => $admin->firstname,
+                    "thread_subject" => $message->subject,
+                    "link" => $this->config->site->url . '/admin/message/thread/' . $message->token
+                ]);
+                $tools->sendMail($to, $subject, $html);
+
                 $this->flashSession->success("Votre message a bien été envoyé.");
                 $this->response->redirect("/message/thread/" . $message->token);
                 $this->response->send();
@@ -104,6 +119,19 @@ class MessageController extends ControllerBase
                     $thread->updatedBy = $this->session->get('member')->id;
                 }
                 $thread->save();
+
+                $tools = new Tools();
+
+                $admin = Member::findFirst(Option::findFirstBySlug('root')->content);
+                // Send mail to member
+                $to = $admin->email;
+                $subject = "Nouveau message reçu pour la conversation {$thread->subject}";
+                $html = $this->view->getPartial("message/mail/new", [
+                    "firstname" => $admin->firstname,
+                    "thread_subject" => $thread->subject,
+                    "link" => $this->config->site->url . '/admin/message/thread/' . $thread->token
+                ]);
+                $tools->sendMail($to, $subject, $html);
 
                 $this->flashSession->success("Votre message a bien été envoyé.");
                 $form->clear();
