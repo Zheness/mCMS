@@ -28,3 +28,18 @@
         {% endfor %}
     </ul>
 </div>
+<div>
+    <h3>Derniers articles</h3>
+    <ul>
+        {% for article in menu_latestArticles %}
+            <li>
+                {% if article.isPrivate %}
+                    <span class="fa fa-lock" data-toggle="tooltip" data-placement="top" title="Article privé"></span>
+                {% endif %}
+                <a href="{{ article.getUrl() }}">
+                    {{ article.title }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>

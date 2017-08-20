@@ -2,6 +2,7 @@
 namespace Mcms\Modules\Frontend\Controllers;
 
 use Mcms\Models\Album;
+use Mcms\Models\Article;
 use Mcms\Models\Option;
 use Mcms\Models\Page;
 use Mcms\Modules\Frontend\Forms\FormBase;
@@ -58,12 +59,25 @@ class ControllerBase extends Controller
         /*
          * Latest albums
          */
-        $pages = Album::find([
+        $albums = Album::find([
             'conditions' => $this->session->has('member') ? null : 'isPrivate = 0',
             'order' => 'dateCreated DESC',
             'limit' => 5
         ]);
-        $this->view->setVar('menu_latestAlbums', $pages);
+        $this->view->setVar('menu_latestAlbums', $albums);
+        /*
+         * Latest articles
+         */
+        $articleQueryCondition = 'datePublication < NOW()';
+        if (!$this->session->has('member')) {
+            $articleQueryCondition .= " AND isPrivate = 0";
+        }
+        $articles = Article::find([
+            'conditions' => $articleQueryCondition,
+            'order' => 'dateCreated DESC',
+            'limit' => 5
+        ]);
+        $this->view->setVar('menu_latestArticles', $articles);
 
         $this->view->setVar('registrationAllowed', Option::findFirstBySlug('registration_allowed')->content == 'true');
 

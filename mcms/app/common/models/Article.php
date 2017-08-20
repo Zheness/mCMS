@@ -135,7 +135,12 @@ class Article extends ModelBase
 
     public function getUrl()
     {
-        return $this->getDI()->get('config')->site->url . '/article/read/' . date("Y/m/d", strtotime($this->datePublication)) . '/' . $this->slug;
+        return '/article/read/' . date("Y/m/d", strtotime($this->datePublication)) . '/' . $this->slug;
+    }
+
+    public function datePublicationReached()
+    {
+        return time() >= strtotime($this->datePublication);
     }
 
 }

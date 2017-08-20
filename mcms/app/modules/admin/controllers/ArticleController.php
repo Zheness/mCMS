@@ -60,6 +60,7 @@ class ArticleController extends ControllerBase
                     $article->save();
                     $this->flashSession->success("L'article a bien été enregistré.");
                     $form->clear();
+                    $form->get("datePublication")->setDefault(date("d/m/Y"));
                 } else {
                     $this->flashSession->error("Un article existe déjà avec cette url.");
                 }

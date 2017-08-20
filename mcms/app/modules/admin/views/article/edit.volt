@@ -78,7 +78,7 @@
                     <div class="TriSea-technologies-Switch">
                         {{ form.render("isPrivate") }}
                         <label for="isPrivate" class="label-primary switch-label"></label>
-                        <label for="isPrivate">Page privée</label>
+                        <label for="isPrivate">Article privé</label>
                     </div>
                 </div>
             </div>

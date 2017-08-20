@@ -5,7 +5,7 @@
     <li class="active">Articles</li>
 </ul>
 <p class="clearfix">
-    <a href="{{ url("page/article") }}" class="btn btn-primary pull-right">
+    <a href="{{ url("article/add") }}" class="btn btn-primary pull-right">
         <span class="fa fa-plus"></span>
         Ajouter un article
     </a>
