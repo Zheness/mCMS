@@ -13,6 +13,10 @@
     <li>
         <a href="{{ url("member/profilePicture/" ~ member.id) }}"><span class="fa fa-picture-o"></span> Image de profil</a>
     </li>
+    <li>
+        <a href="{{ url("member/invite/" ~ member.id) }}"><span class="fa fa-envelope-o"></span> Inviter à devenir
+            administrateur</a>
+    </li>
     <li><a href="{{ url("member/comments/" ~ member.id) }}"><span class="fa fa-comments"></span> Commentaires
             ({{ member.CommentsCreated.count() }})</a></li>
     <li><a href="{{ url("member/delete/" ~ member.id) }}" class="text-danger"><span class="fa fa-trash"></span>

@@ -212,6 +212,8 @@ class MemberController extends ControllerBase
                                 $image->save();
 
                                 $member->profilePicture = $image->id;
+                                $member->dateUpdated = Tools::now();
+                                $member->updatedBy = $this->session->get('member')->id;
                                 $member->save();
 
                                 $this->flashSession->success("L'image a bien été enregistrée.");

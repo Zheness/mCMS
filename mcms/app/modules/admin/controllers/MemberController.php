@@ -8,6 +8,7 @@ use Mcms\Models\Member;
 use Mcms\Modules\Admin\Forms\AddMemberForm;
 use Mcms\Modules\Admin\Forms\EditMemberInfoForm;
 use Mcms\Modules\Admin\Forms\EditMemberProfilePictureForm;
+use Mcms\Modules\Admin\Forms\InviteMemberToBecomeAdminForm;
 use Phalcon\Filter;
 use Phalcon\Text;
 use Phalcon\Utils\Slug;
@@ -191,6 +192,8 @@ class MemberController extends ControllerBase
                                     $image->save();
 
                                     $member->profilePicture = $image->id;
+                                    $member->dateUpdated = Tools::now();
+                                    $member->updatedBy = $this->session->get('member')->id;
                                     $member->save();
 
                                     $this->flashSession->success("L'image a bien été enregistrée.");
@@ -214,6 +217,71 @@ class MemberController extends ControllerBase
         }
         $this->view->setVar('member', $member);
         $this->view->setVar('form', $form);
+        return true;
+    }
+
+    /**
+     * Invite a member to become adminsitrator
+     * @param int $id
+     * @return bool
+     */
+    public function inviteAction($id = 0)
+    {
+        $member = Member::findFirst($id);
+        if (!$member) {
+            $this->flashSession->error("Le membre séléctionné n'existe pas.");
+            $this->dispatcher->forward(
+                [
+                    "controller" => "member",
+                    "action" => "index",
+                ]
+            );
+            return false;
+        }
+        if ($member->id == $this->session->get('member')->id) {
+            $this->flashSession->error("Vous ne pouvez pas vous inviter vous-même.");
+            $this->dispatcher->forward(
+                [
+                    "controller" => "member",
+                    "action" => "edit",
+                    "param" => $member->id,
+                ]
+            );
+            return false;
+        }
+        $form = new InviteMemberToBecomeAdminForm();
+        if ($this->request->isPost()) {
+            if ($form->isValid($this->request->getPost())) {
+                if ($member->token == null) {
+                    $member->token = Text::random(Text::RANDOM_ALNUM, rand(16, 24));
+                }
+                $member->role = 'admin';
+                $member->dateUpdated = Tools::now();
+                $member->updatedBy = $this->session->get('member')->id;
+                $member->save();
+
+                $tools = new Tools();
+
+                // Send mail to member
+                $to = $member->email;
+                $subject = "Invitation à devenir administrateur";
+                $html = $this->view->getPartial("member/mail/invite", [
+                    "firstname" => $member->firstname,
+                    "linkResetPassword" => $this->config->site->url . '/member/resetPassword/' . $member->token,
+                    "linkAdmin" => $this->config->site->url . '/admin'
+                ]);
+//                echo "<pre>";
+//                var_dump($to, $subject, $html);
+//                exit();
+                $tools->sendMail($to, $subject, $html);
+
+                $this->flashSession->success("L'invitation a bien été envoyée.");
+            } else {
+                $this->generateFlashSessionErrorForm($form);
+            }
+        }
+        $this->view->setVar("form", $form);
+        $this->view->setVar('member', $member);
         return true;
     }
 
