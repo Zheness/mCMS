@@ -348,15 +348,22 @@ class MemberController extends ControllerBase
                     $message->createdBy = $rootId;
                     $message->save();
                 }
+                $member->delete();
+                if ($this->session->get('member')->id == $member->id) {
+                    $this->flashSession->success("Votre compte a bien été supprimé.");
+                    $this->response->redirect("index/logout");
+                    $this->response->send();
+                    return false;
+                }
 
                 $this->flashSession->success("Le membre a bien été supprimé.");
-                $member->delete();
                 $this->dispatcher->forward(
                     [
                         "controller" => "member",
                         "action" => "index",
                     ]
                 );
+                return false;
             } else {
                 $this->generateFlashSessionErrorForm($form);
             }
