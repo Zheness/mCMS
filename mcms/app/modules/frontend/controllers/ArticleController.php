@@ -132,6 +132,13 @@ class ArticleController extends ControllerBase
             // 404
             exit("404");
         }
+        if ($month !== null) {
+            if (!((int)$month > 0 && (int)$month <= 12)) {
+                // 404
+                exit("404");
+            }
+        }
+        $monthsStr = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
         if ($month == null) {
             $articlesCount = [
                 [
@@ -206,14 +213,22 @@ class ArticleController extends ControllerBase
             $previousYear = $year - 1;
             $query .= " AND YEAR(datePublication) = '{$previousYear}'";
             $previousYearArticles = Article::count($query);
+            $monthStr = null;
         } else {
+            $month = (int)$month;
+            $previousYearArticles = 0;
+            $query = $articleQueryCondition;
+            $query .= " AND (YEAR(datePublication) = '{$year}' AND MONTH(datePublication) = '{$month}')";
             $articles = Article::find([
-                'conditions' => $articleQueryCondition,
+                'conditions' => $query,
                 'order' => 'datePublication DESC'
             ]);
+            $this->view->pick('article/month');
         }
         $this->view->setVar('articles', $articles);
         $this->view->setVar('year', $year);
+        $this->view->setVar('month', $month);
+        $this->view->setVar('monthsStr', $monthsStr);
         $this->view->setVar('previousYearArticles', $previousYearArticles);
         $this->view->setVar('activeMenu', 'articles');
     }
