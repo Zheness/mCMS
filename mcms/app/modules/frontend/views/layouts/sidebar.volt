@@ -42,4 +42,6 @@
             </li>
         {% endfor %}
     </ul>
+    <p><a href="{{ url('article/list/' ~ date('Y')) }}">Voir les articles de cette année</a></p>
+    <p><a href="{{ url('article/list/' ~ date('Y/m')) }}">Voir les articles de ce mois-ci</a></p>
 </div>

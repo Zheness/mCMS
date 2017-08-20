@@ -15,7 +15,8 @@ class AlbumController extends ControllerBase
     public function indexAction()
     {
         $albums = Album::find([
-            'conditions' => $this->session->has('member') ? null : 'isPrivate = 0'
+            'conditions' => $this->session->has('member') ? null : 'isPrivate = 0',
+            'order' => 'dateCreated DESC'
         ]);
         $this->view->setVar('albums', $albums);
         $this->view->setVar('activeMenu', 'albums');

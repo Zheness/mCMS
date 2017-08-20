@@ -15,11 +15,16 @@ class ArticleController extends ControllerBase
 
     public function indexAction()
     {
-        $albums = Album::find([
-            'conditions' => $this->session->has('member') ? null : 'isPrivate = 0'
+        $articleQueryCondition = 'datePublication < NOW()';
+        if (!$this->session->has('member')) {
+            $articleQueryCondition .= " AND isPrivate = 0";
+        }
+        $articles = Article::find([
+            'conditions' => $articleQueryCondition,
+            'order' => 'datePublication DESC'
         ]);
-        $this->view->setVar('albums', $albums);
-        $this->view->setVar('activeMenu', 'albums');
+        $this->view->setVar('articles', $articles);
+        $this->view->setVar('activeMenu', 'articles');
     }
 
     public function readAction($year = null, $month = null, $day = null, $slug = null)

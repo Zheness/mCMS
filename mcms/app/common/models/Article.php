@@ -2,6 +2,8 @@
 
 namespace Mcms\Models;
 
+use Mcms\Library\Tools;
+
 class Article extends ModelBase
 {
 
@@ -144,6 +146,16 @@ class Article extends ModelBase
     public function datePublicationReached()
     {
         return time() >= strtotime($this->datePublication);
+    }
+
+    /**
+     * Truncate the content and keep html tags
+     * @param int $maxLength
+     * @return string
+     */
+    public function truncateContent($maxLength = 300)
+    {
+        return Tools::truncateHTML($maxLength, $this->content);
     }
 
 }

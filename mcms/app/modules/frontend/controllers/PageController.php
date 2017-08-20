@@ -15,7 +15,8 @@ class PageController extends ControllerBase
     public function indexAction()
     {
         $pages = Page::find([
-            'conditions' => $this->session->has('member') ? null : 'isPrivate = 0'
+            'conditions' => $this->session->has('member') ? null : 'isPrivate = 0',
+            'order' => 'dateCreated DESC'
         ]);
         $this->view->setVar('pages', $pages);
         $this->view->setVar('activeMenu', 'pages');
