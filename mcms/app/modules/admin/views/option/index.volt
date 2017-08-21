@@ -154,5 +154,14 @@
             </a>
         </td>
     </tr>
+    <tr>
+        <td colspan="2">Google reCaptcha</td>
+        <td></td>
+        <td>
+            <a href="{{ url('option/googleReCaptcha') }}" class="btn btn-default">
+                <span class="fa fa-edit"></span> Modifier
+            </a>
+        </td>
+    </tr>
     </tbody>
 </table>

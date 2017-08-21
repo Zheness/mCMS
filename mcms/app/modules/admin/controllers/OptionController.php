@@ -7,6 +7,7 @@ use Mcms\Models\Member;
 use Mcms\Models\Option;
 use Mcms\Modules\Admin\Forms\OptionCommentsForm;
 use Mcms\Modules\Admin\Forms\OptionCookieConsentForm;
+use Mcms\Modules\Admin\Forms\OptionGoogleReCaptchaForm;
 use Mcms\Modules\Admin\Forms\OptionMaintenanceForm;
 use Mcms\Modules\Admin\Forms\OptionNotificationForm;
 use Mcms\Modules\Admin\Forms\OptionRegistrationForm;
@@ -359,6 +360,55 @@ class OptionController extends ControllerBase
         }
         $this->view->setVar("form", $form);
         $this->view->setVar("root", Option::findFirstBySlug('root')->content);
+    }
+
+    public function googleReCaptchaAction()
+    {
+        $this->assets->addCss("adminFiles/css/checkboxes-switch.css");
+        $form = new OptionGoogleReCaptchaForm();
+        if ($this->request->isPost()) {
+            if ($form->isValid($this->request->getPost())) {
+                $option = Option::findFirstBySlug('google_recaptcha_sitekey');
+                $option->content = $this->request->getPost('sitekey', null, null, true);
+                $option->dateUpdated = Tools::now();
+                $option->updatedBy = $this->session->get('member')->id;
+                $option->save();
+
+                $option = Option::findFirstBySlug('google_recaptcha_secret');
+                $option->content = $this->request->getPost('secret', null, null, true);
+                $option->dateUpdated = Tools::now();
+                $option->updatedBy = $this->session->get('member')->id;
+                $option->save();
+
+                $option = Option::findFirstBySlug('google_recaptcha_enabled_for_registration');
+                $option->content = $this->request->getPost('registrationEnabled') == "on" ? 1 : 0;
+                $option->dateUpdated = Tools::now();
+                $option->updatedBy = $this->session->get('member')->id;
+                $option->save();
+
+                $option = Option::findFirstBySlug('google_recaptcha_enabled_for_comments');
+                $option->content = $this->request->getPost('commentsEnabled') == "on" ? 1 : 0;
+                $option->dateUpdated = Tools::now();
+                $option->updatedBy = $this->session->get('member')->id;
+                $option->save();
+
+                $this->flashSession->success('La configuration a bien été enregistrée.');
+            } else {
+                $this->generateFlashSessionErrorForm($form);
+            }
+        } else {
+            $form->get('sitekey')->setDefault(Option::findFirstBySlug('google_recaptcha_sitekey')->content);
+            $form->get('secret')->setDefault(Option::findFirstBySlug('google_recaptcha_secret')->content);
+            $optionEnabled = Option::findFirstBySlug('google_recaptcha_enabled_for_registration')->content == 'true';
+            if ($optionEnabled) {
+                $form->get("registrationEnabled")->setAttribute('checked', 'checked');
+            }
+            $optionEnabled = Option::findFirstBySlug('google_recaptcha_enabled_for_comments')->content == 'true';
+            if ($optionEnabled) {
+                $form->get("commentsEnabled")->setAttribute('checked', 'checked');
+            }
+        }
+        $this->view->setVar("form", $form);
     }
 }
 
