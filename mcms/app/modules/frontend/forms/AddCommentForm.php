@@ -2,9 +2,12 @@
 
 namespace Mcms\Modules\Frontend\Forms;
 
+use Mcms\Models\Option;
+use Phalcon\Forms\Element\Hidden;
 use Phalcon\Forms\Element\Text;
 use Phalcon\Forms\Element\TextArea;
 use Phalcon\Validation\Validator\PresenceOf;
+use Phalcon\Validation\Validator\ReCaptcha;
 use Phalcon\Validation\Validator\StringLength;
 
 class AddCommentForm extends FormBase
@@ -15,6 +18,9 @@ class AddCommentForm extends FormBase
             $this->add($this->username());
         }
         $this->add($this->content());
+        if (Option::findFirstBySlug('google_recaptcha_enabled_for_comments')->content == 'true') {
+            $this->add($this->reCaptcha());
+        }
     }
 
     private function username()
@@ -38,6 +44,19 @@ class AddCommentForm extends FormBase
         $element->addValidator(new PresenceOf([
             "message" => self::FR_VALIDATOR_PRESENCE_OF
         ]));
+        return $element;
+    }
+
+    private function reCaptcha()
+    {
+        $element = new Text("g-recaptcha-response");
+        $element->setLabel("reCAPTCHA");
+        $element->addValidators([
+            new ReCaptcha([
+                'message' => 'Le captcha de sécurité est invalide',
+                'secret' => Option::findFirstBySlug('google_recaptcha_secret')->content,
+            ]),
+        ]);
         return $element;
     }
 }

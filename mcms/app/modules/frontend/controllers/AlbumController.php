@@ -37,6 +37,13 @@ class AlbumController extends ControllerBase
             exit("401");
         }
 
+        $this->view->setVar('reCaptchaEnabled', false);
+        if (Option::findFirstBySlug('google_recaptcha_enabled_for_comments')->content == 'true') {
+            $this->assets->addJs("https://www.google.com/recaptcha/api.js", false);
+            $this->view->setVar('reCaptchaEnabled', true);
+            $this->view->setVar('reCaptchaKey', Option::findFirstBySlug('google_recaptcha_sitekey')->content);
+        }
+
         $memberConnected = $this->session->has("member");
 
         $formComment = new AddCommentForm(null, ['connected' => $memberConnected]);

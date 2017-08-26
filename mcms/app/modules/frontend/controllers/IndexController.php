@@ -84,6 +84,12 @@ class IndexController extends ControllerBase
             $this->response->send();
             return false;
         }
+        $this->view->setVar('reCaptchaEnabled', false);
+        if (Option::findFirstBySlug('google_recaptcha_enabled_for_registration')->content == 'true') {
+            $this->assets->addJs("https://www.google.com/recaptcha/api.js", false);
+            $this->view->setVar('reCaptchaEnabled', true);
+            $this->view->setVar('reCaptchaKey', Option::findFirstBySlug('google_recaptcha_sitekey')->content);
+        }
         $form = new SignupForm();
         if ($this->request->isPost()) {
             if ($form->isValid($this->request->getPost())) {

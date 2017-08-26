@@ -61,4 +61,14 @@ class ModelBase extends Model
     {
         return Tools::mysqlDateToFr($this->dateUpdated);
     }
+
+    public function save($data = null, $whiteList = null)
+    {
+        $saved = parent::save($data, $whiteList);
+        if (!$saved) {
+            foreach ($this->getMessages() as $message) {
+                $this->getDI()->get('flashSession')->error($message->getMessage());
+            }
+        }
+    }
 }

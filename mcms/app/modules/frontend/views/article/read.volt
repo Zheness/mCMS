@@ -52,6 +52,11 @@
                     </div>
                 </div>
             </div>
+            {% if reCaptchaEnabled %}
+                <div class="form-group">
+                    <div class="g-recaptcha" data-sitekey="{{ reCaptchaKey }}"></div>
+                </div>
+            {% endif %}
             <div class="form-group">
                 <input type="hidden" name="{{ csrfKey }}" value="{{ csrf }}">
                 <button type="submit" class="btn btn-primary">Envoyer le commentaire</button>

@@ -2,11 +2,14 @@
 
 namespace Mcms\Modules\Frontend\Forms;
 
+use Mcms\Models\Option;
+use Phalcon\Forms\Element\Hidden;
 use Phalcon\Forms\Element\Password;
 use Phalcon\Forms\Element\Text;
 use Phalcon\Validation\Validator\Confirmation;
 use Phalcon\Validation\Validator\Email;
 use Phalcon\Validation\Validator\PresenceOf;
+use Phalcon\Validation\Validator\ReCaptcha;
 use Phalcon\Validation\Validator\StringLength;
 
 class SignupForm extends FormBase
@@ -18,6 +21,9 @@ class SignupForm extends FormBase
         $this->add($this->email());
         $this->add($this->password());
         $this->add($this->passwordConfirm());
+        if (Option::findFirstBySlug('google_recaptcha_enabled_for_registration')->content == 'true') {
+            $this->add($this->reCaptcha());
+        }
     }
 
     private function email()
@@ -74,8 +80,21 @@ class SignupForm extends FormBase
         $element->setLabel("Confirmation du mot de passe");
         $element->addValidator(new Confirmation([
             "message" => "Les mots de passe sont différents",
-            "with"    => "password",
+            "with" => "password",
         ]));
+        return $element;
+    }
+
+    private function reCaptcha()
+    {
+        $element = new Hidden("g-recaptcha-response");
+        $element->setLabel("reCAPTCHA");
+        $element->addValidators([
+            new ReCaptcha([
+                'message' => 'Le captcha de sécurité est invalide',
+                'secret' => Option::findFirstBySlug('google_recaptcha_secret')->content,
+            ]),
+        ]);
         return $element;
     }
 }
