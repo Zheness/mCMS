@@ -1,20 +1,15 @@
 <?php
-
 namespace Mcms\Modules\Admin;
 
-use Mcms\Library\AnnotationsPlugin;
 use Mcms\Library\DispatchPlugin;
-use Mcms\Library\ExceptionPlugin;
 use Phalcon\DiInterface;
 use Phalcon\Events\Manager;
 use Phalcon\Loader;
 use Phalcon\Mvc\Dispatcher;
-use Phalcon\Mvc\Router;
 use Phalcon\Mvc\Url;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\View\Engine\Php as PhpEngine;
 use Phalcon\Mvc\ModuleDefinitionInterface;
-
 
 class Module implements ModuleDefinitionInterface
 {

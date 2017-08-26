@@ -1,8 +1,12 @@
 <?php
 namespace Mcms\Modules\Frontend;
 
+use Mcms\Library\DispatchPlugin;
 use Phalcon\DiInterface;
+use Phalcon\Events\Event;
+use Phalcon\Events\Manager;
 use Phalcon\Loader;
+use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\Url;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\View\Engine\Php as PhpEngine;
@@ -58,6 +62,24 @@ class Module implements ModuleDefinitionInterface
             $url->setBaseUri("/");
             $url->setStaticBaseUri("/");
             return $url;
+        });
+
+        /**
+         * Setting up the dispatcher service
+         */
+        $di->set('dispatcher', function () {
+            $eventsManager = new Manager();
+            $eventsManager->attach(
+                "dispatch",
+                new DispatchPlugin()
+            );
+
+            $dispatcher = new Dispatcher();
+            $dispatcher->setDefaultNamespace('Mcms\Modules\Frontend\Controllers');
+
+            $dispatcher->setEventsManager($eventsManager);
+
+            return $dispatcher;
         });
     }
 }
