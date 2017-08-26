@@ -301,6 +301,7 @@ class MemberController extends ControllerBase
                     $member->token = Text::random(Text::RANDOM_ALNUM, rand(16, 24));
                 }
                 $member->role = 'admin';
+                $member->status = Member::STATUS_ACTIVE;
                 $member->dateUpdated = Tools::now();
                 $member->updatedBy = $this->session->get('member')->id;
                 $member->save();

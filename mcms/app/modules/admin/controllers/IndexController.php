@@ -29,8 +29,20 @@ class IndexController extends ControllerBase
                 if ($member) {
                     if ($this->security->checkHash($password, $member->password)) {
                         if ($member->role == 'admin') {
-                            $this->session->set("member", $member);
-                            $this->flashSession->success("Vous êtes maintenant connecté à l'administration.");
+                            switch ($member->status) {
+                                case Member::STATUS_ACTIVE:
+                                    $this->session->set("member", $member);
+                                    $this->flashSession->success("Vous êtes maintenant connecté à l'administration.");
+                                    break;
+                                case Member::STATUS_PENDING:
+                                    $this->flashSession->warning("Connexion échouée, votre compte est toujours en attente de validation.");
+                                    break;
+                                case Member::STATUS_BLOCKED:
+                                    $this->flashSession->error("Connexion impossible, votre compte a été bloqué.");
+                                    break;
+                                default:
+                                    $this->flashSession->error("Impossible de récupérer le statut de votre compte.");
+                            }
                             $this->view->disable();
                             $this->response->redirect("");
                             $this->response->send();

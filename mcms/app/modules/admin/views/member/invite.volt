@@ -22,7 +22,7 @@
     <li><a href="{{ url("member/delete/" ~ member.id) }}" class="text-danger"><span class="fa fa-trash"></span>
             Supprimer</a></li>
 </ul>
-<p>En invitant un membre, son rôle passera a <b>Adminsitrateur</b> et un email lui sera envoyé pour l'informer de ce
+<p>En invitant un membre, son rôle passera a <b>Adminsitrateur</b> et son statut à <b>Actif</b> et un email lui sera envoyé pour l'informer de ce
     changement.</p>
 <div class="row">
     <div class="col-lg-9">
