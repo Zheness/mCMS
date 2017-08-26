@@ -151,6 +151,9 @@ class Member extends ModelBase
         $this->hasMany('id', 'Mcms\Models\Article', 'createdBy', ['alias' => 'ArticlesCreated']);
         $this->hasMany('id', 'Mcms\Models\Article', 'updatedBy', ['alias' => 'ArticlesUpdated']);
         $this->hasMany('id', 'Mcms\Models\Comment', 'createdBy', ['alias' => 'CommentsCreated']);
+        $this->hasMany('id', 'Mcms\Models\Comment', 'createdBy', ['alias' => 'CommentsCreatedDesc', 'params' => [
+            'order' => 'dateCreated DESC'
+        ]]);
         $this->hasMany('id', 'Mcms\Models\Comment', 'updatedBy', ['alias' => 'CommentsUpdated']);
         $this->hasMany('id', 'Mcms\Models\Image', 'createdBy', ['alias' => 'ImagesCreated']);
         $this->hasMany('id', 'Mcms\Models\Image', 'updatedBy', ['alias' => 'ImagesUpdated']);

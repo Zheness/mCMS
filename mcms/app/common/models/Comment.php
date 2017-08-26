@@ -139,4 +139,26 @@ class Comment extends ModelBase
         return 'comment';
     }
 
+    /**
+     * @return string
+     */
+    public function getAdminLinkToElement()
+    {
+        if ($this->parentId != null) {
+            return $this->ParentComment->getAdminLinkToElement();
+        }
+        if ($this->pageId != null) {
+            $url = $this->getDI()->get("url")->get("page/edit/" . $this->pageId);
+            return "Page: <a href='{$url}'>{$this->Page->title}</a>";
+        } else if ($this->albumId != null) {
+            $url = $this->getDI()->get("url")->get("album/edit/" . $this->articleId);
+            return "Album: <a href='{$url}'>{$this->Album->title}</a>";
+        } else if ($this->articleId != null) {
+            $url = $this->getDI()->get("url")->get("article/edit/" . $this->articleId);
+            return "Article: <a href='{$url}'>{$this->Article->title}</a>";
+        } else {
+            return "";
+        }
+    }
+
 }

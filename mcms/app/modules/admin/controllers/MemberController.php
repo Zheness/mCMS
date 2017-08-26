@@ -418,5 +418,24 @@ class MemberController extends ControllerBase
         return true;
     }
 
+
+
+    public function commentsAction($id = 0)
+    {
+        $member = Member::findFirst($id);
+        if (!$member) {
+            $this->flashSession->error("Le membre séléctionné n'existe pas.");
+            $this->dispatcher->forward(
+                [
+                    "controller" => "member",
+                    "action" => "index",
+                ]
+            );
+            return false;
+        }
+        $this->view->setVar("member", $member);
+        return true;
+    }
+
 }
 
