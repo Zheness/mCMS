@@ -72,14 +72,26 @@ class MemberController extends ControllerBase
             return false;
         }
         if ($token === null) {
-            // 404
-            exit("404");
+            $this->dispatcher->forward(
+                [
+                    'controller' => 'error',
+                    'action' => 'error404',
+                ]
+            );
+            $this->response->setStatusCode(404);
+            return false;
         }
         /** @var Member $member */
         $member = Member::findFirstByToken($token);
         if (!$member) {
-            // 404
-            exit("404");
+            $this->dispatcher->forward(
+                [
+                    'controller' => 'error',
+                    'action' => 'error404',
+                ]
+            );
+            $this->response->setStatusCode(404);
+            return false;
         }
         $form = new ResetPasswordForm();
         if ($this->request->isPost()) {
@@ -105,12 +117,11 @@ class MemberController extends ControllerBase
         return true;
     }
 
+    /**
+     * @Private
+     */
     public function editAction()
     {
-        if (!$this->session->has('member')) {
-            // 401
-            exit("401");
-        }
         /** @var Member $member */
         $member = $this->session->get('member');
         $form = new EditMemberInfoForm();
@@ -144,12 +155,11 @@ class MemberController extends ControllerBase
         $this->view->setVar('metaTitle', 'Modification du profil');
     }
 
+    /**
+     * @Private
+     */
     public function passwordAction()
     {
-        if (!$this->session->has('member')) {
-            // 401
-            exit("401");
-        }
         /** @var Member $member */
         $member = $this->session->get('member');
         $form = new ResetPasswordForm();
@@ -173,12 +183,12 @@ class MemberController extends ControllerBase
         $this->view->setVar('metaTitle', 'Modification du mot de passe');
     }
 
+    /**
+     * @Private
+     * @return bool
+     */
     public function profilePictureAction()
     {
-        if (!$this->session->has('member')) {
-            // 401
-            exit("401");
-        }
         /** @var Member $member */
         $member = $this->session->get('member');
         $form = new EditMemberProfilePictureForm();
@@ -264,12 +274,12 @@ class MemberController extends ControllerBase
         return $response;
     }
 
+    /**
+     * @Private
+     * @return bool
+     */
     public function unsubscribeAction()
     {
-        if (!$this->session->has('member')) {
-            // 401
-            exit("401");
-        }
         /** @var Member $member */
         $member = $this->session->get('member');
         if ($member->role == 'admin') {

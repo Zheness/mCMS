@@ -21,9 +21,6 @@ class DispatchPlugin extends Plugin
         $actionName = $dispatcher->getActiveMethod();
 
         $controllerIsPrivate = false;
-//        if (strpos($controllerName, 'Mcms\Modules') === false) {
-//            $controllerName = 'Mcms\Modules\Frontend\Controllers\\' . $controllerName;
-//        }
         $classAnnotations = $this->annotations->get($controllerName)->getClassAnnotations();
         if ($classAnnotations !== false) {
             $controllerIsPrivate = $classAnnotations->has("Private");

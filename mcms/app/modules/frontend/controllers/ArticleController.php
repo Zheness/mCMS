@@ -30,26 +30,58 @@ class ArticleController extends ControllerBase
     public function readAction($year = null, $month = null, $day = null, $slug = null)
     {
         if ($year === null && $month === null && $day == null && $slug === null) {
-            // 404
-            exit("404");
+            $this->dispatcher->forward(
+                [
+                    'controller' => 'error',
+                    'action' => 'error404',
+                ]
+            );
+            $this->response->setStatusCode(404);
+            return false;
         }
         /** @var Article $article */
         $article = Article::findFirstBySlug($slug);
         if (!$article) {
-            // 404
-            exit("404");
+            $this->dispatcher->forward(
+                [
+                    'controller' => 'error',
+                    'action' => 'error404',
+                ]
+            );
+            $this->response->setStatusCode(404);
+            return false;
         }
         $dateFr = "{$day}/{$month}/{$year}";
         if ($article->datePublicationToFr() != $dateFr) {
-            // 404
-            exit("404");
+            $this->dispatcher->forward(
+                [
+                    'controller' => 'error',
+                    'action' => 'error404',
+                ]
+            );
+            $this->response->setStatusCode(404);
+            return false;
         }
         if ($article->isPrivate && !$this->session->has("member")) {
-            exit("401");
+            $this->dispatcher->forward(
+                [
+                    'controller' => 'error',
+                    'action' => 'error401',
+                ]
+            );
+            $this->response->setStatusCode(401);
+            return false;
         }
         if (!$article->datePublicationReached()) {
             if (!$this->session->has("member") || $this->session->get("member")->role != 'admin') {
-                exit("401");
+                $this->dispatcher->forward(
+                    [
+                        'controller' => 'error',
+                        'action' => 'error401',
+                    ]
+                );
+                $this->response->setStatusCode(401);
+                return false;
             }
             $this->flashSession->warning("Cet article n'est toujours pas publié. Seuls les administrateur peuvent la voir.");
         }
@@ -127,8 +159,14 @@ class ArticleController extends ControllerBase
     public function listAction($year = null, $month = null)
     {
         if ($year === null && $month === null) {
-            // 404
-            exit("404");
+            $this->dispatcher->forward(
+                [
+                    'controller' => 'error',
+                    'action' => 'error404',
+                ]
+            );
+            $this->response->setStatusCode(404);
+            return false;
         }
         $this->assets->addCss('css/article.css');
         $articleQueryCondition = 'datePublication < NOW()';
@@ -136,13 +174,25 @@ class ArticleController extends ControllerBase
             $articleQueryCondition .= " AND isPrivate = 0";
         }
         if ((int)$year <= 0 || (int)$year >= 9999) {
-            // 404
-            exit("404");
+            $this->dispatcher->forward(
+                [
+                    'controller' => 'error',
+                    'action' => 'error404',
+                ]
+            );
+            $this->response->setStatusCode(404);
+            return false;
         }
         if ($month !== null) {
             if (!((int)$month > 0 && (int)$month <= 12)) {
-                // 404
-                exit("404");
+                $this->dispatcher->forward(
+                    [
+                        'controller' => 'error',
+                        'action' => 'error404',
+                    ]
+                );
+                $this->response->setStatusCode(404);
+                return false;
             }
         }
         $monthsStr = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];

@@ -25,16 +25,35 @@ class PageController extends ControllerBase
     public function readAction($slug = null)
     {
         if ($slug === null) {
-            // 404
-            exit("404");
+            $this->dispatcher->forward(
+                [
+                    'controller' => 'error',
+                    'action' => 'error404',
+                ]
+            );
+            $this->response->setStatusCode(404);
+            return false;
         }
         $page = Page::findFirstBySlug($slug);
         if (!$page) {
-            // 404
-            exit("404");
+            $this->dispatcher->forward(
+                [
+                    'controller' => 'error',
+                    'action' => 'error404',
+                ]
+            );
+            $this->response->setStatusCode(404);
+            return false;
         }
         if ($page->isPrivate && !$this->session->has("member")) {
-            exit("401");
+            $this->dispatcher->forward(
+                [
+                    'controller' => 'error',
+                    'action' => 'error401',
+                ]
+            );
+            $this->response->setStatusCode(401);
+            return false;
         }
 
         $this->view->setVar('reCaptchaEnabled', false);

@@ -89,8 +89,14 @@ class MessageController extends ControllerBase
         /** @var Message $thread */
         $thread = Message::findFirstByToken($token);
         if (!$thread) {
-            // 404
-            exit("404");
+            $this->dispatcher->forward(
+                [
+                    'controller' => 'error',
+                    'action' => 'error404',
+                ]
+            );
+            $this->response->setStatusCode(404);
+            return false;
         }
         $form = new ReplyToMessageForm();
         if ($this->request->isPost()) {

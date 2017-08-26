@@ -25,16 +25,35 @@ class AlbumController extends ControllerBase
     public function readAction($slug = null)
     {
         if ($slug === null) {
-            // 404
-            exit("404");
+            $this->dispatcher->forward(
+                [
+                    'controller' => 'error',
+                    'action' => 'error404',
+                ]
+            );
+            $this->response->setStatusCode(404);
+            return false;
         }
         $album = Album::findFirstBySlug($slug);
         if (!$album) {
-            // 404
-            exit("404");
+            $this->dispatcher->forward(
+                [
+                    'controller' => 'error',
+                    'action' => 'error404',
+                ]
+            );
+            $this->response->setStatusCode(404);
+            return false;
         }
         if ($album->isPrivate && !$this->session->has("member")) {
-            exit("401");
+            $this->dispatcher->forward(
+                [
+                    'controller' => 'error',
+                    'action' => 'error401',
+                ]
+            );
+            $this->response->setStatusCode(401);
+            return false;
         }
 
         $this->view->setVar('reCaptchaEnabled', false);
@@ -105,6 +124,7 @@ class AlbumController extends ControllerBase
         $this->view->setVar('commentsOpen', $commentsOpen);
         $this->view->setVar('metaTitle', $album->title);
         $this->view->setVar('formComment', $formComment);
+        return true;
     }
 
 }

@@ -15,7 +15,7 @@ class PasswordLostForm extends FormBase
     private function email()
     {
         $element = new Text("email");
-        $element->setLabel("Identifiant");
+        $element->setLabel("Email");
         $element->addValidator(new Email([
             "message" => self::FR_VALIDATOR_EMAIL
         ]));
