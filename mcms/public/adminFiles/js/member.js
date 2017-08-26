@@ -13,6 +13,7 @@ $(function () {
                 {"name": "fullname"},
                 {"name": "creation"},
                 {"name": "edition"},
+                {"name": "status", "searchable": false},
                 {"name": "role", "searchable": false},
                 {"name": "actions", "orderable": false, "searchable": false}
             ]

@@ -48,6 +48,7 @@ class MemberAjaxController extends ControllerBase
             "fullname" => "CONCAT(m.firstname, ' ', m.lastname)",
             "creation" => "m.dateCreated",
             "edition" => "m.dateUpdated",
+            "status" => "m.status",
             "role" => "m.role",
             "actions" => "1"
         ];
@@ -90,6 +91,7 @@ class MemberAjaxController extends ControllerBase
                 $member->getFullname(),
                 $member->dateCreatedToFr() . "<br/>" . $member->getAdminLinkCreator(),
                 $member->dateUpdatedToFr() . "<br/>" . $member->getAdminLinkLastEditor(),
+                Member::getStatusFr($member->status),
                 $member->role == 'admin' ? 'Administrateur' : 'Membre',
                 '<div class="btn-group btn-group-sm btn-group-right">
                      <a href="' . $this->url->get("member/edit/" . $member->id) . '" class="btn btn-default"><span class="fa fa-pencil"></span> Modifier</a>

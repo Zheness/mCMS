@@ -18,6 +18,7 @@
         <th>Nom</th>
         <th>Création</th>
         <th>Modification</th>
+        <th>Statut</th>
         <th>Rôle</th>
         <th>Actions</th>
     </tr>
