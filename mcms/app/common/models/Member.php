@@ -99,6 +99,13 @@ class Member extends ModelBase
     public $profilePicture;
 
     /**
+     *
+     * @var string
+     * @Column(type="string", nullable=false)
+     */
+    public $status;
+
+    /**
      * Initialize method for model.
      */
     public function initialize()
@@ -155,6 +162,12 @@ class Member extends ModelBase
         return $this->firstname . " " . $this->lastname;
     }
 
+
+    public function generateAdminMemberLink()
+    {
+        return "<a href='{$this->getDI()->get('url')->get('member/edit/' . $this->id)}'>{$this->getFullname()}</a>";
+    }
+
     /**
      * Returns table name mapped in the model.
      *
@@ -163,11 +176,6 @@ class Member extends ModelBase
     public function getSource()
     {
         return 'member';
-    }
-
-    public function generateAdminMemberLink()
-    {
-        return "<a href='{$this->getDI()->get('url')->get('member/edit/' . $this->id)}'>{$this->getFullname()}</a>";
     }
 
 }
