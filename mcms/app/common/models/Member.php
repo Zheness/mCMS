@@ -4,6 +4,9 @@ namespace Mcms\Models;
 
 class Member extends ModelBase
 {
+    const STATUS_ACTIVE = 'active';
+    const STATUS_PENDING = 'pending';
+    const STATUS_BLOCKED = 'blocked';
 
     /**
      *
@@ -104,6 +107,36 @@ class Member extends ModelBase
      * @Column(type="string", nullable=false)
      */
     public $status;
+
+    /**
+     * @param null|string $status
+     * @return array|string
+     */
+    public static function getStatusFr($status = null)
+    {
+        $statuses = [
+            self::STATUS_ACTIVE => 'Actif',
+            self::STATUS_PENDING => 'En attente de validation',
+            self::STATUS_BLOCKED => 'Bloqué',
+        ];
+        if ($status == null || !isset($statuses[$status])) {
+            return $statuses;
+        }
+        return $statuses[$status];
+    }
+
+    /**
+     * @return array
+     */
+    public static function getStatuses()
+    {
+        $statuses = [
+            self::STATUS_ACTIVE,
+            self::STATUS_PENDING,
+            self::STATUS_BLOCKED,
+        ];
+        return $statuses;
+    }
 
     /**
      * Initialize method for model.

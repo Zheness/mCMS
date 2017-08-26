@@ -99,15 +99,22 @@ class IndexController extends ControllerBase
                 $lastname = $this->request->getPost("lastname", [Filter::FILTER_SPECIAL_CHARS]);
                 $member = Member::findFirstByEmail($email);
                 if (!$member) {
+                    $defaultStatus = Option::findFirstBySlug('member_default_status')->content;
                     $member = new Member();
                     $member->firstname = $firstname;
                     $member->lastname = $lastname;
                     $member->email = $email;
                     $member->password = $this->security->hash($password);
                     $member->dateCreated = Tools::now();
+                    $member->role = 'member';
+                    $member->status = $defaultStatus;
                     $member->save();
-                    $this->session->set("member", $member);
-                    $this->flashSession->success("Inscription réussie ! Vous êtes maintenant connecté à l'espace membre.");
+                    if ($defaultStatus == Member::STATUS_ACTIVE) {
+                        $this->session->set("member", $member);
+                        $this->flashSession->success("Inscription réussie ! Vous êtes maintenant connecté à l'espace membre.");
+                    } else {
+                        $this->flashSession->success("Votre compte a bien été créé.");
+                    }
                     $this->view->disable();
                     $this->response->redirect("");
                     $this->response->send();

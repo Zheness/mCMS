@@ -9,6 +9,7 @@ use Mcms\Modules\Admin\Forms\OptionCommentsForm;
 use Mcms\Modules\Admin\Forms\OptionCookieConsentForm;
 use Mcms\Modules\Admin\Forms\OptionGoogleReCaptchaForm;
 use Mcms\Modules\Admin\Forms\OptionMaintenanceForm;
+use Mcms\Modules\Admin\Forms\OptionMemberStatusForm;
 use Mcms\Modules\Admin\Forms\OptionNotificationForm;
 use Mcms\Modules\Admin\Forms\OptionRegistrationForm;
 use Mcms\Modules\Admin\Forms\OptionRootForm;
@@ -37,6 +38,7 @@ class OptionController extends ControllerBase
         $options['comments_articles_allowed'] = Option::findFirstBySlug('comments_articles_allowed')->content == 'true';
         $options['comments_maximum_per_day'] = Option::findFirstBySlug('comments_maximum_per_day')->content;
         $options['thumbnail_dimensions'] = Option::findFirstBySlug('thumbnail_width')->content . "x" . Option::findFirstBySlug('thumbnail_height')->content;
+        $options['member_default_status'] = Member::getStatusFr(Option::findFirstBySlug('member_default_status')->content);
         $this->view->setVar('options', $options);
     }
 
@@ -424,6 +426,29 @@ class OptionController extends ControllerBase
             if ($optionEnabled) {
                 $form->get("commentsEnabled")->setAttribute('checked', 'checked');
             }
+        }
+        $this->view->setVar("form", $form);
+    }
+
+    public function memberStatusAction()
+    {
+        $form = new OptionMemberStatusForm();
+        if ($this->request->isPost()) {
+            if ($form->isValid($this->request->getPost())) {
+                $status = $this->request->getPost("status");
+
+                $option = Option::findFirstBySlug('member_default_status');
+                $option->content = $status;
+                $option->dateUpdated = Tools::now();
+                $option->updatedBy = $this->session->get('member')->id;
+                $option->save();
+
+                $this->flashSession->success('La configuration a bien été enregistrée.');
+            } else {
+                $this->generateFlashSessionErrorForm($form);
+            }
+        } else {
+            $form->get("status")->setDefault(Option::findFirstBySlug('member_default_status')->content);
         }
         $this->view->setVar("form", $form);
     }

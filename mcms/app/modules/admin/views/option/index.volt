@@ -163,5 +163,16 @@
             </a>
         </td>
     </tr>
+    <tr>
+        <td colspan="2">Statut par défaut des membres</td>
+        <td>
+            {{ options['member_default_status'] }}
+        </td>
+        <td>
+            <a href="{{ url('option/memberStatus') }}" class="btn btn-default">
+                <span class="fa fa-edit"></span> Modifier
+            </a>
+        </td>
+    </tr>
     </tbody>
 </table>
