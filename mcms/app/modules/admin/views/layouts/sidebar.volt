@@ -72,6 +72,12 @@
                 <a href="{{ url("specialPage") }}"><i class="fa fa-files-o fa-fw"></i> Pages spéciales</a>
             </li>
             <li>
+                <a href="{{ url('comment') }}">
+                    <i class="fa fa-comments fa-fw"></i>
+                    Commentaires
+                </a>
+            </li>
+            <li>
                 <a href="{{ url('option') }}">
                     <i class="fa fa-cogs fa-fw"></i>
                     Options

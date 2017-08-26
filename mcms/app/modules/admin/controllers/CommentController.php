@@ -15,6 +15,11 @@ use Phalcon\Filter;
  */
 class CommentController extends ControllerBase
 {
+    public function indexAction()
+    {
+        $this->addAssetsDataTable();
+        $this->assets->addJs("adminFiles/js/comment.js");
+    }
 
     /**
      * Delete a comment

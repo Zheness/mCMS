@@ -32,7 +32,6 @@ class MemberController extends ControllerBase
         $this->assets->addJs("adminFiles/js/member.js");
     }
 
-
     /**
      * Edit a member
      * @param int $id
