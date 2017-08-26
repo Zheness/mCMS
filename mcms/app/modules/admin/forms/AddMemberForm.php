@@ -2,6 +2,7 @@
 
 namespace Mcms\Modules\Admin\Forms;
 
+use Mcms\Models\Member;
 use Phalcon\Forms\Element\Password;
 use Phalcon\Forms\Element\Select;
 use Phalcon\Forms\Element\Text;
@@ -22,6 +23,7 @@ class AddMemberForm extends FormBase
         $this->add($this->passwordConfirm());
         $this->add($this->username());
         $this->add($this->role());
+        $this->add($this->status());
     }
 
     private function email()
@@ -98,6 +100,17 @@ class AddMemberForm extends FormBase
         $element->addValidator(new Confirmation([
             "message" => "Les mots de passe sont différents",
             "with"    => "password",
+        ]));
+        return $element;
+    }
+
+    private function status()
+    {
+        $element = new Select("status", Member::getStatusFr());
+        $element->setLabel("Statut");
+        $element->addValidator(new InclusionIn([
+            "domain" => Member::getStatuses(),
+            "message" => "Le statut choisi n'est pas autorisé."
         ]));
         return $element;
     }

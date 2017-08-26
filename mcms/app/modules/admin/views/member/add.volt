@@ -53,12 +53,22 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="username" class="control-label">
+                <label for="role" class="control-label">
                     Rôle
                 </label>
                 <div class="row">
                     <div class="col-md-3">
                         {{ form.render("role", ["class": "form-control"]) }}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="status" class="control-label">
+                    Statut
+                </label>
+                <div class="row">
+                    <div class="col-md-3">
+                        {{ form.render("status", ["class": "form-control"]) }}
                     </div>
                 </div>
             </div>

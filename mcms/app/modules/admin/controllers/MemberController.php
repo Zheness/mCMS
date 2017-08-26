@@ -51,6 +51,17 @@ class MemberController extends ControllerBase
             );
             return false;
         }
+        if (Option::findFirstBySlug('root')->content == $member->id && $this->session->get('member')->id != $member->id) {
+            $this->flashSession->error("Impossible de modifier le membre séléctionné.");
+            $this->dispatcher->forward(
+                [
+                    "controller" => "member",
+                    "action" => "index",
+                ]
+            );
+            return false;
+        }
+
         $form = new EditMemberInfoForm();
         if ($this->request->isPost()) {
             if ($form->isValid($this->request->getPost())) {
@@ -60,6 +71,7 @@ class MemberController extends ControllerBase
                 $username = $this->request->getPost('username', Filter::FILTER_SPECIAL_CHARS);
                 $password = $this->request->getPost("password");
                 $role = $this->request->getPost('role');
+                $status = $this->request->getPost('status');
 
                 $member->firstname = $firstname;
                 $member->lastname = $lastname;
@@ -75,6 +87,11 @@ class MemberController extends ControllerBase
                 } else {
                     $member->role = $role;
                 }
+                if ($member->id == $this->session->get('member')->id && $status != $member->status) {
+                    $this->flashSession->warning('Impossible de changer votre propre statut.');
+                } else {
+                    $member->status = $status;
+                }
                 $member->save();
                 if ($member->id == $this->session->get('member')->id) {
                     $this->session->set('member', $member);
@@ -89,6 +106,7 @@ class MemberController extends ControllerBase
             $form->get("email")->setDefault($member->email);
             $form->get("username")->setDefault($member->username);
             $form->get("role")->setDefault($member->role);
+            $form->get("status")->setDefault($member->status);
         }
         $this->view->setVar('member', $member);
         $this->view->setVar('form', $form);
@@ -111,6 +129,7 @@ class MemberController extends ControllerBase
                 $username = $this->request->getPost('username', Filter::FILTER_SPECIAL_CHARS);
                 $password = $this->request->getPost("password");
                 $role = $this->request->getPost('role');
+                $status = $this->request->getPost('status');
 
                 $member = new Member();
                 $member->firstname = $firstname;
@@ -125,6 +144,7 @@ class MemberController extends ControllerBase
                 $member->dateCreated = Tools::now();
                 $member->createdBy = $this->session->get('member')->id;
                 $member->role = $role;
+                $member->status = $status;
                 $member->save();
 
                 $this->flashSession->success("Le membre a bien été ajouté.");
@@ -132,6 +152,9 @@ class MemberController extends ControllerBase
             } else {
                 $this->generateFlashSessionErrorForm($form);
             }
+        } else {
+            $form->get("role")->setDefault('member');
+            $form->get("status")->setDefault(Option::findFirstBySlug('member_default_status')->content);
         }
         $this->view->setVar('form', $form);
         return true;
@@ -148,6 +171,16 @@ class MemberController extends ControllerBase
         $member = Member::findFirst($id);
         if (!$member) {
             $this->flashSession->error("Le membre séléctionné n'existe pas.");
+            $this->dispatcher->forward(
+                [
+                    "controller" => "member",
+                    "action" => "index",
+                ]
+            );
+            return false;
+        }
+        if (Option::findFirstBySlug('root')->content == $member->id && $this->session->get('member')->id != $member->id) {
+            $this->flashSession->error("Impossible de modifier le membre séléctionné.");
             $this->dispatcher->forward(
                 [
                     "controller" => "member",
@@ -247,6 +280,16 @@ class MemberController extends ControllerBase
                     "controller" => "member",
                     "action" => "edit",
                     "param" => $member->id,
+                ]
+            );
+            return false;
+        }
+        if (Option::findFirstBySlug('root')->content == $member->id && $this->session->get('member')->id != $member->id) {
+            $this->flashSession->error("Impossible de modifier le membre séléctionné.");
+            $this->dispatcher->forward(
+                [
+                    "controller" => "member",
+                    "action" => "index",
                 ]
             );
             return false;
