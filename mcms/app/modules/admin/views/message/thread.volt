@@ -10,8 +10,8 @@
     <li class="active">
         <a href="{{ url("message/thread/" ~ thread.token) }}"><span class="fa fa-comments"></span> Lire</a>
     </li>
-    <li><a href="{{ url("message/delete/" ~ thread.token) }}" class="text-danger"><span class="fa fa-trash"></span>
-            Supprimer</a></li>
+    <!--<li><a href="{{ url("message/delete/" ~ thread.token) }}" class="text-danger"><span class="fa fa-trash"></span>
+            Supprimer</a></li>-->
 </ul>
 <div class="row">
     <div class="col-lg-9">

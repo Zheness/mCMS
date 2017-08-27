@@ -86,7 +86,7 @@ class MessageAjaxController extends ControllerBase
                 $message->unread == 0 ? '<span class="text-success"><i class="fa fa-check-circle"></i> Oui</span>' : '<span class="text-danger"><i class="fa fa-times-circle"></i> Non</span>',
                 '<div class="btn-group btn-group-sm btn-group-right">
                      <a href="' . $this->url->get("message/thread/" . $message->token) . '" class="btn btn-default"><span class="fa fa-comments"></span> Lire</a>
-                     <a href="' . $this->url->get("message/delete/" . $message->token) . '" class="btn btn-outline btn-danger"><span class="fa fa-trash"></span> Supprimer</a>
+                     <!--<a href="' . $this->url->get("message/delete/" . $message->token) . '" class="btn btn-outline btn-danger"><span class="fa fa-trash"></span> Supprimer</a>-->
                 </div>',
             ];
         }

@@ -3,6 +3,9 @@
 namespace Mcms\Library;
 
 use Mailgun\Mailgun;
+use Mcms\Models\Email;
+use Mcms\Models\Member;
+use Mcms\Models\Option;
 use Phalcon\Mvc\User\Plugin;
 
 class Tools extends Plugin
@@ -122,12 +125,30 @@ class Tools extends Plugin
     {
         $client = new Mailgun($this->config->mail->config->mailgun->api_key);
         $domain = $this->config->mail->config->mailgun->domain;
+
+        $log = new Email();
+        $log->toEmail = $to;
+        $log->subject = $subject;
+        $log->content = $html;
+        $log->dateCreated = self::now();
+        if ($this->session->has('member')) {
+            $log->fromMemberId = $this->session->get('member')->id;
+            $log->fromMemberUsername = $this->session->get('member')->getFullname();
+        } else {
+            $log->fromMemberId = Option::findFirstBySlug('root')->content;
+            $log->fromMemberUsername = 'Administrateur';
+        }
+        $log->response = 'pending';
+        $log->save();
+
         $result = $client->sendMessage($domain, [
             'from' => $this->config->mail->from,
             'to' => $to,
             'subject' => $subject,
             'html' => $html
         ]);
+        $log->response = json_encode($result);
+        $log->save();
         return $result;
     }
 }
