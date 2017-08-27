@@ -66,12 +66,82 @@ class ModelBase extends Model
     {
         $saved = parent::save($data, $whiteList);
         if (!$saved) {
+            $content = 'Source: ' . $this->getSource() . '<br/>';
             foreach ($this->getMessages() as $message) {
-                $this->getDI()->get('flashSession')->error($message->getMessage());
+                $content .= $message->getMessage() . '<br/>';
+            }
+            $logDb = new Log();
+            $logDb->type = 'erreur';
+            $logDb->action = "[Erreur] Une erreur 500 est survenue lors de la sauvegarde en base de données";
+            $logDb->username = 'Mysql';
+            $logDb->sourcerId = null;
+            $logDb->content = $content;
+            $logDb->dateCreated = Tools::now();
+            $logDb->save();
+            if ($this->getDI()->get('session')->has('member')) {
+                $log = new Log();
+                $log->type = 'member';
+                $log->action = "Une erreur 500 est survenue";
+                $log->username = $this->getDI()->get('session')->get('member')->getFullname();
+                $log->sourcerId = $this->getDI()->get('session')->get('member')->id;
+                $log->content = 'Erreur log #' . $logDb->id;
+                $log->dateCreated = Tools::now();
+                $log->save();
+            } else {
+                $log = new Log();
+                $log->type = 'member';
+                $log->action = "Une erreur 500 est survenue";
+                $log->username = 'Anonyme';
+                $log->sourcerId = null;
+                $log->content = 'Erreur log #' . $logDb->id;
+                $log->dateCreated = Tools::now();
+                $log->save();
             }
             if ($this->getSource() == 'email' || $this->getSource() == 'log') {
             } else {
                 throw new \Exception("Saving data error");
+            }
+        }
+    }
+
+    public function delete()
+    {
+        $saved = parent::delete();
+        if (!$saved) {
+            $content = 'Source: ' . $this->getSource() . '<br/>';
+            foreach ($this->getMessages() as $message) {
+                $content .= $message->getMessage() . '<br/>';
+            }
+            $logDb = new Log();
+            $logDb->type = 'erreur';
+            $logDb->action = "[Erreur] Une erreur 500 est survenue lors de la suppression en base de données";
+            $logDb->username = 'Mysql';
+            $logDb->sourcerId = null;
+            $logDb->content = $content;
+            $logDb->dateCreated = Tools::now();
+            $logDb->save();
+            if ($this->getDI()->get('session')->has('member')) {
+                $log = new Log();
+                $log->type = 'member';
+                $log->action = "Une erreur 500 est survenue";
+                $log->username = $this->getDI()->get('session')->get('member')->getFullname();
+                $log->sourcerId = $this->getDI()->get('session')->get('member')->id;
+                $log->content = 'Erreur log #' . $logDb->id;
+                $log->dateCreated = Tools::now();
+                $log->save();
+            } else {
+                $log = new Log();
+                $log->type = 'member';
+                $log->action = "Une erreur 500 est survenue";
+                $log->username = 'Anonyme';
+                $log->sourcerId = null;
+                $log->content = 'Erreur log #' . $logDb->id;
+                $log->dateCreated = Tools::now();
+                $log->save();
+            }
+            if ($this->getSource() == 'email' || $this->getSource() == 'log') {
+            } else {
+                throw new \Exception("Deleting data error");
             }
         }
     }
