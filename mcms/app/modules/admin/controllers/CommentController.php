@@ -88,9 +88,11 @@ class CommentController extends ControllerBase
         $form = new DeleteCommentForm();
         if ($this->request->isPost()) {
             if ($form->isValid($this->request->getPost())) {
-                $this->flashSession->success("Le commentaire a bien été supprimé.");
-
                 $comment->delete();
+
+                $this->addLog('member', 'Commentaire supprimé par le membre #' . $this->session->get('member')->id, $this->session->get('member')->getFullname(), $comment->id);
+                $this->addLog('comment', 'Commentaire #' . $comment->id . ' supprimé', $this->session->get('member')->getFullname(), $this->session->get('member')->id);
+                $this->flashSession->success("Le commentaire a bien été supprimé.");
 
                 $this->dispatcher->forward(
                     [
@@ -200,6 +202,10 @@ class CommentController extends ControllerBase
                 $reply->username = $member->getFullname();
 
                 $reply->save();
+
+                $this->addLog('member', 'Commentaire #' . $reply->id . ' ajouté en réponse au commentaire #' . $comment->id . ' par le membre #' . $this->session->get('member')->id, $this->session->get('member')->getFullname(), $comment->id);
+                $this->addLog('comment', 'Commentaire ajouté en réponse au commentaire #' . $comment->id, $this->session->get('member')->getFullname(), $reply->id);
+                $this->addLog('comment', 'Commentaire #' . $reply->id . ' ajouté en réponse', $this->session->get('member')->getFullname(), $comment->id);
                 $this->flashSession->success("Le commentaire a bien été enregistré.");
                 $this->dispatcher->forward(
                     [

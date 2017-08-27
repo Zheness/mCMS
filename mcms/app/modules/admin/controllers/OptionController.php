@@ -64,6 +64,9 @@ class OptionController extends ControllerBase
                 $option->updatedBy = $this->session->get('member')->id;
                 $option->save();
 
+                $this->addLog('option', 'Options de maintenance modifiées par le membre #' . $this->session->get('member')->id, $this->session->get('member')->getFullname());
+                $this->addLog('member', 'Modifie les options de maintenance', $this->session->get('member')->getFullname(), $this->session->get('member')->id);
+
                 $this->flashSession->success('La configuration a bien été enregistrée.');
             } else {
                 $this->generateFlashSessionErrorForm($form);
@@ -107,6 +110,9 @@ class OptionController extends ControllerBase
                 $option->updatedBy = $this->session->get('member')->id;
                 $option->save();
 
+                $this->addLog('option', 'Options de notification modifiées par le membre #' . $this->session->get('member')->id, $this->session->get('member')->getFullname());
+                $this->addLog('member', 'Modifie les options de notification', $this->session->get('member')->getFullname(), $this->session->get('member')->id);
+
                 $this->flashSession->success('La configuration a bien été enregistrée.');
             } else {
                 $this->generateFlashSessionErrorForm($form);
@@ -136,6 +142,9 @@ class OptionController extends ControllerBase
                 $option->dateUpdated = Tools::now();
                 $option->updatedBy = $this->session->get('member')->id;
                 $option->save();
+
+                $this->addLog('option', 'Options d\'inscription modifiées par le membre #' . $this->session->get('member')->id, $this->session->get('member')->getFullname());
+                $this->addLog('member', 'Modifie les options d\'inscription', $this->session->get('member')->getFullname(), $this->session->get('member')->id);
 
                 $this->flashSession->success('La configuration a bien été enregistrée.');
             } else {
@@ -196,6 +205,9 @@ class OptionController extends ControllerBase
                 $option->updatedBy = $this->session->get('member')->id;
                 $option->save();
 
+                $this->addLog('option', 'Options des commentaires modifiées par le membre #' . $this->session->get('member')->id, $this->session->get('member')->getFullname());
+                $this->addLog('member', 'Modifie les options des commentaires', $this->session->get('member')->getFullname(), $this->session->get('member')->id);
+
                 $this->flashSession->success('La configuration a bien été enregistrée.');
             } else {
                 $this->generateFlashSessionErrorForm($form);
@@ -244,6 +256,9 @@ class OptionController extends ControllerBase
                 $option->updatedBy = $this->session->get('member')->id;
                 $option->save();
 
+                $this->addLog('option', 'Options des miniatures d\'images modifiées par le membre #' . $this->session->get('member')->id, $this->session->get('member')->getFullname());
+                $this->addLog('member', 'Modifie les options des miniatures d\'images', $this->session->get('member')->getFullname(), $this->session->get('member')->id);
+
                 $this->flashSession->success('La configuration a bien été enregistrée.');
             } else {
                 $this->generateFlashSessionErrorForm($form);
@@ -272,6 +287,9 @@ class OptionController extends ControllerBase
 
                         $member->role = 'admin';
                         $member->save();
+
+                        $this->addLog('option', 'Administrateur principal modifié par le membre #' . $this->session->get('member')->id, $this->session->get('member')->getFullname());
+                        $this->addLog('member', 'Change l\'administrateur principal', $this->session->get('member')->getFullname(), $this->session->get('member')->id);
 
                         $this->flashSession->success('La configuration a bien été enregistrée.');
                     } else {
@@ -346,6 +364,9 @@ class OptionController extends ControllerBase
                 $option->updatedBy = $this->session->get('member')->id;
                 $option->save();
 
+                $this->addLog('option', 'Options du bandeau des cookies modifiées par le membre #' . $this->session->get('member')->id, $this->session->get('member')->getFullname());
+                $this->addLog('member', 'Modifie les options du bandeau des cookies', $this->session->get('member')->getFullname(), $this->session->get('member')->id);
+
                 $this->flashSession->success('La configuration a bien été enregistrée.');
             } else {
                 $this->generateFlashSessionErrorForm($form);
@@ -408,6 +429,9 @@ class OptionController extends ControllerBase
                 $option->updatedBy = $this->session->get('member')->id;
                 $option->save();
 
+                $this->addLog('option', 'Options du captcha Google modifiées par le membre #' . $this->session->get('member')->id, $this->session->get('member')->getFullname());
+                $this->addLog('member', 'Modifie les options du captcha Google', $this->session->get('member')->getFullname(), $this->session->get('member')->id);
+
                 $this->flashSession->success('La configuration a bien été enregistrée.');
                 $form->clear();
             } else {
@@ -442,6 +466,9 @@ class OptionController extends ControllerBase
                 $option->dateUpdated = Tools::now();
                 $option->updatedBy = $this->session->get('member')->id;
                 $option->save();
+
+                $this->addLog('option', 'Statut par défaut des membres à l\'inscription modifié par le membre #' . $this->session->get('member')->id, $this->session->get('member')->getFullname());
+                $this->addLog('member', 'Modifie le statut par défaut des membres à l\'inscription', $this->session->get('member')->getFullname(), $this->session->get('member')->id);
 
                 $this->flashSession->success('La configuration a bien été enregistrée.');
             } else {

@@ -58,6 +58,8 @@ class ArticleController extends ControllerBase
                     $article->dateCreated = Tools::now();
                     $article->createdBy = $this->session->get('member')->id;
                     $article->save();
+                    $this->addLog('member', 'Article ajouté par le membre #' . $this->session->get('member')->id, $this->session->get('member')->getFullname(), $article->id, 'Article: ' . $article->title);
+                    $this->addLog('article', 'Article #' . $article->id . ' ajouté', $this->session->get('member')->getFullname(), $this->session->get('member')->id, 'Article: ' . $article->title);
                     $this->flashSession->success("L'article a bien été enregistré.");
                     $form->clear();
                     $form->get("datePublication")->setDefault(date("d/m/Y"));
@@ -120,6 +122,8 @@ class ArticleController extends ControllerBase
                     $article->dateUpdated = Tools::now();
                     $article->updatedBy = $this->session->get('member')->id;
                     $article->save();
+                    $this->addLog('member', 'Article modifié par le membre #' . $this->session->get('member')->id, $this->session->get('member')->getFullname(), $article->id, 'Article: ' . $article->title);
+                    $this->addLog('article', 'Article #' . $article->id . ' modifié', $this->session->get('member')->getFullname(), $this->session->get('member')->id, 'Article: ' . $article->title);
                     $this->flashSession->success("L'article a bien été enregistré.");
                 } else {
                     $this->flashSession->error("Un article existe déjà avec cette url.");
@@ -160,8 +164,10 @@ class ArticleController extends ControllerBase
         $form = new DeleteArticleForm();
         if ($this->request->isPost()) {
             if ($form->isValid($this->request->getPost())) {
-                $this->flashSession->success("L'article a bien été supprimé.");
                 $article->delete();
+                $this->addLog('member', 'Article supprimé par le membre #' . $this->session->get('member')->id, $this->session->get('member')->getFullname(), $article->id, 'Article: ' . $article->title);
+                $this->addLog('article', 'Article #' . $article->id . ' supprimé', $this->session->get('member')->getFullname(), $this->session->get('member')->id, 'Article: ' . $article->title);
+                $this->flashSession->success("L'article a bien été supprimé.");
                 $this->dispatcher->forward(
                     [
                         "controller" => "article",

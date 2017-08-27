@@ -44,6 +44,8 @@ class SpecialPageController extends ControllerBase
                 $page->dateUpdated = Tools::now();
                 $page->updatedBy = $this->session->get('member')->id;
                 $page->save();
+                $this->addLog('member', 'Page spéciale modifiée par le membre #' . $this->session->get('member')->id, $this->session->get('member')->getFullname(), $page->id, 'Page: ' . $page->internTitle);
+                $this->addLog('specialPage', 'Page #' . $page->id . ' modifiée', $this->session->get('member')->getFullname(), $this->session->get('member')->id, 'Page: ' . $page->internTitle);
                 $this->flashSession->success("La page a bien été enregistrée.");
             } else {
                 $this->generateFlashSessionErrorForm($form);

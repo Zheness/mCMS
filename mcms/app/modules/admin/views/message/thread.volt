@@ -18,7 +18,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    {{ thread.firstname }} {{ thread.lastname }}
+                    {{ thread.firstname }} {{ thread.lastname }} - {{ thread.email }}
                     <span class="text-muted">- {{ thread.dateCreatedToFr() }}</span>
                 </h3>
             </div>

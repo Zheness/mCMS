@@ -135,7 +135,7 @@ class MessageController extends ControllerBase
                 }
                 $thread->save();
 
-                $this->addLog('message', 'Nouveau message (#' . $message->id . ') reçu pour la conversation', 'Anonyme', $message->id);
+                $this->addLog('message', 'Nouveau message (#' . $message->id . ') reçu pour la conversation', 'Anonyme', $thread->id, 'Sujet: ' . $thread->subject);
 
                 $tools = new Tools();
 

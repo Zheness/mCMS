@@ -94,6 +94,10 @@ class MemberController extends ControllerBase
                 $member->save();
                 if ($member->id == $this->session->get('member')->id) {
                     $this->session->set('member', $member);
+                    $this->addLog('member', 'Modifie les informations de son compte', $member->getFullname(), $member->id);
+                } else {
+                    $this->addLog('member', 'Informations du compte modifiées par le membre #' . $this->session->get('member')->id, $this->session->get('member')->getFullname(), $member->id);
+                    $this->addLog('member', 'Modifie les informations du compte du membre #' . $member->id, $this->session->get('member')->getFullname(), $this->session->get('member')->id);
                 }
                 $this->flashSession->success("Les informations du membre ont bien été modifiées.");
             } else {
@@ -146,6 +150,9 @@ class MemberController extends ControllerBase
                 $member->status = $status;
                 $member->save();
 
+                $this->addLog('member', 'Membre créé par le membre #' . $this->session->get('member')->id, $this->session->get('member')->getFullname(), $member->id);
+                $this->addLog('member', 'Créé le membre #' . $member->id, $this->session->get('member')->getFullname(), $this->session->get('member')->id);
+
                 $this->flashSession->success("Le membre a bien été ajouté.");
                 $form->clear();
             } else {
@@ -194,6 +201,14 @@ class MemberController extends ControllerBase
                 if ($this->request->hasPost("remove")) {
                     $member->profilePicture = null;
                     $member->save();
+
+                    if ($member->id == $this->session->get('member')->id) {
+                        $this->addLog('member', 'Supprime son image de profil', $this->session->get('member')->getFullname(), $this->session->get('member')->id);
+                    } else {
+                        $this->addLog('member', 'Image de profil supprimée par le membre #' . $this->session->get('member')->id, $this->session->get('member')->getFullname(), $member->id);
+                        $this->addLog('member', 'Supprime l\'image de profil du membre #' . $member->id, $this->session->get('member')->getFullname(), $this->session->get('member')->id);
+                    }
+
                     $this->flashSession->success("L'image a bien été enlevée.");
                 } else {
                     if ($this->request->hasFiles(true)) {
@@ -317,6 +332,9 @@ class MemberController extends ControllerBase
                 ]);
                 $tools->sendMail($to, $subject, $html);
 
+                $this->addLog('member', 'Invitation à devenir administrateur envoyée par le membre #' . $this->session->get('member')->id, $this->session->get('member')->getFullname(), $member->id);
+                $this->addLog('member', 'Invite le  membre #' . $member->id . ' à devenir administrateur', $this->session->get('member')->getFullname(), $this->session->get('member')->id);
+
                 $this->flashSession->success("L'invitation a bien été envoyée.");
             } else {
                 $this->generateFlashSessionErrorForm($form);
@@ -392,13 +410,17 @@ class MemberController extends ControllerBase
                     $message->save();
                 }
                 $member->delete();
+
                 if ($this->session->get('member')->id == $member->id) {
+                    $this->addLog('member', 'Supprime son compte', $this->session->get('member')->getFullname(), $this->session->get('member')->id);
                     $this->flashSession->success("Votre compte a bien été supprimé.");
                     $this->response->redirect("index/logout");
                     $this->response->send();
                     return false;
                 }
 
+                $this->addLog('member', 'Compte supprimé par le membre #' . $this->session->get('member')->id, $this->session->get('member')->getFullname(), $member->id);
+                $this->addLog('member', 'Supprime le compte du membre #' . $member->id, $this->session->get('member')->getFullname(), $this->session->get('member')->id);
                 $this->flashSession->success("Le membre a bien été supprimé.");
                 $this->dispatcher->forward(
                     [
@@ -416,7 +438,6 @@ class MemberController extends ControllerBase
         $this->view->setVar("root", Member::findFirst($rootId));
         return true;
     }
-
 
 
     public function commentsAction($id = 0)

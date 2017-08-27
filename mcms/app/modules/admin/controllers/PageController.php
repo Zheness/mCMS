@@ -55,6 +55,8 @@ class PageController extends ControllerBase
                     $page->dateCreated = Tools::now();
                     $page->createdBy = $this->session->get('member')->id;
                     $page->save();
+                    $this->addLog('member', 'Page ajoutée par le membre #' . $this->session->get('member')->id, $this->session->get('member')->getFullname(), $page->id, 'Page: ' . $page->title);
+                    $this->addLog('page', 'Page #' . $page->id . ' ajoutée', $this->session->get('member')->getFullname(), $this->session->get('member')->id, 'Page: ' . $page->title);
                     $this->flashSession->success("La page a bien été enregistrée.");
                     $form->clear();
                 } else {
@@ -111,6 +113,8 @@ class PageController extends ControllerBase
                     $page->dateUpdated = Tools::now();
                     $page->updatedBy = $this->session->get('member')->id;
                     $page->save();
+                    $this->addLog('member', 'Page modifiée par le membre #' . $this->session->get('member')->id, $this->session->get('member')->getFullname(), $page->id, 'Page: ' . $page->title);
+                    $this->addLog('page', 'Page #' . $page->id . ' modifiée', $this->session->get('member')->getFullname(), $this->session->get('member')->id, 'Page: ' . $page->title);
                     $this->flashSession->success("La page a bien été enregistrée.");
                 } else {
                     $this->flashSession->error("Une page existe déjà avec cette url.");
@@ -155,8 +159,10 @@ class PageController extends ControllerBase
         $form = new DeletePageForm();
         if ($this->request->isPost()) {
             if ($form->isValid($this->request->getPost())) {
-                $this->flashSession->success("La page a bien été supprimée.");
                 $page->delete();
+                $this->addLog('member', 'Page supprimée par le membre #' . $this->session->get('member')->id, $this->session->get('member')->getFullname(), $page->id, 'Page: ' . $page->title);
+                $this->addLog('page', 'Page #' . $page->id . ' supprimée', $this->session->get('member')->getFullname(), $this->session->get('member')->id, 'Page: ' . $page->title);
+                $this->flashSession->success("La page a bien été supprimée.");
                 $this->dispatcher->forward(
                     [
                         "controller" => "page",

@@ -1,6 +1,8 @@
 <?php
 namespace Mcms\Modules\Admin\Controllers;
 
+use Mcms\Library\Tools;
+use Mcms\Models\Log;
 use Mcms\Models\Message;
 use Mcms\Models\Option;
 use Mcms\Modules\Admin\Forms\FormBase;
@@ -90,5 +92,17 @@ class ControllerBase extends Controller
             $response['messageType'] = "Le format de l'image n'est pas supporté (types autorisés: :types)";
         }
         return $response;
+    }
+
+    protected function addLog($type, $action, $username, $sourceId = null, $content = null)
+    {
+        $log = new Log();
+        $log->type = $type;
+        $log->action = "[Administration] " . $action;
+        $log->username = $username;
+        $log->sourcerId = $sourceId;
+        $log->content = $content;
+        $log->dateCreated = Tools::now();
+        $log->save();
     }
 }

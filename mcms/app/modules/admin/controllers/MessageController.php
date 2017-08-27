@@ -51,6 +51,9 @@ class MessageController extends ControllerBase
                 $thread->updatedBy = $member->id;
                 $thread->save();
 
+                $this->addLog('message', 'Message #' . $message->id . ' ajouté par le membre #' . $this->session->get('member')->id, $this->session->get('member')->getFullname(), $thread->id, 'Sujet: ' . $thread->subject);
+                $this->addLog('member', 'Ajoute le message #' . $message->id . ' pour la conversation #' . $thread->id, $this->session->get('member')->getFullname(), $this->session->get('member')->id, 'Sujet: ' . $thread->subject);
+
                 $this->flashSession->success("Votre réponse à la conversation a bien été envoyée.");
 
                 $tools = new Tools();

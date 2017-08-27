@@ -68,6 +68,9 @@ class ImageController extends ControllerBase
                                 $image->dateCreated = Tools::now();
                                 $image->createdBy = $this->session->get('member')->id;
                                 $image->save();
+
+                                $this->addLog('member', 'Image ajoutée par le membre #' . $this->session->get('member')->id, $this->session->get('member')->getFullname(), $image->id);
+                                $this->addLog('image', 'Image #' . $image->id . ' ajoutée', $this->session->get('member')->getFullname(), $this->session->get('member')->id);
                                 $this->flashSession->success("L'image a bien été enregistrée.");
                                 $form->clear();
                             } else {
@@ -118,6 +121,8 @@ class ImageController extends ControllerBase
                 $image->dateUpdated = Tools::now();
                 $image->updatedBy = $this->session->get('member')->id;
                 $image->save();
+                $this->addLog('member', 'Informations de l\'image modifiées par le membre #' . $this->session->get('member')->id, $this->session->get('member')->getFullname(), $image->id);
+                $this->addLog('image', 'Informations de l\'image #' . $image->id . ' modifiées', $this->session->get('member')->getFullname(), $this->session->get('member')->id);
                 $this->flashSession->success("Les informations sur l'image ont bien été enregistrées.");
             } else {
                 $this->generateFlashSessionErrorForm($form);
@@ -160,8 +165,10 @@ class ImageController extends ControllerBase
                     }
                 }
                 if (!$hasError) {
-                    $this->flashSession->success("L'image a bien été supprimée.");
                     $image->delete();
+                    $this->addLog('member', 'Image supprimée par le membre #' . $this->session->get('member')->id, $this->session->get('member')->getFullname(), $image->id);
+                    $this->addLog('image', 'Image #' . $image->id . ' supprimée', $this->session->get('member')->getFullname(), $this->session->get('member')->id);
+                    $this->flashSession->success("L'image a bien été supprimée.");
                     $this->dispatcher->forward(
                         [
                             "controller" => "image",

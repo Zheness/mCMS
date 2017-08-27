@@ -55,6 +55,8 @@ class AlbumController extends ControllerBase
                     $album->dateCreated = Tools::now();
                     $album->createdBy = $this->session->get('member')->id;
                     $album->save();
+                    $this->addLog('member', 'Album ajouté par le membre #' . $this->session->get('member')->id, $this->session->get('member')->getFullname(), $album->id, 'Album: ' . $album->title);
+                    $this->addLog('album', 'Album #' . $album->id . ' ajouté', $this->session->get('member')->getFullname(), $this->session->get('member')->id, 'Album: ' . $album->title);
                     $this->flashSession->success("L'album a bien été enregistré.");
                     $form->clear();
                 } else {
@@ -111,6 +113,8 @@ class AlbumController extends ControllerBase
                     $album->dateUpdated = Tools::now();
                     $album->updatedBy = $this->session->get('member')->id;
                     $album->save();
+                    $this->addLog('member', 'Album modifié par le membre #' . $this->session->get('member')->id, $this->session->get('member')->getFullname(), $album->id, 'Album: ' . $album->title);
+                    $this->addLog('album', 'Album #' . $album->id . ' modifié', $this->session->get('member')->getFullname(), $this->session->get('member')->id, 'Album: ' . $album->title);
                     $this->flashSession->success("L'album a bien été enregistré.");
                 } else {
                     $this->flashSession->error("Un album existe déjà avec cette url.");
@@ -155,8 +159,10 @@ class AlbumController extends ControllerBase
         $form = new DeleteAlbumForm();
         if ($this->request->isPost()) {
             if ($form->isValid($this->request->getPost())) {
-                $this->flashSession->success("L'album a bien été supprimé.");
                 $album->delete();
+                $this->addLog('member', 'Album supprimé par le membre #' . $this->session->get('member')->id, $this->session->get('member')->getFullname(), $album->id, 'Album: ' . $album->title);
+                $this->addLog('album', 'Album #' . $album->id . ' suppimé', $this->session->get('member')->getFullname(), $this->session->get('member')->id, 'Album: ' . $album->title);
+                $this->flashSession->success("L'album a bien été supprimé.");
                 $this->dispatcher->forward(
                     [
                         "controller" => "album",
