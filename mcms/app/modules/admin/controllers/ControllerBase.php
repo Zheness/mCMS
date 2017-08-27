@@ -49,8 +49,10 @@ class ControllerBase extends Controller
     public function afterExecuteRoute()
     {
         $this->assets->addCss("adminFiles/css/admin-style.css");
-        if (Option::findFirstBySlug('maintenance_enabled')->content == 'true' && $this->session->has('member')) {
-            $this->flashSession->warning('<p>Le site est actuellement en maintenance et n\'est pas disponible au public.</p><p>Rendez-vous sur la <a href="' . $this->url->get('option/maintenance') . '">page d\'option</a> pour réactiver le site.</p>');
+        if (!$this->request->isAjax() && !$this->response->isSent()) {
+            if (Option::findFirstBySlug('maintenance_enabled')->content == 'true' && $this->session->has('member')) {
+                $this->flashSession->warning('<p>Le site est actuellement en maintenance et n\'est pas disponible au public.</p><p>Rendez-vous sur la <a href="' . $this->url->get('option/maintenance') . '">page d\'option</a> pour réactiver le site.</p>');
+            }
         }
         $this->view->setVar("menu_unreadMessages", Message::count(['parentId IS NULL AND unread = 1']));
         $this->view->setVar("csrfKey", $this->security->getTokenKey());

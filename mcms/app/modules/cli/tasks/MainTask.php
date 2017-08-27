@@ -1,11 +1,14 @@
 <?php
 namespace Mcms\Modules\Cli\Tasks;
 
-class MainTask extends \Phalcon\Cli\Task
+use Phalcon\Cli\Task;
+
+class MainTask extends Task
 {
     public function mainAction()
     {
-        echo "Congratulations! You are now flying with Phalcon CLI!";
+        echo "Welcome to the mCMS installer!", PHP_EOL;
+        echo "Type `./run install` to install and configure everything for your first installation.";
     }
 
 }
