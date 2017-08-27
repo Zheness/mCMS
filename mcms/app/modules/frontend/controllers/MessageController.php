@@ -39,12 +39,21 @@ class MessageController extends ControllerBase
                 $message->unread = 1;
 
                 if ($this->session->has('member')) {
-                    $message->firstname = $this->session->get('member')->firstname;
-                    $message->lastname = $this->session->get('member')->lastname;
-                    $message->email = $this->session->get('member')->email;
-                    $message->createdBy = $this->session->get('member')->id;
+                    $member = $this->session->get('member');
+                    $message->firstname = $member->firstname;
+                    $message->lastname = $member->lastname;
+                    $message->email = $member->email;
+                    $message->createdBy = $member->id;
                 }
                 $message->save();
+
+                if ($this->session->has('member')) {
+                    $member = $this->session->get('member');
+                    $this->addLog('member', 'Nouvelle conversation (#' . $message->id . ') créée', $member->getFullname(), $member->id, 'Sujet: ' . $message->subject);
+                    $this->addLog('message', 'Conversation créée par le membre #' . $member->id, $member->getFullname(), $message->id, 'Sujet: ' . $message->subject);
+                } else {
+                    $this->addLog('member', 'Conversation créée', 'Anonyme', $message->id, 'Sujet: ' . $message->subject);
+                }
 
                 $tools = new Tools();
 
@@ -125,6 +134,8 @@ class MessageController extends ControllerBase
                     $thread->updatedBy = $this->session->get('member')->id;
                 }
                 $thread->save();
+
+                $this->addLog('message', 'Nouveau message (#' . $message->id . ') reçu pour la conversation', 'Anonyme', $message->id);
 
                 $tools = new Tools();
 

@@ -112,6 +112,16 @@ class AlbumController extends ControllerBase
                     }
 
                     $comment->save();
+
+                    if ($memberConnected) {
+                        $member = $this->session->get('member');
+                        $this->addLog('member', 'Commentaire #' . $comment->id . ' ajouté sur l\'album #' . $album->id, $member->getFullname(), $member->id, 'Album: ' . $album->title);
+                        $this->addLog('comment', 'Commentaire ajouté par le membre #' . $member->id . ' sur l\'album #' . $album->id, $member->getFullname(), $comment->id, 'Album: ' . $album->title);
+                        $this->addLog('article', 'Commentaire ajouté par le membre #' . $member->id, $member->getFullname(), $album->id, 'Album: ' . $album->title);
+                    } else {
+                        $this->addLog('comment', 'Commentaire ajouté sur l\'album #' . $album->id, 'Anonyme', $comment->id, 'Album: ' . $album->title);
+                        $this->addLog('article', 'Commentaire ajouté', 'Anonyme', $album->id, 'Album: ' . $album->title);
+                    }
                     $this->flashSession->success("Le commentaire a bien été enregistré.");
                     $formComment->clear();
                 }

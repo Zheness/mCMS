@@ -142,6 +142,16 @@ class ArticleController extends ControllerBase
                     }
 
                     $comment->save();
+
+                    if ($memberConnected) {
+                        $member = $this->session->get('member');
+                        $this->addLog('member', 'Commentaire #' . $comment->id . ' ajouté sur l\'article #' . $article->id, $member->getFullname(), $member->id, 'Article: ' . $article->title);
+                        $this->addLog('comment', 'Commentaire ajouté par le membre #' . $member->id . ' sur l\'article #' . $article->id, $member->getFullname(), $comment->id, 'Article: ' . $article->title);
+                        $this->addLog('article', 'Commentaire ajouté par le membre #' . $member->id, $member->getFullname(), $article->id, 'Article: ' . $article->title);
+                    } else {
+                        $this->addLog('comment', 'Commentaire ajouté sur l\'article #' . $article->id, 'Anonyme', $comment->id, 'Article: ' . $article->title);
+                        $this->addLog('article', 'Commentaire ajouté', 'Anonyme', $article->id, 'Article: ' . $article->title);
+                    }
                     $this->flashSession->success("Le commentaire a bien été enregistré.");
                     $formComment->clear();
                 }

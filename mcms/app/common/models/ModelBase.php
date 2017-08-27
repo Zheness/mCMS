@@ -69,6 +69,10 @@ class ModelBase extends Model
             foreach ($this->getMessages() as $message) {
                 $this->getDI()->get('flashSession')->error($message->getMessage());
             }
+            if ($this->getSource() == 'email' || $this->getSource() == 'log') {
+            } else {
+                throw new \Exception("Saving data error");
+            }
         }
     }
 }

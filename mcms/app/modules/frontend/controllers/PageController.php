@@ -113,6 +113,16 @@ class PageController extends ControllerBase
                         }
 
                         $comment->save();
+
+                        if ($memberConnected) {
+                            $member = $this->session->get('member');
+                            $this->addLog('member', 'Commentaire #' . $comment->id . ' ajouté sur la page #' . $page->id, $member->getFullname(), $member->id, 'Page: ' . $page->title);
+                            $this->addLog('comment', 'Commentaire ajouté par le membre #' . $member->id . ' sur la page #' . $page->id, $member->getFullname(), $comment->id, 'Page: ' . $page->title);
+                            $this->addLog('page', 'Commentaire ajouté par le membre #' . $member->id, $member->getFullname(), $page->id, 'Page: ' . $page->title);
+                        } else {
+                            $this->addLog('comment', 'Commentaire ajouté sur la page #' . $page->id, 'Anonyme', $comment->id, 'Page: ' . $page->title);
+                            $this->addLog('page', 'Commentaire ajouté', 'Anonyme', $page->id, 'Page: ' . $page->title);
+                        }
                         $this->flashSession->success("Le commentaire a bien été enregistré.");
                         $formComment->clear();
                     }

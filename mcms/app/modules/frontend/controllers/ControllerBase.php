@@ -1,8 +1,10 @@
 <?php
 namespace Mcms\Modules\Frontend\Controllers;
 
+use Mcms\Library\Tools;
 use Mcms\Models\Album;
 use Mcms\Models\Article;
+use Mcms\Models\Log;
 use Mcms\Models\Option;
 use Mcms\Models\Page;
 use Mcms\Modules\Frontend\Forms\FormBase;
@@ -106,5 +108,17 @@ class ControllerBase extends Controller
             'textColorLink' => Option::findFirstBySlug('cookie_consent_link_color')->content,
         ];
         $this->view->setVar('cookieConsent', $cookieConsent);
+    }
+
+    protected function addLog($type, $action, $username, $sourceId = null, $content = null)
+    {
+        $log = new Log();
+        $log->type = $type;
+        $log->action = $action;
+        $log->username = $username;
+        $log->sourcerId = $sourceId;
+        $log->content = $content;
+        $log->dateCreated = Tools::now();
+        $log->save();
     }
 }

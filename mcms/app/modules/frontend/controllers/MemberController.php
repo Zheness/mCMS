@@ -51,6 +51,7 @@ class MemberController extends ControllerBase
                     ]);
                     $tools->sendMail($to, $subject, $html);
                     $form->clear();
+                    $this->addLog('member', 'Demande de mot de passe envoyée par mail', $member->getFullname(), $member->id);
                     $this->flashSession->success("La demande de mot de passe a bien été envoyée.");
                 } else {
                     $this->flashSession->error("Aucun compte trouvé avec cette addresse email.");
@@ -102,6 +103,8 @@ class MemberController extends ControllerBase
                 $member->dateUpdated = Tools::now();
                 $member->save();
 
+                $this->addLog('member', 'Mot de passe modifié après une demande de mot de passe', $member->getFullname(), $member->id);
+
                 $this->flashSession->success("Votre mot de passe a bien été modifié.");
 
                 $this->response->redirect("index/login");
@@ -140,6 +143,7 @@ class MemberController extends ControllerBase
                 $member->updatedBy = $member->id;
                 $member->save();
                 $this->session->set('member', $member);
+                $this->addLog('member', 'Informations du compte modifiées', $member->getFullname(), $member->id);
                 $this->flashSession->success("Vos informations ont bien été modifiées.");
             } else {
                 $this->generateFlashSessionErrorForm($form);
@@ -172,6 +176,7 @@ class MemberController extends ControllerBase
                 $member->updatedBy = $member->id;
                 $member->save();
 
+                $this->addLog('member', 'Mot de passe modifié', $member->getFullname(), $member->id);
                 $this->flashSession->success("Votre mot de passe a bien été modifié.");
                 $form->clear();
             } else {
@@ -210,6 +215,7 @@ class MemberController extends ControllerBase
                         $hasError = false;
                         if (!file_exists("img/upload")) {
                             if (!mkdir('img/upload')) {
+                                $this->addLog('member', 'Impossible de créer le dossier de destination de l\'image de profil', $member->getFullname(), $member->id);
                                 $this->flashSession->error("Impossible de créer le dossier de destination.");
                                 $hasError = true;
                             }
@@ -228,9 +234,11 @@ class MemberController extends ControllerBase
                                 $member->updatedBy = $this->session->get('member')->id;
                                 $member->save();
 
+                                $this->addLog('member', 'Image de profil modifiée', $member->getFullname(), $member->id);
                                 $this->flashSession->success("L'image a bien été enregistrée.");
                                 $form->clear();
                             } else {
+                                $this->addLog('member', 'Impossible de déplacer l\'image de profil dans le dossier de destination', $member->getFullname(), $member->id);
                                 $this->flashSession->error("Impossible de déplacer le fichier le dossier de destination.");
                             }
                         }
@@ -333,6 +341,10 @@ class MemberController extends ControllerBase
                     $message->createdBy = $rootId;
                     $message->save();
                 }
+
+
+                $this->addLog('member', 'Désinscription réussie', $member->getFullname(), $member->id);
+
                 $member->delete();
 
                 $this->flashSession->success("Votre compte a bien été supprimé.");
