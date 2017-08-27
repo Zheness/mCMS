@@ -24,7 +24,7 @@
 </ul>
 <div class="row">
     <div class="col-sm-12">
-        <p>Attention, souhaitez-vous réelement supprimer le membre <b>{{ member.getFullname() }}</b> ?</p>
+        <p>Attention, souhaitez-vous réellement supprimer le membre <b>{{ member.getFullname() }}</b> ?</p>
         {% if member.PagesCreated.count() %}
             <p>Les pages suivant seront <b>conservées</b> et rattachées à l'administrateur principal {{ root.generateAdminMemberLink() }}.</p>
             <ul>

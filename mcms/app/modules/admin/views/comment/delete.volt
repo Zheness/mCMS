@@ -15,7 +15,7 @@
 </ul>
 <div class="row">
     <div class="col-sm-12">
-        <p>Attention, souhaitez-vous réelement supprimer le commentaire posté par <b>{{ comment.username }}</b> ?</p>
+        <p>Attention, souhaitez-vous réellement supprimer le commentaire posté par <b>{{ comment.username }}</b> ?</p>
         <p>Toute suppression est définitive.</p>
     </div>
     <div class="col-lg-7">
@@ -25,6 +25,7 @@
                 <input type="hidden" name="{{ csrfKey }}" value="{{ csrf }}">
                 <button type="submit" class="btn btn-danger">Supprimer</button>
                 <a href="{{ url("comment") }}" class="btn btn-default">Retour à la liste</a>
+                {{ comment.getAdminLinkToElement() }}
             </div>
         </form>
     </div>

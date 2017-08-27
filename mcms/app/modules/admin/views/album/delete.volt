@@ -20,7 +20,7 @@
 </ul>
 <div class="row">
     <div class="col-sm-12">
-        <p>Attention, souhaitez-vous réelement supprimer l'album <b>{{ album.title }}</b> ?</p>
+        <p>Attention, souhaitez-vous réellement supprimer l'album <b>{{ album.title }}</b> ?</p>
         <p>Les {{ album.Images.count() }} images rattachées ne seront pas supprimées.</p>
         <p>Toute suppression est définitive.</p>
     </div>

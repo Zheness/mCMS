@@ -19,7 +19,7 @@
     <div class="col-sm-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                {{ comment.username }} - {{ comment.dateCreatedToFr() }}
+                {{ comment.username }} - {{ comment.dateCreatedToFr() }} - {{ comment.getAdminLinkToElement() }}
             </div>
             <div class="panel-body nl2br">
                 {{ comment.content }}

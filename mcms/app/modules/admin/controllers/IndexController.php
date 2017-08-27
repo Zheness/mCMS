@@ -12,6 +12,8 @@ class IndexController extends ControllerBase
     {
         if (!$this->session->has("member")) {
             $this->dispatcher->forward(["controller" => "index", "action" => "login"]);
+        } else {
+            $this->dispatcher->forward(["controller" => "page", "action" => "index"]);
         }
     }
 

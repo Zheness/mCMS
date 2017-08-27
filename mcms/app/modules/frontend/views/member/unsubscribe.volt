@@ -13,7 +13,7 @@
         </a>
     </li>
 </ul>
-<p>Attention, souhaitez-vous réelement supprimer votre compte ?</p>
+<p>Attention, souhaitez-vous réellement supprimer votre compte ?</p>
 {% if member.PagesCreated.count() %}
     <p>Les pages suivant seront <b>conservées</b> et rattachées à l'administrateur
         principal {{ root.generateAdminMemberLink() }}.</p>

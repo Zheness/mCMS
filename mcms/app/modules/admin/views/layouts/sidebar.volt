@@ -1,9 +1,9 @@
 <div class="navbar-default sidebar" role="navigation">
     <div class="sidebar-nav navbar-collapse">
         <ul class="nav" id="side-menu">
-            <li>
+            <!--<li>
                 <a href="{{ url() }}"><i class="fa fa-dashboard fa-fw"></i> Accueil</a>
-            </li>
+            </li>-->
             <li>
                 <a href="{{ url('message') }}">
                     <i class="fa fa-envelope-o fa-fw"></i>

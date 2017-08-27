@@ -20,7 +20,7 @@
 </ul>
 <div class="row">
     <div class="col-sm-12">
-        <p>Attention, souhaitez-vous réelement supprimer l'article <b>{{ article.title }}</b> ?</p>
+        <p>Attention, souhaitez-vous réellement supprimer l'article <b>{{ article.title }}</b> ?</p>
         <p>Toute suppression est définitive.</p>
     </div>
     <div class="col-lg-7">

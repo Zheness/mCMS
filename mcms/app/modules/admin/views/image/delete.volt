@@ -16,7 +16,7 @@
 </ul>
 <div class="row">
     <div class="col-sm-12">
-        <p>Attention, souhaitez-vous réelement supprimer l'image
+        <p>Attention, souhaitez-vous réellement supprimer l'image
             <b>{{ image.title != '' ? image.title : '#' ~ image.id }}</b> ?</p>
         <p>Toute suppression est définitive.</p>
     </div>
