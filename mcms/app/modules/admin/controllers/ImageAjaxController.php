@@ -112,7 +112,7 @@ class ImageAjaxController extends ControllerBase
 
         $images = Image::find([
             'limit' => $limit,
-            'offset' => $offset,
+            'offset' => $offset * $limit,
         ]);
 
         $data = [];
